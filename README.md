@@ -1,2 +1,7 @@
 # TPFinalLab2
-Lautaro se la come.
+Diego se la come.
+
+Logros conseguidos por Diego ... Moreno
+                               |-> Solucion Trivial
+                               |-> Puntero Doble
+                               |->continuara..
