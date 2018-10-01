@@ -1,0 +1,12 @@
+#include "cabecera.h"
+
+int main()
+{
+    NodoAuto * nuevoNodo;
+    nuevoNodo=inicNodo();
+    CeldaAuto arreglo[30];
+    agregarMuchos(&nuevoNodo);
+    mostrarLista(nuevoNodo);
+
+    return 0;
+}
