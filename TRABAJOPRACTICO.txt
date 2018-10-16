@@ -1,0 +1,18 @@
+Contenido minimo para trabajo practico final Laboratorio II
+Presentacion de proyecto (PREZI).
+
+
+		Documentacion:
+	-Descripcion del proyecto.
+	-Diagrama de destrucuturas/funciones.
+	-Diario de trabajo.
+	-Matriz de soluciones.
+
+		Codigo: 
+
+	-Manejo de archivos binarios.
+	-Recursividad.
+	-Listas enlazadas.(Simples/dobles)
+	-Arboles binarios de búsqueda. Para muestra(Preorder, inorder, postorder, eliminar nodo).
+	-Estructura de datos compuestos.(arreglo de lista, lista de listas, lista de arboles).
+	-Conocimientos adquiridos en Estadistica.
