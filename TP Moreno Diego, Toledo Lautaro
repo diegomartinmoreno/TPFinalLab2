@@ -1,6 +1,6 @@
 16/10/2018                                                                      Moreno Diego, Toledo Lautaro
 
-                                Sistema de Gestion de Alarmas
+                                Sistema de Gestion de Supervision de Camaras de Seguridad
 
 El proyecto se basara en conseguir analizar en tiempo real el funcionamiento de diferentes camaras situadas en distintas posiciones. Se
 podra obtener el estado de las camaras (activas/inhactivas por falla), la posicion, la cantidad de veces que fueron modificadas, fecha 
