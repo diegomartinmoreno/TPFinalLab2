@@ -10,19 +10,9 @@ Logros conseguidos por Diego ... Moreno
 
 ---------------------------------------------------------------------------------------------
 
-0 < prioridad < 10
-El arbol de camaras se ordenara por prioridad.
-La prioridad indicara, desde el inicio del trabajo de un operador, cual es el orden para ver el estado de la camara.
-Un menu para Supervisores // Simular supervision // Alertar manualmente averia o alerta
-Un menu con contraseña para Administradores // Estadisticas averias y alertas // abm camaras // abm y estadisticas personal
+DIARIO DE TRABAJO
 
-Lautaro -----------
-Funciones //
-FILE camara - personal //
-Buscar camara - personal //
-Cargar camara - personal //
+>>> 23/10
+Lautaro -- Funciones de abl del arbol de camaras.
+Moreno -- Funciones del modo supervision.
 
-
-Diego ------------
-Simular supervision //
-Alertar manualmente averia o alerta
