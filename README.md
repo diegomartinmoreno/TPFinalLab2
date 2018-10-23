@@ -17,12 +17,12 @@ Un menu para Supervisores // Simular supervision // Alertar manualmente averia o
 Un menu con contraseña para Administradores // Estadisticas averias y alertas // abm camaras // abm y estadisticas personal
 
 Lautaro -----------
-Funciones 
-FILE camara / personal
-Buscar camara / personal
-Cargar camara / personal
+Funciones //
+FILE camara - personal //
+Buscar camara - personal //
+Cargar camara - personal //
 
 
 Diego ------------
-Simular supervision
+Simular supervision //
 Alertar manualmente averia o alerta
