@@ -1,5 +1,7 @@
-int main ()
+#include "headers.h"
+
+int main()
 {
-    menuPrincipal();
+    inicioSistema();
     return 0;
 }
