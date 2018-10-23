@@ -26,7 +26,7 @@ typedef struct
     int minuto;
     int segundo;
 } tiempo;
-
+//
 typedef struct
 {
     int IDcamara;
@@ -37,16 +37,24 @@ typedef struct
 } historial;
 ///LOS PRIMEROS 4 BYTES DEL HISTORIAL, UNA VEZ GUARDADO EN FILE, SERÁ INDICADOR DE LA CANTIDAD DE REGISTROS INGRESADOS PARA ESA CAMARA.
 
-typedef struct
-{
+typedef struct  {
     int IDcamara;
     int estado; /// 0=offline; 1=online; 2=en reparacion;
     tiempo fechaInstalacion;
     lugar ubicacion;
     char supervisor[50];
+    int prioridad; // 0 <= prioridad <= 10
     historial *histAverias;
     historial *histAlertas;
-} camara;
+} celda;
+
+typedef struct
+{
+    celda C;
+    struct arbolCamara *derecha;
+    struct arbolCamara *izquierda;
+} arbolCamara;
+
 
 
 #endif // HEADERS_H_INCLUDED
