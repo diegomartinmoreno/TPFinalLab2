@@ -163,12 +163,9 @@ void imprimirPrimerMenu(){
 
     primerMenuSwt(opc);
 }
-void imprimirMenuHalcon(){
 
-    int opc;
-
+void imprimirHeadSupervisor (){
     imprimirHeader("   Menu  Supervisor   ");
-
     textcolor(10);
     printf("\n\t1.- ");
     textcolor(15);
@@ -181,6 +178,12 @@ void imprimirMenuHalcon(){
     printf("\n\t3.- ");
     textcolor(15);
     printf("Reportar Alerta.");
+}
+
+void imprimirMenuHalcon(){
+
+    int opc;
+    imprimirHeadSupervisor;
     textcolor(12);
     printf("\n\t4.- ");
     textcolor(15);
