@@ -1,57 +1,5 @@
 #include "headers.h"
 
-char procesarMenuPrincipal(int op)
-{
-    char control='n';
-    switch (op)
-    {
-    case 1:
-        puts("\n\n---> Alertas y estadisticas.");
-        system("pause");
-        break;
-    case 2:
-        puts("\n\n---> Averias y estadisticas.");
-        system("pause");
-        break;
-    case 3:
-        puts("\n\n---> Listar y modificar camaras.");
-        system("pause");
-        break;
-    case 4:
-        puts("\n\n---> Personal en nomina y estadisticas.");
-        system("pause");
-        break;
-    case 5:
-        puts("\n\n---> Seguro desea salir? S/N");
-        fflush(stdin);
-        control=getch();
-        break;
-    default:
-        puts("\n\n---> Ha ingresado una opcion invalida!");
-        system("pause");
-    }
-    return control;
-}
-
-void menuPrincipal()
-{
-    char control='n', input;
-    int op;
-    while (control!='s'&&control!='S')
-    {
-        system("cls");
-        imprimirHeader("    Menu Principal    ");
-        imprimirMenuPrincipal();
-        fflush(stdin);
-        input=getch();
-        op=atoi(&input);
-        fflush(stdin);
-        control=procesarMenuPrincipal(op);
-    }
-}
-
-
---------------------------------------------------------------------------------------------------------------------------------------
     char control(){
     char opc;
     puts("DESEA CONTINUAR? S/N");
@@ -149,7 +97,7 @@ void menuAdminSwt(int opc){ ///alertas y estad. / averias y estad. / listar y mo
     system("cls");
     switch (opc) {
         case 1:
-            printf("ALERTAS Y ESTADISTICAS\n");
+            printf("Estadisticas de alertas.\n");
             break;
         case 2:
             printf("AVERIAS Y ESTADISTICAS\n");
@@ -224,15 +172,15 @@ void imprimirMenuHalcon(){
     textcolor(10);
     printf("\n\t1.- ");
     textcolor(15);
-    printf("Alertar.");
+    printf("Comenzar Supervision.");
     textcolor(10);
     printf("\n\t2.- ");
     textcolor(15);
-    printf("Reportar Averia");
+    printf("Reportar Averia.");
     textcolor(10);
     printf("\n\t3.- ");
     textcolor(15);
-    printf("Listar camaras.");
+    printf("Reportar Alerta.");
     textcolor(12);
     printf("\n\t4.- ");
     textcolor(15);
@@ -253,11 +201,11 @@ void imprimirMenuAdmin(){
     textcolor(10);
     printf("\n\t1.- ");
     textcolor(15);
-    printf("Alertas y estadisticas.");
+    printf("Estadisticas de alertas.");
     textcolor(10);
     printf("\n\t2.- ");
     textcolor(15);
-    printf("Averias y estadisticas.");
+    printf("Estadisticas de averias.");
     textcolor(10);
     printf("\n\t3.- ");
     textcolor(15);
