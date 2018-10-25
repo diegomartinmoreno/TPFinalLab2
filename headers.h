@@ -8,8 +8,8 @@
 #include <windows.h>
 #include <string.h>
 
-#define rutaSupervisores "./Sup.txt"
-#define rutaAdministradores "./Adm.txt"
+#define rutaSupervisores "./Sup.txt" /// Guarda bloques de 100 caracteres, 50 para un usuario seguido de 50 para una contraseña.
+#define rutaAdministradores "./Adm.txt" /// Guarda bloques de 100 caracteres, 50 para un usuario seguido de 50 para una contraseña.
 #define rutaCamaras "./Cam.bin"
 #define rutaPersonal "./Personal.bin"
 #define rutaTecnicos "./Tecnicos.bin"

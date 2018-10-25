@@ -1,5 +1,6 @@
 #include "headers.h"
-
+/// Funciones por si se puede ingresar una entrada de historial de fechas anteriores, ordenandola antes de las ultimas entradas.
+/*
 int compararFechas (tiempo t1, tiempo t2){ /// 1 si son iguales, -1 si tienen mismo dia distinta hora. 2 si t1 es mayor y -2 si t2 es mayor.
     int rta=-2;
     if (t1.ano==t2.ano && t1.mes==t2.mes && t1.dia==t2.dia){ /// Compara fecha
@@ -52,6 +53,28 @@ historial *insertarOrdenardoAA (historial *lista, historial *nuevo){
         lista=nuevo;
     }
     return lista;
+}*/
+
+int realocarArreglo (celda camaras[], int dimF){
+    camaras=realloc(camaras, sizeof(celda)+10);
+    if (!camaras)
+        perror("No se encontro espacio suficiente para realocar arreglo de camaras.");
+    return dimF
+}
+
+int generarArregloCamaras (arbolCamara *arbol, celda camaras[], int dimL, int dimF, char usuario[]){
+    if (arbol){
+        if (strcmp(usuario, arbol->C.supervisor)==0){
+           if (dimL+1>dimF){
+                dimF=realocarArreglo(camaras, dimF);
+           }
+           camaras[dimL]=arbol->C;
+           dimL++;
+        }
+        dimL=generarArregloCamaras(arbol->izquierda, camaras, dimL);
+        dimL=generarArregloCamaras(arbol->derecha, camaras, dimL);
+    }
+    return dimL;
 }
 
 char cicloDeControl (){
@@ -68,8 +91,8 @@ char cicloDeControl (){
 }
 
 
-void inicSupervision (celda camaras[], int dimL){
-    int prioridad=1, i=0;
+void inicSupervision (celda camaras[], int i, int dimL){
+    int prioridad=1;
     char control='0';
     do{
         system("cls");
@@ -93,4 +116,68 @@ void inicSupervision (celda camaras[], int dimL){
             Sleep(5000);
         }
     } while (control!='3');
+}
+
+void procesamientoSupervision (arbolCamara *arbol, char usuario[]) {
+    celda camaras[50];
+    int dimL, dimF=50, i=0;
+    char control;
+    dimL=generarArregloCamaras(arbol, camaras, dimL, dimF, usuario);
+    while (control!='s'&&control!='S'){
+        inicSupervision(camaras, i, dimL);
+        puts("Desea cerrar sesion en este usuario?");
+        puts("S para salir.");
+        puts("N para reanudar vigilancia.");
+        fflush(stdin);
+        getch(control);
+    }
+}
+
+int contarUsuariosCreados (){
+    int cant;
+    FILE *dataUsuarios=fopen(rutaSupervisores, "r");
+    cant = fseek(dataUsuarios, 0, SEEK_END);
+    cant = can/(sizeof(char)*100);
+    fclose(dataUsuarios);
+    return cant;
+}
+
+int confirmarUsuario (char usuario[]){
+    int cantUsers=contarUsuariosCreados(), i=0, encontrado=0, aprobado=0;
+    char contrasena[50], aux[50];
+    puts("Ingrese su nombre de usuario de Supervisor:");
+    fflush(stdin);
+    gets(usuario);
+    puts("Ingrese su contraseña:");
+    fflush(stdin);
+    gets(contrasena);
+    FILE *dataUsuarios=fopen(rutaSupervisores, "r");
+    while (i<cantUsers && !encontrado){
+        i++;
+        fread(aux, sizeof(char), 50, dataUsuarios);
+        if (strcmp(usuario, aux)==0){
+            encontrado=1;
+            fread(aux, sizeof(char), 50, dataUsuarios);
+            if (strcmp(contrasena, aux)==0){
+                aprobado=1;
+            }
+            else{
+                puts("Contraseña incorrecta");
+            }
+        }
+    }
+    return aprobado;
+}
+
+void inicioSesion (){
+    char usuario[50];
+    int aprobado=0;
+    while (op==0){
+        system("cls");
+        imprimirHeader("   Inicio de Sesion   ");
+        aprobado=confirmarUsuario(usuario);
+        if (aprobado){
+            procesamientoSupervision(arbol, usuario);
+        }
+    }
 }
