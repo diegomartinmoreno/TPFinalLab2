@@ -8,6 +8,14 @@
 #include <windows.h>
 #include <string.h>
 
+#define rutaSupervisores "./Sup.txt"
+#define rutaAdministradores "./Adm.txt"
+#define rutaCamaras "./Cam.bin"
+#define rutaPersonal "./Personal.bin"
+#define rutaTecnicos "./Tecnicos.bin"
+#define rutaHistorialAverias "./Averias.bin"
+#define rutaHistorialAlertas "./Alertas.bin"
+
 typedef struct
 {
     char ciudad[50];
