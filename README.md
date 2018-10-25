@@ -13,8 +13,8 @@ Logros conseguidos por Diego ... Moreno
 DIARIO DE TRABAJO
 
 >>> 23/10
-Lautaro -- Funciones de abl del arbol de camaras.
-Moreno -- Funciones del modo supervision.
+* Lautaro -- Funciones de abl del arbol de camaras.
+* Moreno -- Funciones del modo supervision.
 
 >>> 25/10
-Moreno -- Funciones de inicio de sesion para supervisores, parte del generador random de camaras.
+* Moreno -- Funciones de inicio de sesion para supervisores, parte del generador random de camaras.
