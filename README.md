@@ -16,3 +16,5 @@ DIARIO DE TRABAJO
 Lautaro -- Funciones de abl del arbol de camaras.
 Moreno -- Funciones del modo supervision.
 
+>>> 25/10
+Moreno -- Funciones de inicio de sesion para supervisores, parte del generador random de camaras.
