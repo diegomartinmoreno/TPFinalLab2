@@ -63,6 +63,23 @@ typedef struct
     struct arbolCamara *izquierda;
 } arbolCamara;
 
+///Estructuras Personal
+typedef struct{
+    int idSupervisor;
+    char nomYApe[30];
+    int cantReportes;
+}supervisor;
+
+typedef struct{
+    supervisor sup;
+    struct nodoSupervisor * sig;
+}nodoSupervisor;
+
+typedef struct{  
+    supervisor sup;
+    struct nodo2Supervisor * ante;
+    struct nodo2Supervisor * sig;
+}nodo2Supervisor;
 
 
 #endif // HEADERS_H_INCLUDED
