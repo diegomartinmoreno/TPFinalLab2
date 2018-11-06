@@ -1,3 +1,5 @@
+#define "headers.h"
+
 typedef struct{
     supervisor sup;
     struct nodo2Supervisor * ante;
