@@ -16,6 +16,8 @@
 #define rutaHistorialAverias "./Averias.bin"
 #define rutaHistorialAlertas "./Alertas.bin"
 
+#define sizeNom 50
+
 typedef struct
 {
     char ciudad[50];
