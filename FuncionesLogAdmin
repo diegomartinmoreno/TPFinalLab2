@@ -1,443 +1,119 @@
+#define "headers.h"
+
+
+typedef struct{
+    char nomUsuario[sizeNom];
+    char contrasena[sizeNom];
+}usuario;
+//.---------------------------------------------------------------.-.-.----------------------------------------------
+void crearArchivo(){
+    FILE *admin=fopen(rutaAdministradores,"a+b");
+    if(admin){
+        puts(" ");
+        fclose(admin);
+    }
+};
 char control(){
     char opc;
-    puts("DESEA CONTINUAR? S/N");
+    printf("Desea Continuar? S/N.\n");
     fflush(stdin);
     opc=getch();
     opc=tolower(opc);
+
     return opc;
 };
-///INICIO FUNCIONES LOG
-void crearArchivo(){
-    FILE *admin=fopen(rutaAdministradores,"a+b");
-    if(admin)
-        puts("Archivo creado correctamente.");
-    else
-        puts("Error.");
-
-    fclose(admin);
-}
-usuario cargarUnAdministrador(){
+usuario registro(){
     usuario aux;
 
-    imprimirHeader("Identificarse/Registrarse");
-    printf("\n\tIngrese nombre de usuario:  ");
+    printf("Ingrese nombre de usuario: ");
     fflush(stdin);
-    gets(aux.nombUsuario);
+    gets(aux.nomUsuario);
 
-    printf("\n\tIngrese contrase%ca:  ",-92);
+    printf("Ingrese contrase%ca: ",-92);
     fflush(stdin);
-    gets(aux.clave);
+    gets(aux.contrasena);
 
     return aux;
 };
-void mostrarUnUsuario(usuario aux){
-    printf("----------------------***-----------------------\n");
-    printf("Nombre de usuario: %s\n",aux.nombUsuario);
-    printf("Constrase%ca: %s\n",-92,aux.clave);
-    printf("----------------------***-----------------------\n");
-};
-void mostrarArchivoAdministrador(){
+
+int buscarExistente(usuario aux){
+
     FILE *admin=fopen(rutaAdministradores,"rb");
-    usuario administ;
+    int rta=0,valid,ingreso=0;
+    usuario auxReg;
 
     if(admin){
-        while((fread(&administ,sizeof(usuario),1,admin))>0){
-            mostrarUnUsuario(administ);
-        }
-    }else
-        puts("Error.");
+        while(!feof(admin) && ingreso==0){
+            fread(&auxReg,sizeof(usuario),1,admin);
+            rta=strcmp(auxReg.nomUsuario,aux.nomUsuario);
 
-    fclose(admin);
-};
-
-int buscarUsuarioExistente(usuario adm[],int dim,usuario in){
-    int rta,i=0;
-
-    while(i<dim && ((strcmp(in.nombUsuario,adm[i].nombUsuario))!=0)){
-        rta=0;
-        i++;
-    }
-    if(i<dim){
-        rta=1;
-    }
-
-    return rta;
-};
-int leerDeFileCargarEnArreglo(usuario administ[],int dim){
-    FILE *administrador=fopen(rutaAdministradores,"rb");
-    int i=0;
-
-    if(administrador){
-        fseek(administrador,0,SEEK_SET);
-        while((fread(&administ[i],sizeof(usuario),1,administrador))>0 && i<dim){
-            i++;
-        }
-    }
-    fclose(administrador);
-    return i;
-};
-void registrarAdmYCargarEnFileAdministrador(){
-    FILE *administrador=fopen(rutaAdministradores,"a+b");
-    char opc='s';
-    int val,ocupado;
-    usuario adm,a[maxAdms];
-
-    if(administrador){
-        while(opc=='s'){
-
-            adm=cargarUnAdministrador();
-
-            fseek(administrador,0,SEEK_SET);
-
-            val=leerDeFileCargarEnArreglo(a,maxAdms);
-
-            if(val==0){
-                fwrite(&adm,sizeof(usuario),1,administrador);
-            }
-            if(val>0){
-                    ocupado=buscarUsuarioExistente(a,val,adm);
-                    if(ocupado==0){
-                        fwrite(&adm,sizeof(usuario),1,administrador);
-                    }else{
-                        printf("\nUSUARIO EXISTENTE.\n");
-                        system("pause");
-                        system("cls");
-                        imprimirPrimerMenu();
+            if(rta==0){
+                valid=strcmp(auxReg.contrasena,aux.contrasena);
+                if(valid==0){
+                    ingreso=1;
                 }
             }
-            opc=control();
-            if(opc=='s'){
-                opcionesLogueoAdministrador();
-            }else{
-                system("cls");
-                inicioSistema();
-            }
         }
-    }else
-        puts("Error.");
-
-    fclose(administrador);
+        fclose(admin);
+    }
+    return ingreso;
 };
 
-int verificarUsuarioYClave(usuario in,usuario administ[],int dim){
-    int i=0,flag=0,errorClave=0;
-    while(i<dim && flag==0){
+int cantReg(){
+    FILE * admin=fopen(rutaAdministradores,"rb");
+    usuario ad;
+    int i=0;
 
-        if((strcmp(in.nombUsuario,administ[i].nombUsuario))==0){
-            errorClave+=1;
+    if(admin){
+
+        while(fread(&ad,sizeof(usuario),1,admin)>0){
+            i++;
         }
-
-        if((strcmp(in.nombUsuario,administ[i].nombUsuario))==0 &&(strcmp(in.clave,administ[i].clave))==0){
-            flag=1;
-        }
-
-        i++;
+        fclose(admin);
     }
-
-    if(flag==0 && errorClave==0){
-            printf("Nombre de usuario ingresado no valido!!\n");
-            system("pause");
-    }
-    if(flag==0 && errorClave==1){
-        printf("Contrase%ca ingresada no valida!!\n",-92);
-        system("pause");
-    }
-    return flag;
-};
-///FIN FUNCIONES LOG
-
-
-void inicioSistema(){
-    imprimirHeader("    Menu Principal    ");
-    imprimirPrimerMenu();
+    return i;
 };
 
-void textcolor (int color) // Gracias por tanto StackOverflow.
-{
-    static int __BACKGROUND;
-    HANDLE h = GetStdHandle ( STD_OUTPUT_HANDLE );
-    CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
-    GetConsoleScreenBufferInfo(h, &csbiInfo);
-    SetConsoleTextAttribute (GetStdHandle (STD_OUTPUT_HANDLE),
-                             color + (__BACKGROUND << 4));
-}
+void cargarUsuarios(){
+    FILE *admin=fopen(rutaAdministradores,"a+b");
+    char opc='s';
+    int ingreso=0,validos;
+    usuario aux;
 
-//PARA QUEDAR CENTRADO DEBE RECIBIR UN STRING DE 22 CARACTERES.
-void imprimirHeader(char titulo[]){
-    int i;
-    textcolor(2);
-    printf("\n%c", 201);
-    printf("%c", 205);
-    for (i=0; i<19; i++){
-        printf("%c", 174);
-    }
-    textcolor(10);
-    for (i=0; i<22; i++){
-        printf("%c", 205);
-    }
-    textcolor(2);
-    for (i=0; i<19; i++){
-        printf("%c", 175);
-    }
-    printf("%c", 205);
-    printf("%c\n", 187);
-    printf("%c%42s%21c\n", 186, " ", 186);
-    printf("%c", 186);
-    textcolor(15);
-    printf("%42s", titulo);
-    textcolor(2);
-    printf("%21c\n", 186);
-    printf("%c%42s%21c\n", 186, " ", 186);
-    printf("%c", 200);
-    printf("%c", 205);
-    for (i=0; i<19; i++){
-        printf("%c", 174);
-    }
-    textcolor(10);
-    for (i=0; i<22; i++){
-        printf("%c", 205);
-    }
-    textcolor(2);
-    for (i=0; i<19; i++){
-        printf("%c", 175);
-    }
-    printf("%c", 205);
-    printf("%c\n\n", 188);
-    textcolor(15);
-};
-
-///funciones con switch
-void menuSupervisorSwt(int opc){ ///alertar reportar listar salir
-
-    system("cls");
-    switch (opc) {
-        case 1:
-            printf("CREAR ALERTA");
-            break;
-        case 2:
-            printf("REPORTAR AVERIA");
-            break;
-        case 3:
-            printf("LISTAR CAMARAS");
-            break;
-        case 4:
-            inicioSistema();
-            break;
-        default:
-            printf("Ingrese una opcion valida!\n");
-            break;
-    }
-};
-void menuAdminSwt(int opc){ ///alertas y estad. / averias y estad. / listar y modif. cams / Personal en nomina y estad.
-
-    system("cls");
-    switch (opc) {
-        case 1:
-            printf("Estadisticas de alertas.\n");
-            break;
-        case 2:
-            printf("AVERIAS Y ESTADISTICAS\n");
-            break;
-        case 3:
-            printf("LISTAR Y MODIFICAR CAMARAS\n");
-            break;
-        case 4:
-            printf("LISTAR PERSONAL EN NOMINA Y ESTADISTICA\n");
-            break;
-        case 5:
-            inicioSistema();
-            break;
-        default:
-            printf("Ingrese una opcion valida!\n");
-            break;
-    }
-};
-
-void identificacionLog(){
-
-    int validos,rta;
-    char opc;
-    usuario adm[maxAdms],in;
-
-    in=cargarUnAdministrador();
-    validos=leerDeFileCargarEnArreglo(adm,maxAdms);
-    rta=verificarUsuarioYClave(in,adm,validos);
-
-    if(rta>0){
-        system("pause");
+    if(admin){
         system("cls");
-        imprimirMenuAdmin();
-    }
-    if(rta==0){
-        opc=control();
-        if(opc=='s'){
-            system("cls");
-            imprimirMenuAdmin();
-        }else{
-            system("cls");
-            inicioSistema();
+        
+        while(opc=='s'){
+
+            aux=registro();
+            validos=cantReg();
+
+            if(validos==0){
+                fwrite(&aux,sizeof(usuario),1,admin);
+            }else{
+                ingreso=buscarExistente(aux);
+                if(ingreso==0){
+                    fwrite(&aux,sizeof(usuario),1,admin);
+                }else{
+                    puts("Usuario existente.");
+                }
+            }
+
+            opc=control();
         }
+        fclose(admin);
     }
 };
-void opcionesAdministradorSwt(int opc){
-    int rta=0;
-    system("cls");
-    switch (opc) {
-        case 1:
-            identificacionLog();
-            break;
-        case 2:
-            registrarAdmYCargarEnFileAdministrador();
-            break;
-        case 3:
-            imprimirPrimerMenu();
-        default:
-            printf("Ingrese opcion valida.");
-            system("pause");
-            system("cls");
-            inicioSistema();
-            break;
+void iniciarSesion(){
+    usuario in;
+    int acceso=0;
+
+    in=registro();
+    acceso=buscarExistente(in);
+    if(acceso==1){
+        printf("Exito.\n");
+    }else{
+        printf("ERROR.\n");
     }
-};
-
-void opcionesLogueoAdministrador(){
-    int opc;
-
-    imprimirHeader("   Iniciar   Sesion   ");
-    textcolor(10);
-    printf("\n\t1.- ");
-    textcolor(15);
-    printf("Ingresar con usuario y contrase%ca.",-92);
-    textcolor(10);
-    printf("\n\t2.- ");
-    textcolor(15);
-    printf("Crear/Agregar un administrador.");
-    textcolor(12);
-    printf("\n\t3.- ");
-    textcolor(15);
-    printf("Volver.");
-
-    printf("\n\n\tIngrese una opcion para continuar:  ");
-    fflush(stdin);
-    scanf("%i",&opc);
-
-    opcionesAdministradorSwt(opc);
-};
-void primerMenuSwt(int opc){
-    int rta=0;
-    system("cls");
-    switch (opc) {
-        case 1:
-            imprimirMenuSupervisor();
-            break;
-        case 2:
-            opcionesLogueoAdministrador();
-            break;
-        case 3:
-            printf("Cerrando sistema...\n");
-            system("pause");
-            exit(0);
-        default:
-            printf("Ingrese opcion valida.");
-            system("pause");
-            system("cls");
-            inicioSistema();
-            break;
-    }
-};
-
-///Funciones de menues.
-void imprimirPrimerMenu(){
-    int opc;
-
-    textcolor(10);
-    printf("\n\t1.- ");
-    textcolor(15);
-    printf("Ingresar como Supervisor.");
-    textcolor(10);
-    printf("\n\t2.- ");
-    textcolor(15);
-    printf("Ingresar como Administrador.");
-    textcolor(12);
-    printf("\n\t3.- ");
-    textcolor(15);
-    printf("Salir del sistema.");
-
-
-    printf("\n\n\tIngrese opcion para continuar: ");
-    fflush(stdin);
-    scanf("%i",&opc);
-
-    primerMenuSwt(opc);
-}
-
-void imprimirHeadSupervisor (){
-    int opc=0;
-
-    imprimirHeader("   Menu  Supervisor   ");
-    textcolor(10);
-    printf("\n\t1.- ");
-    textcolor(15);
-    printf("Comenzar Supervision.");
-    textcolor(10);
-    printf("\n\t2.- ");
-    textcolor(15);
-    printf("Reportar Averia.");
-    textcolor(10);
-    printf("\n\t3.- ");
-    textcolor(15);
-    printf("Reportar Alerta.");
-
-    printf("\n\n\tIngrese opcion para continuar: ");
-    fflush(stdin);
-    scanf("%i",&opc);
-}
-
-void imprimirMenuSupervisor(){
-
-    int opc;
-    imprimirHeadSupervisor;
-    textcolor(12);
-    printf("\n\t4.- ");
-    textcolor(15);
-    printf("Salir del sistema.");
-
-    printf("\n\n\tIngrese una opcion para continuar: ");
-    fflush(stdin);
-    scanf("%i",&opc);
-
-    menuSupervisorSwt(opc);
 
 };
-void imprimirMenuAdmin(){
-    int opc;
-
-    imprimirHeader("  Menu Administrador  ");
-
-    textcolor(10);
-    printf("\n\t1.- ");
-    textcolor(15);
-    printf("Estadisticas de alertas.");
-    textcolor(10);
-    printf("\n\t2.- ");
-    textcolor(15);
-    printf("Estadisticas de averias.");
-    textcolor(10);
-    printf("\n\t3.- ");
-    textcolor(15);
-    printf("Listar y modificar camaras.");
-    textcolor(10);
-    printf("\n\t4.- ");
-    textcolor(15);
-    printf("Personal en nomina y estadisticas.");
-    textcolor(12);
-    printf("\n\t5.- ");
-    textcolor(15);
-    printf("Salir del sistema.");
-
-    printf("\n\n\tIngrese una opcion para continuar: ");
-    fflush(stdin);
-    scanf("%i",&opc);
-
-    menuAdminSwt(opc);
-}
