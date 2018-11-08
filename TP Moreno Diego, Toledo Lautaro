@@ -2,13 +2,27 @@
 
                                 Sistema de Gestion de Supervision de Camaras de Seguridad
 
-El proyecto se basara en conseguir analizar en tiempo real el funcionamiento de diferentes camaras situadas en distintas posiciones. Se
-podra obtener el estado de las camaras (activas/inactivas/en reparación por falla), la posicion, la cantidad de veces que fueron modificadas, fecha 
-de instalacion. 
+El proyecto se basara en conseguir un sistema que permita analizar en tiempo real el funcionamiento de diferentes camaras situadas
+en distintas posiciones. Se podra obtener el estado de las camaras (activas/inactivas/en reparación por falla),la posicion, la cantidad
+de veces que fueron modificadas, fecha de instalacion. 
 
-Este sofwtare permitirá calcular la probabilidad de que una de las camaras vuelva a fallar para tener en cuenta el chequeo correspondiente
-de la misma previo a la falla. 
-Cada camara contará con un contador de asistencias tecnicas e historial de mantenimiento, con la informacion de reparacion, que debera
-ser completado por el tecnico que realizo el mantenimiento.
+Este sofwtare permitirá realizar la supervision de camaras de seguridad, alertar un siniestro o reportar una avería. Contará con un 
+sistema de acceso, en el cual se encontrará la posibilidad ingresar como supervisor o como administrador. 
+
+Ingresando como usuario supervisor, se podran realizar acciones como:
+
+* Supervisión de camaras ordenadas automáticamente por prioridad.
+* Lista de camaras para supervisar.
+* Reportar un siniestro.
+* Reportar averia.
+
+Dentro de las distintas acciones que podrá realizar el usuario administrador se encuentran: 
+
+* ABM Supervisores.
+* ABM Cámaras.
+* Conocer cantidad de reportes realizados.
+* Conocer cantidad de alertas realizados.
+
+Cada camara contará con un contador de asistencias tecnicas, historial de mantenimiento con la informacion de reparacion.
 
 
