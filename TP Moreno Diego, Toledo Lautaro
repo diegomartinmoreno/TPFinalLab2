@@ -11,17 +11,17 @@ sistema de acceso, en el cual se encontrará la posibilidad ingresar como superv
 
 Ingresando como usuario supervisor, se podran realizar acciones como:
 
-* Supervisión de camaras ordenadas automáticamente por prioridad.
-* Lista de camaras para supervisar.
-* Reportar un siniestro.
-* Reportar averia.
+>>> Supervisión de camaras ordenadas automáticamente por prioridad.
+>>> Lista de camaras para supervisar.
+>>> Reportar un siniestro.
+>>> Reportar averia.
 
 Dentro de las distintas acciones que podrá realizar el usuario administrador se encuentran: 
 
-* ABM Supervisores.
-* ABM Cámaras.
-* Conocer cantidad de reportes realizados.
-* Conocer cantidad de alertas realizados.
+>>> ABM Supervisores.
+>>> ABM Cámaras.
+>>> Conocer cantidad de reportes realizados.
+>>> Conocer cantidad de alertas realizados.
 
 Cada camara contará con un contador de asistencias tecnicas, historial de mantenimiento con la informacion de reparacion.
 
