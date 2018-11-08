@@ -3,7 +3,7 @@
                                 Sistema de Gestion de Supervision de Camaras de Seguridad
 
 El proyecto se basara en conseguir analizar en tiempo real el funcionamiento de diferentes camaras situadas en distintas posiciones. Se
-podra obtener el estado de las camaras (activas/inhactivas por falla), la posicion, la cantidad de veces que fueron modificadas, fecha 
+podra obtener el estado de las camaras (activas/inactivas/en reparación por falla), la posicion, la cantidad de veces que fueron modificadas, fecha 
 de instalacion. 
 
 Este sofwtare permitirá calcular la probabilidad de que una de las camaras vuelva a fallar para tener en cuenta el chequeo correspondiente
