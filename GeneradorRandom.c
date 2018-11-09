@@ -1,4 +1,4 @@
-#include "headers.h"
+asdasdasd#include "headers.h"
 
 void generarCamara (celda camara){
     int i;
