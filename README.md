@@ -19,3 +19,6 @@ DIARIO DE TRABAJO
 >>> 25/10
 * Moreno -- Funciones de inicio de sesion para supervisores, parte del generador random de camaras.
 * Lautaro -- Funcion de carga de datos de arbol a archivo.
+
+>>> 9/11
+* Moreno -- Funciones de estadísticas para administradores.
