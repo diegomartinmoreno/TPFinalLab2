@@ -1,27 +1,25 @@
 #include "headers.h"
 
-
+/*
 typedef struct{
     char nomUsuario[sizeNom];
     char contrasena[sizeNom];
 }usuario;
+*/
 //.---------------------------------------------------------------.-.-.----------------------------------------------
 void crearArchivo(){
-    FILE *admin=fopen(rutaAdministradores,"a+b");
+    FILE *admin=fopen(rutaAdministradores,"wb");
+    usuario in;
+
     if(admin){
+        strcpy(in.nomUsuario,"diego");
+        strcpy(in.contrasena,"diego");
+        fwrite(&in,sizeof(usuario),1,admin);
         puts(" ");
         fclose(admin);
     }
 };
-char control(){
-    char opc;
-    printf("Desea Continuar? S/N.\n");
-    fflush(stdin);
-    opc=getch();
-    opc=tolower(opc);
 
-    return opc;
-};
 usuario registro(){
     usuario aux;
 
@@ -74,15 +72,17 @@ int cantReg(){
     return i;
 };
 
-void cargarUsuarios(){
+void cargarUsuariosAdm(){
     FILE *admin=fopen(rutaAdministradores,"a+b");
     char opc='s';
     int ingreso=0,validos;
     usuario aux;
 
+    system("cls");
+    imprimirHeader("     Registrarse      ");
+
     if(admin){
-        system("cls");
-        
+
         while(opc=='s'){
 
             aux=registro();
@@ -104,16 +104,50 @@ void cargarUsuarios(){
         fclose(admin);
     }
 };
-void iniciarSesion(){
-    usuario in;
-    int acceso=0;
+void identificarse(){
 
-    in=registro();
-    acceso=buscarExistente(in);
-    if(acceso==1){
-        printf("Exito.\n");
-    }else{
-        printf("ERROR.\n");
+    char pass,enmascarado[20];
+    usuario aux;
+
+    int i=0,ingreso=0;
+
+    strcpy(enmascarado,"**********");
+
+    imprimirHeader("        Acceso        ");
+
+    printf("Ingrese nombre: ");
+    fflush(stdin);
+    gets(aux.nomUsuario);
+
+    //No debe tomar "ENTER" como un caracter de contraseña
+
+    printf("\nIngrese contrase%ca: ",164);
+    while(i<20){
+        pass=getch();
+        if(pass != 13 && pass != 8){
+            printf("%c",enmascarado[i]);
+            aux.contrasena[i]=pass;
+            i++;
+        }
+        if(pass==8){ //si ingresa por teclado 'borrar'
+            i--;
+            printf("\b");
+            printf(" ");
+            printf("\b");
+
+        }
+        if(pass==13){
+            aux.contrasena[i]='\0';
+            ingreso=buscarExistente(aux);
+            if(ingreso==1){
+                system("cls");
+                imprimirMenuAdmin();
+            }else{
+                system("cls");
+                inicioSistema();
+
+            }
+        }
     }
 
 };
