@@ -9,7 +9,7 @@
 #include <string.h>
 
 #define rutaSupervisores "./Sup.txt" /// Guarda bloques de 100 caracteres, 50 para un usuario seguido de 50 para una contraseña.
-#define rutaAdministradores "./Adm.txt" /// Guarda bloques de 100 caracteres, 50 para un usuario seguido de 50 para una contraseña.
+#define rutaAdministradores "./Adm.bin" /// Guarda bloques de 100 caracteres, 50 para un usuario seguido de 50 para una contraseña.
 #define rutaCamaras "./Cam.bin"
 #define rutaPersonal "./Personal.bin"
 #define rutaTecnicos "./Tecnicos.bin"
@@ -77,11 +77,16 @@ typedef struct{
     struct nodoSupervisor * sig;
 }nodoSupervisor;
 
-typedef struct{  
+typedef struct{
     supervisor sup;
     struct nodo2Supervisor * ante;
     struct nodo2Supervisor * sig;
 }nodo2Supervisor;
+
+typedef struct{
+    char nomUsuario[sizeNom];
+    char contrasena[sizeNom];
+}usuario;
 
 
 #endif // HEADERS_H_INCLUDED
