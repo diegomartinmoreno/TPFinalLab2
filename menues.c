@@ -1,15 +1,8 @@
 #include "headers.h"
 
-    char control(){
-    char opc;
-    puts("DESEA CONTINUAR? S/N");
-    fflush(stdin);
-    opc=getch();
-    opc=tolower(opc);
-    return opc;
-};
 
 void inicioSistema(){
+    crearArchivo();
     imprimirHeader("    Menu Principal    ");
     imprimirPrimerMenu();
 
@@ -25,7 +18,13 @@ void textcolor (int color) // Gracias por tanto StackOverflow.
     SetConsoleTextAttribute (GetStdHandle (STD_OUTPUT_HANDLE),
                              color + (__BACKGROUND << 4));
 }
-
+char control(){
+    char opc;
+    puts("Desea continuar? S/N .");
+    fflush(stdin);
+    opc=getch();
+    return opc;
+};
 //PARA QUEDAR CENTRADO DEBE RECIBIR UN STRING DE 22 CARACTERES.
 void imprimirHeader(char titulo[]){
     int i;
@@ -92,6 +91,24 @@ void menuHalconSwt(int opc){ ///alertar reportar listar salir
             break;
     }
 };
+void mostrarUnUsuario(usuario aux){
+    printf("--------------------------------------\n");
+    printf("Nombre de usuario: %s\n",aux.nomUsuario);
+    printf("Contrase%ca: %s\n",164,aux.contrasena);
+    printf("--------------------------------------\n");
+};
+void mostrarArchivoAdministrador(){
+    FILE * admin=fopen(rutaAdministradores,"rb");
+    usuario in;
+
+    if(admin){
+        while(fread(&in,sizeof(usuario),1,admin)>0){
+            mostrarUnUsuario(in);
+        }
+
+        fclose(admin);
+    }
+};
 void menuAdminSwt(int opc){ ///alertas y estad. / averias y estad. / listar y modif. cams / Personal en nomina y estad.
 
     system("cls");
@@ -109,6 +126,15 @@ void menuAdminSwt(int opc){ ///alertas y estad. / averias y estad. / listar y mo
             printf("LISTAR PERSONAL EN NOMINA Y ESTADISTICA\n");
             break;
         case 5:
+            cargarUsuariosAdm();
+            imprimirMenuAdmin();
+            break;
+        case 6:
+            mostrarArchivoAdministrador();
+            getch();
+            imprimirMenuAdmin();
+            break;
+        case 7:
             inicioSistema();
             break;
         default:
@@ -118,18 +144,19 @@ void menuAdminSwt(int opc){ ///alertas y estad. / averias y estad. / listar y mo
 };
 void primerMenuSwt(int opc){
 
+    crearArchivo();
     system("cls");
     switch (opc) {
         case 1:
             imprimirMenuHalcon();
             break;
         case 2:
-            imprimirMenuAdmin();
+            identificarse();
             break;
         case 3:
             printf("Cerrando sistema...\n");
             system("pause");
-            exit(0);
+            break;
         default:
             printf("Ingrese opcion valida.");
             system("pause");
@@ -198,6 +225,7 @@ void imprimirMenuHalcon(){
 };
 void imprimirMenuAdmin(){
     int opc;
+    system("cls");
 
     imprimirHeader("  Menu Administrador  ");
 
@@ -217,8 +245,16 @@ void imprimirMenuAdmin(){
     printf("\n\t4.- ");
     textcolor(15);
     printf("Personal en nomina y estadisticas.");
-    textcolor(12);
+    textcolor(10);
     printf("\n\t5.- ");
+    textcolor(15);
+    printf("Agregar Administrador.");//agregado
+    textcolor(10);
+    printf("\n\t6.- ");
+    textcolor(15);
+    printf("Listar Administradores."); //agregado
+    textcolor(12);
+    printf("\n\t7.- ");
     textcolor(15);
     printf("Salir del sistema.");
 
