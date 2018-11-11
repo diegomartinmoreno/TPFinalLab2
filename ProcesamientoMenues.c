@@ -2,11 +2,14 @@
 
 
 void inicioSistema(){
+    inicializarCamaras();
+    inicializarHistAlertas();
+    inicializarHistAverias();
     crearArchivo();
+    system("Pause");
+    system("cls");
     imprimirHeader("    Menu Principal    ");
     imprimirPrimerMenu();
-
-
 };
 
 

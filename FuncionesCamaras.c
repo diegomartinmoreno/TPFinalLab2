@@ -30,11 +30,9 @@ celda crearCamara(){
 
 arbolCamara * crearNodoArbolCamara(celda cam){
     arbolCamara * aux=(arbolCamara *)malloc(sizeof(arbolCamara));
-
     aux->C=cam;
     aux->derecha=0;
     aux->izquierda=0;
-
     return aux;
 };
 
@@ -67,9 +65,7 @@ arbolCamara * cargarCamaras(arbolCamara * arbol){
 
     printf(".:A CONTINUACION, INGRESE LOS DATOS SOLICITADOS PARA LA CARGA DE UNA CAMARA:.\n\n");
     while (opc=='s'){
-
         arbol=insertarNodoCamaraEnArbol(arbol,crearNodoArbolCamara(crearCamara()));
-
         opc=control();
     }
     return arbol;
@@ -107,21 +103,6 @@ void arbolToFile(arbolCamara * arbol){
         printf("\a");
     }
     fclose(cam);
-};
-
-
-void mostrarUnaCamara(celda cam){
-    printf("-----------------------------------------------------------------------------------------\n");
-    printf("ID de camara: %i\n",cam.IDcamara);
-    printf("Nombre y Apellido de supervisor: %s\n",cam.supervisor);
-    if(cam.estado == 0)
-        printf("Estado: OFFLINE\n");
-    if(cam.estado == 1)
-        printf("Estado: ONLINE\n");
-    if(cam.estado == 2)
-        printf("Estado: EN REPARACION\n");
-    printf("Prioridad de Camara: %i",cam.prioridad);
-    printf("\n---------------------------------------------------------------------------------------\n");
 };
 
 
