@@ -3,7 +3,7 @@
 tiempo generarFecha (){
     tiempo aux;
     aux.ano=(rand()%10)+2008;
-    aux.dia=rand()%90;
+    aux.dia=rand()%30;
     aux.hora=rand()%24;
     aux.mes=rand()%13;
     aux.minuto=rand()%60;
@@ -40,6 +40,7 @@ void generarCamara (int ID){
     camara.IDcamara=ID;
     camara.ubicacion=generarUbicacion(ID);
     camara.prioridad=rand()%10;
+    camara.eliminada=0;
     FILE *fp=fopen(rutaCamaras, "ab");
     if (fp){
         fwrite(&camara, sizeof(celda), 1, fp);
@@ -49,7 +50,7 @@ void generarCamara (int ID){
 
 void generarBaseCamaras(){
     int i, j, ID;
-    for (i=0; i<8; i++){
+    for (i=1; i<9; i++){
         for (j=0;j<6; j++){
             ID=(i*100)+j;
             generarCamara(ID);
@@ -67,4 +68,109 @@ void inicializarCamaras (){
     else
         puts("Base de datos de Camaras disponible.");
     fclose(fp);
+}
+
+/// >>>>>> Generador de historiales.
+
+historial generarAveriaRandom(int ID){
+    historial aux;
+    char descripciones[][150]={{"Camara con mal funcionamiento."},{"Camara no brinda imagen."},{"Camara destruida por un meteorito."},{"Camara con lente obstruido"},{"Camara necesita reemplazo."}};
+    strcpy(aux.descripcion, descripciones[rand()%5]);
+    aux.tiempoRespuesta=rand()%48;
+    aux.tiempoRespuesta+=(rand()%60)/100;
+    aux.fecha=generarFecha();
+    aux.IDcamara=ID;
+    return aux;
+}
+
+
+void generarHistAverias(){
+    FILE *fp = fopen(rutaCamaras, "rb");
+    celda aux;
+    historial guardar;
+    int *IDS, i, j, cant, cantAverias;
+    fseek(fp, 0, SEEK_END);
+    cant=ftell(fp);
+    cant=cant/sizeof(celda);
+    IDS=(int *)malloc(sizeof(int)*cant);
+    fseek(fp, 0, SEEK_SET);
+    for (i=0; i<cant; i++){
+        fread(&aux, sizeof(celda), 1, fp);
+        IDS[i]=aux.IDcamara;
+    }
+    fclose(fp);
+    fp=fopen(rutaHistorialAverias, "ab");
+    for (i=0; i<cant; i++){
+        cantAverias=rand()%5;
+        for (j=0; j<cantAverias; j++){
+            guardar=generarAveriaRandom(IDS[i]);
+            fwrite(&guardar, sizeof(historial), 1, fp);
+        }
+    }
+    fclose(fp);
+}
+
+
+historial generarAlertaRandom(int ID){
+    historial aux;
+    char descripciones[][150]={{"Se estan tirando con detodo."},{"Jovenes consumiendo charuto en la puerta."},{"Barras bravas rompiendo el local."},{"Asalto con arma de grueso calibre."},{"Se rompio el aire acondicionado."}};
+    strcpy(aux.descripcion, descripciones[rand()%5]);
+    aux.tiempoRespuesta=rand()%3;
+    aux.tiempoRespuesta+=(rand()%60)/100;
+    aux.fecha=generarFecha();
+    aux.IDcamara=ID;
+    return aux;
+}
+
+
+void generarHistAlertas(){
+    FILE *fp = fopen(rutaCamaras, "rb");
+    celda aux;
+    historial guardar;
+    int *IDS, i, j, cant, cantAlertas;
+    fseek(fp, 0, SEEK_END);
+    cant=ftell(fp);
+    cant=cant/sizeof(celda);
+    IDS=(int *)malloc(sizeof(int)*cant);
+    fseek(fp, 0, SEEK_SET);
+    for (i=0; i<cant; i++){
+        fread(&aux, sizeof(celda), 1, fp);
+        IDS[i]=aux.IDcamara;
+    }
+    fclose(fp);
+    fp=fopen(rutaHistorialAlertas, "ab");
+    for (i=0; i<cant; i++){
+        cantAlertas=rand()%7;
+        for (j=0; j<cantAlertas; j++){
+            guardar=generarAlertaRandom(IDS[i]);
+            fwrite(&guardar, sizeof(historial), 1, fp);
+        }
+    }
+    fclose(fp);
+}
+
+
+void inicializarHistAverias(){
+    FILE *fp=fopen(rutaHistorialAverias, "rb");
+    if (!fp){
+        fclose(fp);
+        generarHistAverias();
+        puts("Se ha generado un nuevo historial de averias aleatorias.");
+    }else{
+        fclose(fp);
+        puts("Carga de base de datos del historial de averias exitosa.");
+    }
+}
+
+
+void inicializarHistAlertas(){
+    FILE *fp=fopen(rutaHistorialAlertas, "rb");
+    if (!fp){
+        fclose(fp);
+        generarHistAlertas();
+        puts("Se ha generado un nuevo historial de alertas aleatorias.");
+    }else{
+        fclose(fp);
+        puts("Carga de base de datos del historial de alertas exitosa.");
+    }
 }

@@ -8,13 +8,13 @@
 #include <windows.h>
 #include <string.h>
 
-#define rutaSupervisores "./Sup.txt" /// Guarda bloques de 100 caracteres, 50 para un usuario seguido de 50 para una contraseña.
-#define rutaAdministradores "./Adm.bin" /// Guarda bloques de 100 caracteres, 50 para un usuario seguido de 50 para una contraseña.
-#define rutaCamaras "./Cam.bin"
-#define rutaPersonal "./Personal.bin"
-#define rutaTecnicos "./Tecnicos.bin"
-#define rutaHistorialAverias "./Averias.bin"
-#define rutaHistorialAlertas "./Alertas.bin"
+#define rutaSupervisores "./bases/Supervisores.bin" /// Guarda bloques de 100 caracteres, 50 para un usuario seguido de 50 para una contraseña.
+#define rutaAdministradores "./bases/Administradores.bin" /// Guarda bloques de 100 caracteres, 50 para un usuario seguido de 50 para una contraseña.
+#define rutaCamaras "./bases/Camaras.bin"
+#define rutaPersonal "./bases/Personal.bin"
+#define rutaTecnicos "./bases/Tecnicos.bin"
+#define rutaHistorialAverias "./bases/Averias.bin"
+#define rutaHistorialAlertas "./bases/Alertas.bin"
 
 #define sizeNom 50
 
@@ -45,7 +45,7 @@ typedef struct
     float tiempoRespuesta; /// En horas, tiempo que tardo el tecnico o la seguridad en arribar a la incidencia.
     char descripcion[150];
     struct historial *siguiente;
-}historial;
+} historial;
 ///LOS PRIMEROS 4 BYTES DEL HISTORIAL, UNA VEZ GUARDADO EN FILE, SERÁ INDICADOR DE LA CANTIDAD DE REGISTROS INGRESADOS PARA ESA CAMARA.
 
 typedef struct celda{
@@ -55,6 +55,7 @@ typedef struct celda{
     lugar ubicacion;
     char supervisor[sizeNom];
     int prioridad; // 0 <= prioridad <= 10
+    int eliminada; // 0 si no fue eliminada, 1 si lo fue.
     historial *histAverias;
     historial *histAlertas;
 } celda;
@@ -71,23 +72,23 @@ typedef struct supervisor{
     int idSupervisor;
     char nomYApe[sizeNom];
     int cantReportes;
-}supervisor;
+} supervisor;
 
 typedef struct nodoSupervisor{
     supervisor sup;
     struct nodoSupervisor * sig;
-}nodoSupervisor;
+} nodoSupervisor;
 
 typedef struct nodo2Supervisor{
     supervisor sup;
     struct nodo2Supervisor * ante;
     struct nodo2Supervisor * sig;
-}nodo2Supervisor;
+} nodo2Supervisor;
 
 typedef struct usuario{
     char nomUsuario[sizeNom];
     char contrasena[sizeNom];
-}usuario;
+} usuario;
 
 
 
