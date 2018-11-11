@@ -1,5 +1,23 @@
 #include "headers.h"
 
+void mostrarUnaCamara(celda cam){
+    if (!cam.eliminada){
+        printf("-----------------------------------------------------------------------------------------\n");
+        printf("ID de camara: %i\n",cam.IDcamara);
+        printf("Nombre y Apellido de supervisor: %s\n",cam.supervisor);
+        if(cam.estado == 0)
+            printf("Estado: OFFLINE\n");
+        if(cam.estado == 1)
+            printf("Estado: ONLINE\n");
+        if(cam.estado == 2)
+            printf("Estado: EN REPARACION\n");
+        printf("Prioridad de Camara: %i",cam.prioridad);
+        printf("\n---------------------------------------------------------------------------------------\n");
+    }else{
+        puts("Error! Intenta mostrar una camara eliminada!");
+    }
+};
+
 void textcolor (int color) // Gracias por tanto StackOverflow.
 {
     static int __BACKGROUND;

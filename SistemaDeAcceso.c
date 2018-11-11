@@ -18,7 +18,6 @@ void mostrarArchivoAdministrador(){
 void crearArchivo(){
     FILE *admin=fopen(rutaAdministradores,"wb");
     usuario in;
-
     if(admin){
         strcpy(in.nomUsuario,"diego");
         strcpy(in.contrasena,"diego");
