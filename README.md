@@ -22,3 +22,6 @@ DIARIO DE TRABAJO
 
 >>> 9/11
 * Moreno -- Funciones de estadísticas para administradores.
+
+>>> 11/11
+* Moreno -- Reorganización y correcciones menores en el trabajo hecho hasta este punto.
