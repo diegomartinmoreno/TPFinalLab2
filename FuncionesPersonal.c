@@ -1,12 +1,4 @@
-#define "headers.h"
-
-typedef struct{
-    supervisor sup;
-    struct nodo2Supervisor * ante;
-    struct nodo2Supervisor * sig;
-}nodo2Supervisor;
-
-//-------------------------------------------------------------------------------------------------------------------------------
+#include "headers.h"
 
 char control(){
     char opc;
@@ -20,6 +12,7 @@ char control(){
 nodoSupervisor * inicListaSupervisores(){
     return 0;
 };
+
 
 supervisor cargarUnSupervisor(){
     supervisor aux;
@@ -39,6 +32,7 @@ supervisor cargarUnSupervisor(){
     return aux;
 };
 
+
 nodoSupervisor * crearNodoSupervisor(supervisor s){
     nodoSupervisor * aux=(nodoSupervisor *)malloc(sizeof(nodoSupervisor));
 
@@ -50,6 +44,7 @@ nodoSupervisor * crearNodoSupervisor(supervisor s){
 
     return aux;
 };
+
 
 nodo2Supervisor * crearNodoDobleSupervisor(supervisor s){
     nodo2Supervisor * aux=(nodo2Supervisor *)malloc(sizeof(nodo2Supervisor));
@@ -64,6 +59,7 @@ nodo2Supervisor * crearNodoDobleSupervisor(supervisor s){
     return aux;
 };
 
+
 nodoSupervisor * agregarAlFinal(nodoSupervisor * lista, nodoSupervisor * nuevo){
     nodoSupervisor * seg=lista;
     if(lista){
@@ -76,6 +72,7 @@ nodoSupervisor * agregarAlFinal(nodoSupervisor * lista, nodoSupervisor * nuevo){
     }
     return lista;
 };
+
 
 nodoSupervisor * insertarSupervisorEnListaOrdenadoxId(nodoSupervisor * lista,nodoSupervisor * nuevo){
     nodoSupervisor * ante=lista;
@@ -98,6 +95,7 @@ nodoSupervisor * insertarSupervisorEnListaOrdenadoxId(nodoSupervisor * lista,nod
         }
     return lista;
 };
+
 
 nodo2Supervisor * insertarSupervisorEnListaDobleOrdenadoXId(nodo2Supervisor * listaD, nodo2Supervisor * nuevo){
 
@@ -128,6 +126,7 @@ nodo2Supervisor * insertarSupervisorEnListaDobleOrdenadoXId(nodo2Supervisor * li
     return listaD;
 };
 
+
 nodoSupervisor * insertarSupervisorEnListaOrdenadoxNombre(nodoSupervisor * lista, nodoSupervisor * nuevo){
     nodoSupervisor * ante=lista;
 
@@ -149,6 +148,7 @@ nodoSupervisor * insertarSupervisorEnListaOrdenadoxNombre(nodoSupervisor * lista
     }
     return lista;
 };
+
 
 nodo2Supervisor * insertarSupervisorEnListaDobleOrdenadoxNombre(nodo2Supervisor * listaD, nodo2Supervisor * nuevo){
 
@@ -192,6 +192,7 @@ int consultaOrdenacion(){
    return opc;
 };
 
+
 void mostrarNodoSupervisor(nodoSupervisor * s){
 
     printf("\n-------------------------------- \n");
@@ -200,6 +201,8 @@ void mostrarNodoSupervisor(nodoSupervisor * s){
     printf("Cantidad de Reportes: %d",s->sup.cantReportes);
     printf("\n-------------------------------- \n");
 };
+
+
 void mostrarUnSupervisor(supervisor  s){
 
     printf("\n-------------------------------- \n");
@@ -208,6 +211,7 @@ void mostrarUnSupervisor(supervisor  s){
     printf("Cantidad de Reportes: %d",s.cantReportes);
     printf("\n-------------------------------- \n");
 };
+
 
 int cantCargadosEnFilePersonal(){
     FILE *personal=fopen(rutaPersonal,"rb");
@@ -225,6 +229,7 @@ int cantCargadosEnFilePersonal(){
     return i;
 };
 
+
 void mostrarListaSupervisores(nodoSupervisor * lista){
     nodoSupervisor * seg=lista;
     while(seg){
@@ -237,6 +242,7 @@ void mostrarListaSupervisores(nodoSupervisor * lista){
 
     }
 };
+
 
 nodoSupervisor * cargarListaSupervisores(nodoSupervisor * lista){
 
@@ -263,6 +269,7 @@ nodoSupervisor * cargarListaSupervisores(nodoSupervisor * lista){
     return lista;
 }
 
+
 void listaToArchivo(nodoSupervisor * lista){
     FILE *personal=fopen(rutaPersonal,"a+b");
     nodoSupervisor * seg=lista;
@@ -280,6 +287,7 @@ void listaToArchivo(nodoSupervisor * lista){
     }
 };
 
+
 void mostrarArchivoPersonal(){
     FILE *personal=fopen(rutaPersonal,"rb");
     supervisor aux;
@@ -296,7 +304,8 @@ void mostrarArchivoPersonal(){
     }
 };
 
-nodo2Supervisor *  cargarListaDobleDesdeArchivo(nodo2Supervisor * listaD, nodo2Supervisor * nuevo,int opcOrdenacion){
+
+nodo2Supervisor * cargarListaDobleDesdeArchivo(nodo2Supervisor * listaD, nodo2Supervisor * nuevo,int opcOrdenacion){
 
 
     if(opcOrdenacion==1)
@@ -306,6 +315,7 @@ nodo2Supervisor *  cargarListaDobleDesdeArchivo(nodo2Supervisor * listaD, nodo2S
 
     return listaD;
 };
+
 
 nodo2Supervisor * archivoToLista(nodoSupervisor * listaD){
     FILE *personal=fopen(rutaPersonal,"rb");
@@ -330,6 +340,7 @@ nodo2Supervisor * archivoToLista(nodoSupervisor * listaD){
     }
     return listaD;
 };
+
 
 void mostrarListaDobleRecursion(nodo2Supervisor * listaD){
     if(listaD){

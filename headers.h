@@ -18,16 +18,17 @@
 
 #define sizeNom 50
 
-typedef struct
+typedef struct lugar
 {
-    char ciudad[50];
-    char calle[50];
+    char nombre[sizeNom];
+    char ciudad[sizeNom];
+    char calle[sizeNom];
     int altura;
     char piso;
     char departamento;
 } lugar;
 
-typedef struct
+typedef struct tiempo
 {
     int ano;
     int mes;
@@ -36,7 +37,7 @@ typedef struct
     int minuto;
     int segundo;
 } tiempo;
-//
+
 typedef struct
 {
     int IDcamara;
@@ -44,21 +45,21 @@ typedef struct
     float tiempoRespuesta; /// En horas, tiempo que tardo el tecnico o la seguridad en arribar a la incidencia.
     char descripcion[150];
     struct historial *siguiente;
-} historial;
+}historial;
 ///LOS PRIMEROS 4 BYTES DEL HISTORIAL, UNA VEZ GUARDADO EN FILE, SERÁ INDICADOR DE LA CANTIDAD DE REGISTROS INGRESADOS PARA ESA CAMARA.
 
-typedef struct  {
+typedef struct celda{
     int IDcamara;
     int estado; /// 0=offline; 1=online; 2=en reparacion;
     tiempo fechaInstalacion;
     lugar ubicacion;
-    char supervisor[50];
+    char supervisor[sizeNom];
     int prioridad; // 0 <= prioridad <= 10
     historial *histAverias;
     historial *histAlertas;
 } celda;
 
-typedef struct
+typedef struct arbolCamara
 {
     celda C;
     struct arbolCamara *derecha;
@@ -66,27 +67,85 @@ typedef struct
 } arbolCamara;
 
 ///Estructuras Personal
-typedef struct{
+typedef struct supervisor{
     int idSupervisor;
-    char nomYApe[30];
+    char nomYApe[sizeNom];
     int cantReportes;
 }supervisor;
 
-typedef struct{
+typedef struct nodoSupervisor{
     supervisor sup;
     struct nodoSupervisor * sig;
 }nodoSupervisor;
 
-typedef struct{
+typedef struct nodo2Supervisor{
     supervisor sup;
     struct nodo2Supervisor * ante;
     struct nodo2Supervisor * sig;
 }nodo2Supervisor;
 
-typedef struct{
+typedef struct usuario{
     char nomUsuario[sizeNom];
     char contrasena[sizeNom];
 }usuario;
+
+
+
+/// >>>>  PROTOTIPADO <<<<<
+
+
+
+/// impresiones.c
+void textcolor (int color);
+void imprimirPrimerMenu();
+void imprimirHeader(char titulo[]);
+void mostrarUnUsuario(usuario aux);
+void imprimirMenuHalcon();
+void imprimirHeadSupervisor ();
+void imprimirMenuAdmin();
+
+
+/// procesamientoMenues.c
+void inicioSistema();
+void menuHalconSwt(int opc);
+void menuAdminSwt(int opc);
+void primerMenuSwt(int opc);
+
+
+/// sistemaDeAcceso.c
+void mostrarArchivoAdministrador();
+void crearArchivo();
+usuario registro();
+int buscarExistente(usuario aux);
+int cantReg();
+void cargarUsuariosAdm();
+void identificarse();
+
+
+/// funcionesSupervisor.c
+
+
+
+/// funcionesPersonal.c
+
+
+
+/// funcionesEstadisticas.c
+
+
+
+/// funcionesCamaras.c
+
+
+
+/// generadorRandom.c
+tiempo generarFecha ();
+lugar generarUbicacion (int ID);
+void generarCamara (int ID);
+void generarBaseCamaras();
+void inicializarCamaras ();
+
+
 
 
 #endif // HEADERS_H_INCLUDED

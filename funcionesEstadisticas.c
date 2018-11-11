@@ -142,7 +142,7 @@ void histAverias(arbolCamara *arbol){
     puts("Ingrese el nombre del cliente o el ID de la camara buscada:");
     esNumero=obtenerInput(input, &ID);
     if (esNumero){
-        obtenerHist(ID);
+        ///obtenerHist(ID);
     }
 
 }

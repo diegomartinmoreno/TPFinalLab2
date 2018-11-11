@@ -15,24 +15,24 @@ tiempo generarFecha (){
 lugar generarUbicacion (int ID){
     lugar aux;
     int IDlugar=ID/100;
-    char nombre[sizeNom][7]={{'Grido'},{'Italia'},{'San Marino'},{'Reggio'},{'Ischia'},{'Freddo'},{'Giannelli'},{'Arlequin'}};
-    char calle [sizeNom][7]={{'A. Edison'},{'Alem'},{'Constitucion'},{'Av Libertad'},{'Luro'},{'Rawson'},{'Luro'},{'Luro'}};
+    char nombre[][sizeNom]={{"Grido"},{"Italia"},{"San Marino"},{"Reggio"},{"Ischia"},{"Freddo"},{"Giannelli"},{"Arlequin"}};
+    char calle [][sizeNom]={{"A. Edison"},{"Alem"},{"Constitucion"},{"Av Libertad"},{"Luro"},{"Rawson"},{"Luro"},{"Luro"}};
     int altura[8]={ 1411, 3618, 4018, 4326, 4004, 1313, 3358, 7198};
     aux.altura=altura[IDlugar];
-    strcpy(aux->nombre, nombre[IDlugar]);
-    strcpy(aux->calle, calle[IDlugar]);
+    strcpy(aux.nombre, nombre[IDlugar]);
+    strcpy(aux.calle, calle[IDlugar]);
     aux.piso=0;
     aux.departamento=0;
-    strcpy(aux->ciudad, "Mar del Plata");
+    strcpy(aux.ciudad, "Mar del Plata");
     return aux;
 }
 
 void generarCamara (int ID){
     celda camara;
     int i;
-    char supervisores[sizeNom][]={{'Domingo'},{'Nestor'},{'Mauri'},{'Sergio'},{'Gaby'},{'Mariu'},{'Lilita'},{'Cristina'}};
+    char supervisores[][sizeNom]={{"Domingo"},{"Nestor"},{"Mauri"},{"Sergio"},{"Gaby"},{"Mariu"},{"Lilita"},{"Cristina"}};
     i=rand()%8;
-    strcpy(camara->supervisor, supervisores[i]);
+    strcpy(camara.supervisor, supervisores[i]);
     camara.fechaInstalacion=generarFecha();
     camara.histAlertas=0;
     camara.histAlertas=0;

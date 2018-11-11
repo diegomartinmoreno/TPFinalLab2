@@ -1,5 +1,20 @@
 #include "headers.h"
 
+
+void mostrarArchivoAdministrador(){
+    FILE * admin=fopen(rutaAdministradores,"rb");
+    usuario in;
+
+    if(admin){
+        while(fread(&in,sizeof(usuario),1,admin)>0){
+            mostrarUnUsuario(in);
+        }
+
+        fclose(admin);
+    }
+};
+
+
 void crearArchivo(){
     FILE *admin=fopen(rutaAdministradores,"wb");
     usuario in;
@@ -12,6 +27,7 @@ void crearArchivo(){
         fclose(admin);
     }
 };
+
 
 usuario registro(){
     usuario aux;
@@ -26,6 +42,7 @@ usuario registro(){
 
     return aux;
 };
+
 
 int buscarExistente(usuario aux){
 
@@ -50,6 +67,7 @@ int buscarExistente(usuario aux){
     return ingreso;
 };
 
+
 int cantReg(){
     FILE * admin=fopen(rutaAdministradores,"rb");
     usuario ad;
@@ -64,6 +82,7 @@ int cantReg(){
     }
     return i;
 };
+
 
 void cargarUsuariosAdm(){
     FILE *admin=fopen(rutaAdministradores,"a+b");
@@ -91,12 +110,13 @@ void cargarUsuariosAdm(){
                     puts("Usuario existente.");
                 }
             }
-
             opc=control();
         }
         fclose(admin);
     }
 };
+
+
 void identificarse(){
 
     char pass,enmascarado[20];
@@ -112,7 +132,7 @@ void identificarse(){
     fflush(stdin);
     gets(aux.nomUsuario);
 
-    //No debe tomar "ENTER" como un caracter de contraseÃ±a
+    //No debe tomar "ENTER" como un caracter de contraseña
 
     printf("\nIngrese contrase%ca: ",164);
     while(i<20){

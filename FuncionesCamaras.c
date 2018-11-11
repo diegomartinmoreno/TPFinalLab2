@@ -1,6 +1,10 @@
+#include "headers.h"
+
 arbolCamara* inicializarArbolCamaras(){
     return NULL;
-}
+};
+
+
 celda crearCamara(){
     celda aux;
 
@@ -21,7 +25,9 @@ celda crearCamara(){
     aux.estado=0;
 
     return aux;
-}
+};
+
+
 arbolCamara * crearNodoArbolCamara(celda cam){
     arbolCamara * aux=(arbolCamara *)malloc(sizeof(arbolCamara));
 
@@ -30,7 +36,9 @@ arbolCamara * crearNodoArbolCamara(celda cam){
     aux->izquierda=0;
 
     return aux;
-}
+};
+
+
 arbolCamara * insertarNodoCamaraEnArbol(arbolCamara * arbol, arbolCamara * nuevo){
 
     if(arbol){
@@ -44,6 +52,7 @@ arbolCamara * insertarNodoCamaraEnArbol(arbolCamara * arbol, arbolCamara * nuevo
     return arbol;
 };
 
+
 void mostrarArbolCamaras(arbolCamara * arbol){
     if(arbol){
         mostrarArbolCamaras(arbol->izquierda);
@@ -51,13 +60,8 @@ void mostrarArbolCamaras(arbolCamara * arbol){
         mostrarUnaCamara(arbol->C);
     }
 };
-char control(){
-    char opc;
-    puts("Desea continuar? S/N .");
-    fflush(stdin);
-    opc=getch();
-    return opc;
-};
+
+
 arbolCamara * cargarCamaras(arbolCamara * arbol){
     char opc='s';
 
@@ -71,6 +75,7 @@ arbolCamara * cargarCamaras(arbolCamara * arbol){
     return arbol;
 };
 
+
 void crearArchivoCamaras(){
     FILE * cam=fopen(rutaCamaras,"a+b");
 
@@ -83,6 +88,8 @@ void crearArchivoCamaras(){
 
     fclose(cam);
 };
+
+
 void arbolToFile(arbolCamara * arbol){
     FILE * cam=fopen(rutaCamaras,"a+b");
 
@@ -101,6 +108,8 @@ void arbolToFile(arbolCamara * arbol){
     }
     fclose(cam);
 };
+
+
 void mostrarUnaCamara(celda cam){
     printf("-----------------------------------------------------------------------------------------\n");
     printf("ID de camara: %i\n",cam.IDcamara);
@@ -114,6 +123,8 @@ void mostrarUnaCamara(celda cam){
     printf("Prioridad de Camara: %i",cam.prioridad);
     printf("\n---------------------------------------------------------------------------------------\n");
 };
+
+
 void mostrarFile(){
     FILE * cam = fopen(rutaCamaras,"rb");
     celda aux;
@@ -130,6 +141,8 @@ void mostrarFile(){
     }
     fclose(cam);
 };
+
+
 int cantidadRegistrosEnFile(){
     FILE * cam=fopen(rutaCamaras,"rb");
     int rta=0;
