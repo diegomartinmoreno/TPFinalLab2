@@ -9,7 +9,7 @@ char control(){
     return opc;
 };
 
-nodoSupervisor * inicListaSupervisores(){
+nodo2Supervisor * inicListaSupervisores(){
     return 0;
 };
 
@@ -157,7 +157,7 @@ void listaToArchivo(nodoSupervisor * lista){
 
 
 void mostrarArchivoPersonal(){
-    FILE *personal=fopen(rutaPersonal,"rb");
+    FILE *personal=fopen(rutaSupervisores,"rb");
     usuario aux;
 
     if(personal){
@@ -173,7 +173,7 @@ void mostrarArchivoPersonal(){
 };
 
 nodo2Supervisor * archivoToLista(nodoSupervisor * listaD){
-    FILE *personal=fopen(rutaPersonal,"rb");
+    FILE *personal=fopen(rutaSupervisores,"rb");
     int i=0,orden,val=contarUsuariosCreados();
     usuario  aux;
     nodo2Supervisor * nuevo;
@@ -200,5 +200,24 @@ void mostrarListaDobleRecursion(nodo2Supervisor * listaD){
     if(listaD){
        mostrarUnSupervisor(listaD->sup);
        mostrarListaDobleRecursion(listaD->sig);
+    }
+};
+
+
+void listarPersonal(){
+    FILE *personal=fopen(rutaSupervisores,"rb");
+    nodo2Supervisor *auxLista=inicListaSupervisores();
+    if(personal){
+
+        imprimirHeader("  Listar    Personal  ");
+
+        auxLista=archivoToLista(auxLista);
+
+        mostrarListaDobleRecursion(auxLista);
+
+        printf("Presione una tecla para continuar...");
+        getch();
+
+        fclose(personal);
     }
 };
