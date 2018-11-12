@@ -32,5 +32,4 @@ DIARIO DE TRABAJO
 * Toledo -- Funciones de gestion de personal.
 
 >>> 12/11
-* moreno -- Funciones de técnicos.
-* Toledo -- Funciones personal.
+* Moreno -- Funciones de técnicos.
