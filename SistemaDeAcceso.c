@@ -116,12 +116,12 @@ void cargarUsuariosAdm(){
 };
 
 
-void identificarse(){
+int identificarse(){
 
     char pass,enmascarado[20];
     usuario aux;
 
-    int i=0,ingreso=0;
+    int i=0,ingreso=0,encontrado=0;
 
     strcpy(enmascarado,"**********");
 
@@ -131,8 +131,6 @@ void identificarse(){
     fflush(stdin);
     gets(aux.nomUsuario);
 
-    //No debe tomar "ENTER" como un caracter de contraseña
-
     printf("\nIngrese contrase%ca: ",164);
     while(i<20){
         pass=getch();
@@ -141,25 +139,21 @@ void identificarse(){
             aux.contrasena[i]=pass;
             i++;
         }
-        if(pass==8){ //si ingresa por teclado 'borrar'
+        
+        if(pass==8){ //si lee backspace
             i--;
             printf("\b");
             printf(" ");
             printf("\b");
 
         }
-        if(pass==13){
+        if(pass==13){ //si lee retorno de carro
             aux.contrasena[i]='\0';
-            ingreso=buscarExistente(aux);
-            if(ingreso==1){
-                system("cls");
-                imprimirMenuAdmin();
-            }else{
-                system("cls");
-                inicioSistema();
-
+            encontrado=buscarExistente(aux);
+            if(encontrado==1){
+                ingreso=1;
             }
         }
     }
-
+    return ingreso;
 };
