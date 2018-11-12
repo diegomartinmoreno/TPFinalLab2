@@ -148,20 +148,14 @@ int cantidadRegistrosEnFile(){
     return rta;
 };
 
-arbolCamara * buscarCamaraXID (arbolCamara *arbol, int ID){
-    arbolCamara *rta=0;
-    if (arbol){
+void buscarCamaraXID (arbolCamara *arbol, arbolCamara **rta, int ID){
+    if (arbol!=NULL){
+        buscarCamaraXID(arbol->derecha, rta, ID);
+        buscarCamaraXID(arbol->izquierda, rta, ID);
         if (arbol->C.IDcamara==ID){
-            rta=arbol;
+            *rta=arbol;
         }
-        rta=buscarCamaraXID(arbol->derecha, ID);
-        rta=buscarCamaraXID(arbol->izquierda, ID);
     }
-    return rta;
-}
-
-arbolCamara * buscarCamaraXLugar (arbolCamara *arbol, int ID){
-
 }
 
 arbolCamara * buscarCamara (arbolCamara *arbol){
@@ -183,7 +177,7 @@ arbolCamara * buscarCamara (arbolCamara *arbol){
     gets(input);
     if (input[0]<58&&input[0]>47){ /// ES UNA ID
         ID=atoi(input);
-        encontrado=buscarCamaraXID(arbol, ID);
+        buscarCamaraXID(arbol, &encontrado, ID);
         if (encontrado==0){
             puts("No se encontro la camara buscada en la base de datos.");
         }
@@ -195,7 +189,7 @@ arbolCamara * buscarCamara (arbolCamara *arbol){
         fflush(stdin);
         gets(input);
         ID=atoi(input);
-        encontrado=buscarCamaraXID(arbol, ID);
+        buscarCamaraXID(arbol, &encontrado, ID);
         if (encontrado==0){
             puts("No se encontro la camara buscada en la base de datos.");
         }
