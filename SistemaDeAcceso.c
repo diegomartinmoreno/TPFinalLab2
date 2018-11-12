@@ -16,17 +16,28 @@ void mostrarArchivoAdministrador(){
 
 
 void crearArchivoAdministradores(){
-    FILE *admin=fopen(rutaAdministradores,"wb");
+    FILE *admin=fopen(rutaAdministradores,"ab+");
     usuario in;
     if(admin){
-        strcpy(in.nomUsuario,"diego");
-        strcpy(in.contrasena,"diego");
+        strcpy(in.nomUsuario,"master");
+        strcpy(in.contrasena,"master");
         fwrite(&in,sizeof(usuario),1,admin);
         puts(" ");
         fclose(admin);
     }
 };
 
+void crearArchivoSupervisores(){
+    FILE *admin=fopen(rutaSupervisores,"ab+");
+    usuario in;
+    if(admin){
+        strcpy(in.nomUsuario,"master");
+        strcpy(in.contrasena,"master");
+        fwrite(&in,sizeof(usuario),1,admin);
+        puts(" ");
+        fclose(admin);
+    }
+}
 
 usuario registro(){
     usuario aux;

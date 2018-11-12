@@ -90,12 +90,6 @@ typedef struct usuario{
     char contrasena[sizeNom];
 } usuario;
 
-typedef struct
-{
-    char cli[sizeNom];
-    struct listaClientes *sig;
-} listaClientes;
-
 /// >>>>  PROTOTIPADO <<<<<
 
 

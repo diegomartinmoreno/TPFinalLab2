@@ -7,6 +7,8 @@ void inicioSistema(){
     inicializarHistAlertas();
     inicializarHistAverias();
     crearArchivoAdministradores();
+    crearArchivoSupervisores();
+    system("Pause");
     SwitchMenuPrincipal();
 };
 
@@ -74,7 +76,7 @@ void iniciarMenuCamaras(){
     arbolToFile(arbol);
 }
 
-void menuSup(){
+void menuSup(char usuario[]){
     system("cls");
     char flag='n';
     int op;
@@ -87,6 +89,7 @@ void menuSup(){
         scanf("%i", &op);
         switch(op){
             case 1:
+                procesamientoSupervision(usuario);
                 system("cls");
             break;
             case 2:
@@ -157,7 +160,7 @@ void menuAdmin(){
 
 void SwitchMenuPrincipal(){
     crearArchivoAdministradores();
-    char flag='n';
+    char flag='n', user[sizeNom], opchar;
     int op, acceso=0;
     do{
         system("cls");
@@ -165,11 +168,12 @@ void SwitchMenuPrincipal(){
         imprimirPrimerMenu();
         puts("");
         fflush(stdin);
-        scanf("%i", &op);
+        opchar=getch();
+        op=atoi(&opchar);
         switch(op){
             case 1:
                 system("cls");
-                ///menuSup();
+                inicioSesionSup();
             break;
             case 2:
                 system("cls");
