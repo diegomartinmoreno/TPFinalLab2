@@ -106,7 +106,7 @@ void menuSup(){
 }
 
 void menuAdmin(){
-    char control='n';
+    char control='n', opchar;
     int op;
     do{
         system("cls");
@@ -114,7 +114,8 @@ void menuAdmin(){
         imprimirMenuAdmin();
         puts("");
         fflush(stdin);
-        scanf("%i", &op);
+        opchar=getch();
+        op=atoi(&opchar);
         switch(op){
             case 1:
                 system("cls");
@@ -145,7 +146,7 @@ void menuAdmin(){
             case 7:
                 puts("Volver al menu principal? S/N\n");
                 fflush(stdin);
-                scanf("%c",&control);
+                control=getch();
             break;
             default:
                 puts("OPCION INCORRECTA.");

@@ -60,7 +60,7 @@ void generarCamara (int ID){
 
 void generarBaseCamaras(){
     int i, j, ID;
-    for (i=1; i<9; i++){
+    for (i=1; i<8; i++){
         for (j=0;j<6; j++){
             ID=(i*100)+j;
             generarCamara(ID);
