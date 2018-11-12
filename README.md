@@ -31,5 +31,6 @@ DIARIO DE TRABAJO
 * Moreno -- Implementacion y finalizado de las funciones de supervision.
 * Toledo -- Funciones de gestion de personal.
 
->>> 12
+>>> 12/11
 * moreno -- Funciones de técnicos.
+* Toledo -- Funciones personal.
