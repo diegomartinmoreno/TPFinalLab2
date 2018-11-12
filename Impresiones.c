@@ -113,8 +113,8 @@ void imprimirFecha(tiempo fecha){
 void imprimirCamaraEncontrada (celda cam){
     if (!cam.eliminada){
         printf("|---------------------------------->>>\n");
-        printf("ID de camara: %i\n",cam.IDcamara);
-        printf("Nombre y Apellido de supervisor: %s\n",cam.supervisor.nomUsuario);
+        printf(" ID de camara: %i\n",cam.IDcamara);
+        printf(" Nombre y Apellido de supervisor: %s\n",cam.supervisor.nomUsuario);
         printf("| Cliente: %s /// Desde ", cam.ubicacion.nombre);
         imprimirFecha(cam.fechaInstalacion);
         if(cam.estado == 0)
@@ -123,7 +123,7 @@ void imprimirCamaraEncontrada (celda cam){
             printf("\n| Estado: ONLINE\n");
         if(cam.estado == 2)
             printf("\n| Estado: EN REPARACION\n");
-        printf("Prioridad de Camara: %i",cam.prioridad);
+        printf(" Prioridad de Camara: %i",cam.prioridad);
         printf("\n|-------------------------------------------------------------------->>>\n");
     }else{
         puts("Error! Intenta mostrar una camara eliminada!");
