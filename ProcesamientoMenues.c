@@ -165,7 +165,7 @@ void menuAdmin(){
             break;
             case 4:
                 system("cls");
-                system("pause");
+                listarPersonal();
             break;
             case 5:
                 system("cls");
