@@ -7,6 +7,8 @@
 #include <conio.h>
 #include <windows.h>
 #include <string.h>
+#include <sys/stat.h>
+
 
 #define rutaSupervisores "./bases/Supervisores.bin" /// Guarda bloques de 100 caracteres, 50 para un usuario seguido de 50 para una contraseña.
 #define rutaAdministradores "./bases/Administradores.bin" /// Guarda bloques de 100 caracteres, 50 para un usuario seguido de 50 para una contraseña.

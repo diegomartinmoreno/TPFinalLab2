@@ -3,6 +3,7 @@
 
 void inicioSistema(){
     puts("Bienvenidos al trabajo final de Laboratorio 2 de los alumnos Toledo y Moreno.\n");
+    mkdir("./bases");
     inicializarCamaras();
     inicializarHistAlertas();
     inicializarHistAverias();
@@ -97,7 +98,10 @@ void menuSup(char usuario[]){
                 system("cls");
             break;
             case 3:
-                puts("\nDesea salir del sistema? S/N");
+                system("cls");
+            break;
+            case 4:
+                puts("\nDesea cerrar sesion de supervisor? S/N");
                 fflush(stdin);
                 flag=getch();
                 system("cls");
