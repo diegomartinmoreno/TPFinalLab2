@@ -261,6 +261,10 @@ void imprimirMenuSupervisor (){
     printf("\n\t3.- ");
     textcolor(15);
     printf("Reportar Alerta.");
+    textcolor(10);
+    printf("\n\t4.- ");
+    textcolor(15);
+    printf("Salir al menu principal.");
 }
 
 

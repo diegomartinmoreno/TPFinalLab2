@@ -1,6 +1,6 @@
 #include "headers.h"
 /// *** Funciones por si se puede ingresar una entrada de historial de fechas anteriores, ordenandola antes de las ultimas entradas.
-
+/*
 int compararFechas (tiempo t1, tiempo t2){ /// 1 si son iguales, -1 si tienen mismo dia distinta hora. 2 si t1 es mayor y -2 si t2 es mayor.
     int rta=-2;
     if (t1.ano==t2.ano && t1.mes==t2.mes && t1.dia==t2.dia){ /// Compara fecha
@@ -57,6 +57,11 @@ historial *insertarOrdenardoAA (historial *lista, historial *nuevo){
 }
 
 ///****************************************
+*/
+
+void ingresarNuevaAveria(int IDCamara){
+
+}
 
 char cicloDeControl (celda camaras[], int actual){
     time_t delay;
@@ -154,7 +159,7 @@ void procesamientoSupervision (char usuario[]) {
         Supervision(camaras, i, dimL);
         system("cls");
         imprimirHeader("         Salir         ");
-        puts("Desea cerrar sesion en este usuario? S/N");
+        puts("Desea volver al menu principal? S/N");
         fflush(stdin);
         control=getch();
     }
