@@ -78,7 +78,7 @@ void iniciarMenuCamaras(){
 
 void menuSup(char usuario[]){
     system("cls");
-    char flag='n';
+    char flag='n', opchar;
     int op;
     do{
         system("cls");
@@ -86,7 +86,8 @@ void menuSup(char usuario[]){
         imprimirMenuSupervisor();
         puts("");
         fflush(stdin);
-        scanf("%i", &op);
+        opchar=getch();
+        op=atoi(&opchar);
         switch(op){
             case 1:
                 procesamientoSupervision(usuario);

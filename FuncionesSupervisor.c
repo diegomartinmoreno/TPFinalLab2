@@ -58,39 +58,67 @@ historial *insertarOrdenardoAA (historial *lista, historial *nuevo){
 
 ///****************************************
 
-char cicloDeControl (){
+char cicloDeControl (celda camaras[], int actual){
+    time_t delay;
+    time_t start;
     char rta=0;
-    int i=0;
-    while (i<14 && rta==0){
+    int i=0, dibujo=1;
+    while ((rta!='1'||rta!='2'||rta!='3')&&i<7){
         fflush(stdin);
-        Sleep(500);
-        if (!feof(stdin)){
-            rta=getch();
+        system("cls");
+        imprimirHeader("    Modo Supervision   ");
+        printf ("Actualmente en supervision de la camara: %i\n", camaras[actual].IDcamara);
+        mostrarUnaCamara(camaras[actual]);
+        puts ("Cambiando de camara en 7 segundos.");
+        puts ("<<<<------------------------------------------>>>>");
+        dibujo++;
+        if(dibujo==5){
+            dibujo=1;
         }
+        imprimirDibujo(dibujo);
+        textcolor(10);
+        printf("\n\t1.- ");
+        textcolor(15);
+        printf("Reportar Alerta.");
+        textcolor(10);
+        printf("\n\t2.- ");
+        textcolor(15);
+        printf("Reportar Averia.");
+        textcolor(10);
+        printf("\n\t3.- ");
+        textcolor(15);
+        printf("Salir del modo supervision.");
+        delay = 1;
+        start = time(NULL);
+        do
+        {
+            if (_kbhit())
+                rta=getch();
+        }
+        while (time(NULL) - start < delay);
+        i++;
     }
     return rta;
 }
-
 
 void Supervision (celda camaras[], int i, int dimL){
     int prioridad=1;
     char control='0';
     do{
         system("cls");
+        imprimirHeader("    Modo Supervision   ");
         if (i<dimL){
-            imprimirHeader("    Modo Supervision   ");
-            printf ("Comienza supervision de la camara: %i", camaras[i].IDcamara);
-            mostrarUnaCamara(camaras[i]);
-            puts ("<<<<---------------------------------------------------->>>>");
-            puts ("Cambiando de camara en 7 segundos.");
-            control=cicloDeControl();
+            control=cicloDeControl(camaras, i);
             if (control=='1'){
+                system("Pause");
                 ///ingresarAlarma(camaras[i]);
             }else{
                 if (control =='2'){
+                    system("Pause");
                     ///ingresarAveria(camaras[i]);
                 }
             }
+            i++;
         } else {
             puts("Vigilancia finalizada. Iniciando nueva ronda en 5 segundos.");
             i=0;
@@ -124,9 +152,9 @@ void procesamientoSupervision (char usuario[]) {
     dimL=generarArregloCamaras(camaras, dimL, dimF, usuario);
     while (control!='s'&&control!='S'){
         Supervision(camaras, i, dimL);
-        puts("Desea cerrar sesion en este usuario?");
-        puts("S para salir.");
-        puts("N para reanudar vigilancia.");
+        system("cls");
+        imprimirHeader("         Salir         ");
+        puts("Desea cerrar sesion en este usuario? S/N");
         fflush(stdin);
         control=getch();
     }
