@@ -59,8 +59,64 @@ historial *insertarOrdenardoAA (historial *lista, historial *nuevo){
 ///****************************************
 */
 
-void ingresarNuevaAveria(int IDCamara){
+tiempo leerFechaActual(){
+    tiempo aux;
+    time_t tiempoSeed=time(NULL);;
+    struct tm * tiempoLocal;
+    tiempoLocal=localtime(&tiempoSeed);
+    aux.ano=tiempoLocal->tm_year+1900;
+    aux.dia=tiempoLocal->tm_mday;
+    aux.hora=tiempoLocal->tm_hour;
+    aux.mes=tiempoLocal->tm_mon+1;
+    aux.minuto=tiempoLocal->tm_min;
+    aux.segundo=tiempoLocal->tm_sec;
+    return aux;
+}
 
+void ingresarNuevaAlerta(int IDCamara){
+    int IDh;
+    imprimirHeader("    Ingresar alerta    ");
+    printf("Se ingresara una alerta en la camara ID %i\n", IDCamara);
+    historial aux;
+    aux.IDcamara=IDCamara;
+    aux.fecha=leerFechaActual();
+    puts("Ingrese una descripcion de la alerta:");
+    fflush(stdin);
+    gets(aux.descripcion);
+    aux.activo=1;
+    aux.tiempoRespuesta=-1;
+    aux.siguiente=0;
+    FILE *fp=fopen(rutaHistorialAlertas, "ab");
+    fseek(fp,0,SEEK_END);
+    IDh=ftell(fp);
+    IDh=IDh/sizeof(historial);
+    IDh++;
+    aux.IDregistro=IDh;
+    fwrite(&aux, sizeof(historial), 1, fp);
+    fclose(fp);
+}
+
+void ingresarNuevaAveria(int IDCamara){
+    int IDh;
+    imprimirHeader("    Ingresar Averia    ");
+    printf("Se ingresara una averia en la camara ID %i\n", IDCamara);
+    historial aux;
+    aux.IDcamara=IDCamara;
+    aux.fecha=leerFechaActual();
+    puts("Ingrese una descripcion de la averia:");
+    fflush(stdin);
+    gets(aux.descripcion);
+    aux.activo=1;
+    aux.tiempoRespuesta=-1;
+    aux.siguiente=0;
+    FILE *fp=fopen(rutaHistorialAverias, "ab");
+    fseek(fp,0,SEEK_END);
+    IDh=ftell(fp);
+    IDh=IDh/sizeof(historial);
+    IDh++;
+    aux.IDregistro=IDh;
+    fwrite(&aux, sizeof(historial), 1, fp);
+    fclose(fp);
 }
 
 char cicloDeControl (celda camaras[], int actual){
@@ -115,12 +171,16 @@ void Supervision (celda camaras[], int i, int dimL){
         if (i<dimL){
             control=cicloDeControl(camaras, i);
             if (control=='1'){
-                system("Pause");
-                ///ingresarAlarma(camaras[i]);
+                system("cls");
+                ingresarNuevaAlerta(camaras[i].IDcamara);
+                printf("Se ha ingresado una alerta. ");
+                system("pause");
             }else{
                 if (control =='2'){
-                    system("Pause");
-                    ///ingresarAveria(camaras[i]);
+                    system("cls");
+                    ingresarNuevaAveria(camaras[i].IDcamara);
+                    printf("Se ha ingresado una averia. ");
+                    system("pause");
                 }
             }
             i++;

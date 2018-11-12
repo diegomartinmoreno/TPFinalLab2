@@ -42,7 +42,9 @@ typedef struct tiempo
 
 typedef struct
 {
+    int IDregistro;
     int IDcamara;
+    int activo; /// 1 si todavia no fue reparada la averia o gestionada la alerta, 0 si ya fue hecho.
     tiempo fecha;
     float tiempoRespuesta; /// En horas, tiempo que tardo el tecnico o la seguridad en arribar a la incidencia.
     char descripcion[150];

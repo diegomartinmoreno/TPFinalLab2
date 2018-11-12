@@ -80,7 +80,9 @@ void iniciarMenuCamaras(){
 void menuSup(char usuario[]){
     system("cls");
     char flag='n', opchar;
-    int op;
+    int op, IDCamara;
+    arbolCamara *arbol=0, *aux=0;
+    arbol=fileToArbol(arbol);
     do{
         system("cls");
         imprimirHeader("   Menu  Supervisor   ");
@@ -95,12 +97,35 @@ void menuSup(char usuario[]){
                 system("cls");
             break;
             case 2:
+
+                aux=buscarCamara(arbol);
+                IDCamara=aux->C.IDcamara;
                 system("cls");
+                ingresarNuevaAveria(IDCamara);
+                printf("Se ha ingresado una averia. ");
+                system("pause");
             break;
             case 3:
+                aux=buscarCamara(arbol);
+                IDCamara=aux->C.IDcamara;
                 system("cls");
+                ingresarNuevaAveria(IDCamara);
+                printf("Se ha ingresado una alerta. ");
+                system("pause");
             break;
             case 4:
+                aux=buscarCamara(arbol);
+                IDCamara=aux->C.IDcamara;
+                system("cls");
+                atenderAA(IDCamara, 1, rutaHistorialAverias);
+            break;
+            case 5:
+                aux=buscarCamara(arbol);
+                IDCamara=aux->C.IDcamara;
+                system("cls");
+                atenderAA(IDCamara, 1, rutaHistorialAlertas);
+            break;
+            case 6:
                 puts("\nDesea cerrar sesion de supervisor? S/N");
                 fflush(stdin);
                 flag=getch();
@@ -111,6 +136,7 @@ void menuSup(char usuario[]){
             break;
         }
     }while(flag!='s'&&flag!='S');
+
 }
 
 void menuAdmin(){

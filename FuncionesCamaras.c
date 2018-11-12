@@ -163,13 +163,13 @@ arbolCamara * buscarCamara (arbolCamara *arbol){
     int ID, dimL=0, i=0;
     char clientes[50][sizeNom];
     dimL=obtenerClientes(arbol, clientes, 0);
-    puts("Ingrese un ID de camara o un cliente:");
+    puts("Ingrese un ID de camara o un cliente:\n");
     puts("Clientes existentes:");
     for (i=0; i<dimL; i++){
         printf("| %s |", clientes[i]);
     }
     puts("");
-    puts("IDs de camara existentes:");
+    puts("\nIDs de camara existentes:");
     mostrarArbolCamaras(arbol, 3, 0, input);
     puts("");
     fflush(stdin);

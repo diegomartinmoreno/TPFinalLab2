@@ -106,17 +106,23 @@ void imprimirDibujo(int op){
     }
 }
 
+void imprimirFecha(tiempo fecha){
+    printf("Hora: %i:%i:%i del %i/%i/%i", fecha.hora, fecha.minuto, fecha.segundo, fecha.dia, fecha.mes, fecha.ano);
+}
+
 void imprimirCamaraEncontrada (celda cam){
     if (!cam.eliminada){
         printf("|---------------------------------->>>\n");
         printf("ID de camara: %i\n",cam.IDcamara);
-        printf("Nombre y Apellido de supervisor: %s\n",cam.supervisor);
+        printf("Nombre y Apellido de supervisor: %s\n",cam.supervisor.nomUsuario);
+        printf("| Cliente: %s /// Desde ", cam.ubicacion.nombre);
+        imprimirFecha(cam.fechaInstalacion);
         if(cam.estado == 0)
-            printf("Estado: OFFLINE\n");
+            printf("\n| Estado: OFFLINE\n");
         if(cam.estado == 1)
-            printf("Estado: ONLINE\n");
+            printf("\n| Estado: ONLINE\n");
         if(cam.estado == 2)
-            printf("Estado: EN REPARACION\n");
+            printf("\n| Estado: EN REPARACION\n");
         printf("Prioridad de Camara: %i",cam.prioridad);
         printf("\n|-------------------------------------------------------------------->>>\n");
     }else{
@@ -131,12 +137,13 @@ void mostrarUnaCamara (celda cam, int modo, char cliente[]){ /// MODO= 1 muestra
                 if (cam.estado == 2||cam.estado == 0){
                     printf("|---------------------------------->>>\n");
                     printf("| ID de camara: %i /// ",cam.IDcamara);
-                    printf("Supervisor: %s\n",cam.supervisor);
-                    printf("| Cliente: %s /// ", cam.ubicacion.nombre);
+                    printf("Supervisor: %s\n",cam.supervisor.nomUsuario);
+                    printf("| Cliente: %s /// Desde ", cam.ubicacion.nombre);
+                    imprimirFecha(cam.fechaInstalacion);
                     if(cam.estado == 0)
-                        printf("Estado: OFFLINE");
+                        printf("\n| Estado: OFFLINE");
                     if(cam.estado == 2)
-                        printf("Estado: EN REPARACION");
+                        printf("\n| Estado: EN REPARACION");
                     printf(" /// Prioridad de Camara: %i",cam.prioridad);
                     printf("\n|-------------------------------------------------------------------->>>\n");
                 }
@@ -145,9 +152,10 @@ void mostrarUnaCamara (celda cam, int modo, char cliente[]){ /// MODO= 1 muestra
                 if (cam.estado == 1){
                     printf("|---------------------------------->>>\n");
                     printf("| ID de camara: %i /// ",cam.IDcamara);
-                    printf("Supervisor: %s\n",cam.supervisor);
-                    printf("| Cliente: %s /// ", cam.ubicacion.nombre);
-                    printf("Estado: ONLINE");;
+                    printf("Supervisor: %s\n",cam.supervisor.nomUsuario);
+                    printf("| Cliente: %s /// Desde ", cam.ubicacion.nombre);
+                    imprimirFecha(cam.fechaInstalacion);
+                    printf("\n| Estado: ONLINE");;
                     printf(" /// Prioridad de Camara: %i",cam.prioridad);
                     printf("\n|-------------------------------------------------------------------->>>\n");
                 }
@@ -244,7 +252,7 @@ void imprimirPrimerMenu(){
     textcolor(12);
     printf("\n\t3.- ");
     textcolor(15);
-    printf("Salir del sistema.");
+    printf("Salir del sistema.\n\n");
 }
 
 
@@ -264,7 +272,15 @@ void imprimirMenuSupervisor (){
     textcolor(10);
     printf("\n\t4.- ");
     textcolor(15);
-    printf("Salir al menu principal.");
+    printf("Reportar solucionada una averia.");
+    textcolor(10);
+    printf("\n\t5.- ");
+    textcolor(15);
+    printf("Reportar gestionada una alerta.");
+    textcolor(10);
+    printf("\n\t6.- ");
+    textcolor(15);
+    printf("Salir al menu principal.\n\n");
 }
 
 
@@ -296,7 +312,7 @@ void imprimirMenuAdmin(){
     textcolor(12);
     printf("\n\t7.- ");
     textcolor(15);
-    printf("Salir del sistema.");
+    printf("Salir del sistema.\n\n");
 }
 
 void imprimirMenuCamaras (){
@@ -323,5 +339,5 @@ void imprimirMenuCamaras (){
     textcolor(12);
     printf("\n\t6.- ");
     textcolor(15);
-    printf("Volver al menu anterior.\n");
+    printf("Volver al menu anterior.\n\n");
 }

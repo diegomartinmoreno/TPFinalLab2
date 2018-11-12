@@ -84,14 +84,17 @@ void inicializarCamaras (){
 
 /// >>>>>> Generador de historiales.
 
-historial generarAveriaRandom(int ID){
+historial generarAveriaRandom(int IDc, int IDh){
     historial aux;
     char descripciones[][150]={{"Camara con mal funcionamiento."},{"Camara no brinda imagen."},{"Camara destruida por un meteorito."},{"Camara con lente obstruido"},{"Camara necesita reemplazo."}};
     strcpy(aux.descripcion, descripciones[rand()%5]);
     aux.tiempoRespuesta=rand()%48;
     aux.tiempoRespuesta+=(rand()%60)/100;
     aux.fecha=generarFecha();
-    aux.IDcamara=ID;
+    aux.activo=0;
+    aux.IDcamara=IDc;
+    aux.IDregistro=IDh;
+    aux.siguiente=0;
     return aux;
 }
 
@@ -100,7 +103,7 @@ void generarHistAverias(){
     FILE *fp = fopen(rutaCamaras, "rb");
     celda aux;
     historial guardar;
-    int *IDS, i, j, cant, cantAverias;
+    int *IDS, i, j, cant, cantAverias, IDh=1;
     fseek(fp, 0, SEEK_END);
     cant=ftell(fp);
     cant=cant/sizeof(celda);
@@ -115,22 +118,26 @@ void generarHistAverias(){
     for (i=0; i<cant; i++){
         cantAverias=rand()%5;
         for (j=0; j<cantAverias; j++){
-            guardar=generarAveriaRandom(IDS[i]);
+            guardar=generarAveriaRandom(IDS[i], IDh);
             fwrite(&guardar, sizeof(historial), 1, fp);
+            IDh++;
         }
     }
     fclose(fp);
 }
 
 
-historial generarAlertaRandom(int ID){
+historial generarAlertaRandom(int IDc, int IDh){
     historial aux;
     char descripciones[][150]={{"Se estan tirando con detodo."},{"Jovenes consumiendo charuto en la puerta."},{"Barras bravas rompiendo el local."},{"Asalto con arma de grueso calibre."},{"Se rompio el aire acondicionado."}};
     strcpy(aux.descripcion, descripciones[rand()%5]);
     aux.tiempoRespuesta=rand()%3;
     aux.tiempoRespuesta+=(rand()%60)/100;
     aux.fecha=generarFecha();
-    aux.IDcamara=ID;
+    aux.IDcamara=IDc;
+    aux.IDregistro=IDh;
+    aux.activo=0;
+    aux.siguiente=0;
     return aux;
 }
 
@@ -139,7 +146,7 @@ void generarHistAlertas(){
     FILE *fp = fopen(rutaCamaras, "rb");
     celda aux;
     historial guardar;
-    int *IDS, i, j, cant, cantAlertas;
+    int *IDS, i, j, cant, cantAlertas, IDh=1;
     fseek(fp, 0, SEEK_END);
     cant=ftell(fp);
     cant=cant/sizeof(celda);
@@ -154,8 +161,9 @@ void generarHistAlertas(){
     for (i=0; i<cant; i++){
         cantAlertas=rand()%7;
         for (j=0; j<cantAlertas; j++){
-            guardar=generarAlertaRandom(IDS[i]);
+            guardar=generarAlertaRandom(IDS[i], IDh);
             fwrite(&guardar, sizeof(historial), 1, fp);
+            IDh++;
         }
     }
     fclose(fp);
