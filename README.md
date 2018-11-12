@@ -25,3 +25,8 @@ DIARIO DE TRABAJO
 
 >>> 11/11
 * Moreno -- Reorganización y correcciones menores en el trabajo hecho hasta este punto.
+
+
+>>> 12/11
+* Moreno -- Implementacion y finalizado de las funciones de camaras.
+* Toledo -- Funciones de acceso controlado a los diferentes menues.
