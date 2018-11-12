@@ -31,8 +31,10 @@ void generarCamara (int ID){
     celda camara;
     int i;
     char supervisores[][sizeNom]={{"Domingo"},{"Nestor"},{"Mauri"},{"Sergio"},{"Gaby"},{"Mariu"},{"Lilita"},{"Cristina"}};
+    char contrasenas[][sizeNom]={{"peron"},{"kirchner"},{"macri"},{"massa"},{"michetti"},{"vidal"},{"carrio"},{"kirchner"}};
     i=rand()%7;
-    strcpy(camara.supervisor, supervisores[i]);
+    strcpy(camara.supervisor.nomUsuario, supervisores[i]);
+    strcpy(camara.supervisor.contrasena, contrasenas[i]);
     camara.fechaInstalacion=generarFecha();
     camara.histAlertas=0;
     camara.histAlertas=0;

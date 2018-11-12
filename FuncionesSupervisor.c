@@ -58,30 +58,6 @@ historial *insertarOrdenardoAA (historial *lista, historial *nuevo){
 
 ///****************************************
 
-int realocarArreglo (celda camaras[], int dimF){
-    camaras=realloc(camaras, sizeof(celda)+10);
-    if (!camaras)
-        perror("No se encontro espacio suficiente para realocar arreglo de camaras.");
-    return dimF;
-}
-
-
-int generarArregloCamaras (arbolCamara *arbol, celda camaras[], int dimL, int dimF, char usuario[]){
-    if (arbol){
-        if (strcmp(usuario, arbol->C.supervisor)==0){
-           if (dimL+1>dimF){
-                dimF=realocarArreglo(camaras, dimF);
-           }
-           camaras[dimL]=arbol->C;
-           dimL++;
-        }
-        dimL=generarArregloCamaras(arbol->izquierda, camaras, dimL, dimF, usuario);
-        dimL=generarArregloCamaras(arbol->derecha, camaras, dimL, dimF, usuario);
-    }
-    return dimL;
-}
-
-
 char cicloDeControl (){
     char rta=0;
     int i=0;
@@ -124,15 +100,28 @@ void Supervision (celda camaras[], int i, int dimL){
 }
 
 
-void procesamientoSupervision (char usuario[]) {
-    celda camaras[50];
-    int dimL, dimF=50, i=0;
-    char control;
-    arbolCamara *arbol;
+int generarArregloCamaras (celda camaras[], int dimL, int dimF, char usuario[]){
+    int cantCamaras=cantidadRegistrosEnFile();
+    celda aux;
     FILE *fp=fopen(rutaCamaras, "rb");
-    arbol=fileToArbol(arbol);
+    int i=0, j=0;
+    for (i=0; i<cantCamaras; i++){
+        fread(&aux, sizeof(celda), 1, fp);
+        if(strcmp(aux.supervisor.nomUsuario, usuario)==0){
+            camaras[j]=aux;
+            j++;
+        }
+    }
     fclose(fp);
-    dimL=generarArregloCamaras(arbol, camaras, dimL, dimF, usuario);
+    return j;
+}
+
+
+void procesamientoSupervision (char usuario[]) {
+    celda camaras[100];
+    int dimL=0, dimF=50, i=0;
+    char control;
+    dimL=generarArregloCamaras(camaras, dimL, dimF, usuario);
     while (control!='s'&&control!='S'){
         Supervision(camaras, i, dimL);
         puts("Desea cerrar sesion en este usuario?");
@@ -147,7 +136,8 @@ void procesamientoSupervision (char usuario[]) {
 int contarUsuariosCreados (){
     int cant;
     FILE *dataUsuarios=fopen(rutaSupervisores, "r");
-    cant = fseek(dataUsuarios, 0, SEEK_END);
+    fseek(dataUsuarios, 0, SEEK_END);
+    cant = ftell(dataUsuarios);
     cant = cant/(sizeof(char)*sizeNom*2);
     fclose(dataUsuarios);
     return cant;
@@ -173,13 +163,11 @@ int confirmarUsuario (usuario user){
     return aprobado;
 }
 
-void inicioSesionSup (arbolCamara *arbol){
-    int aprobado=0;
+int inicioSesionSup (char user[]){
+    actualizarArchivoSupervisores();
+    int aprobado=0, i=0;
     char pass,enmascarado[20];
     usuario aux;
-
-    int i=0,ingreso=0,encontrado=0;
-
     strcpy(enmascarado,"**********");
     imprimirHeader("    Inicio de Sesion   ");
     printf("Ingrese nombre: ");
@@ -204,12 +192,11 @@ void inicioSesionSup (arbolCamara *arbol){
             aux.contrasena[i]='\0';
         }
     }while(i<20&&pass!=13);
-    encontrado=confirmarUsuario(aux);
-    if(encontrado==1){
-        ingreso=1;
-    }else{
+    aprobado=confirmarUsuario(aux);
+    if(aprobado!=1){
         puts("\nDatos incorrectos.");
         system("Pause");
     }
-    return ingreso;
+    strcpy(user, aux.nomUsuario);
+    return aprobado;
 }

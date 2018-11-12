@@ -3,8 +3,8 @@
 arbolCamara* inicializarArbolCamaras(){
     return NULL;
 };
-
-
+/// AGREGAR VERIFICACIONES DE USUARIO Y CONTRASEÑA SUPERVISOR
+/*
 celda crearCamara(){
     celda aux;
 
@@ -28,6 +28,17 @@ celda crearCamara(){
     return aux;
 };
 
+arbolCamara * cargarCamaras(arbolCamara * arbol){
+    char opc='s';
+
+    printf(".:A CONTINUACION, INGRESE LOS DATOS SOLICITADOS PARA LA CARGA DE UNA CAMARA:.\n\n");
+    while (opc=='s'){
+        arbol=insertarNodoCamaraEnArbol(arbol,crearNodoArbolCamara(crearCamara()));
+        opc=control();
+    }
+    return arbol;
+};
+*/
 
 arbolCamara * crearNodoArbolCamara(celda cam){
     arbolCamara * aux=(arbolCamara *)malloc(sizeof(arbolCamara));
@@ -66,18 +77,6 @@ int mostrarArbolCamaras(arbolCamara * arbol, int modo, int rep, char cliente[]){
         mostrarUnaCamara(aux, modo, cliente);
     }
     return rep;
-};
-
-
-arbolCamara * cargarCamaras(arbolCamara * arbol){
-    char opc='s';
-
-    printf(".:A CONTINUACION, INGRESE LOS DATOS SOLICITADOS PARA LA CARGA DE UNA CAMARA:.\n\n");
-    while (opc=='s'){
-        arbol=insertarNodoCamaraEnArbol(arbol,crearNodoArbolCamara(crearCamara()));
-        opc=control();
-    }
-    return arbol;
 };
 
 

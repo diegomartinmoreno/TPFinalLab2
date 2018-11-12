@@ -27,16 +27,64 @@ void crearArchivoAdministradores(){
     }
 };
 
-void crearArchivoSupervisores(){
-    FILE *admin=fopen(rutaSupervisores,"ab+");
-    usuario in;
-    if(admin){
-        strcpy(in.nomUsuario,"master");
-        strcpy(in.contrasena,"master");
-        fwrite(&in,sizeof(usuario),1,admin);
-        puts(" ");
-        fclose(admin);
+int realocarArreglo (celda camaras[], int dimF){
+    camaras=realloc(camaras, sizeof(celda)+10);
+    if (!camaras)
+        perror("No se encontro espacio suficiente para realocar arreglo de camaras.");
+    return dimF;
+}
+
+int generarArregloTodasLasCamaras (celda camaras[], int dimL, int dimF){
+    int cantCamaras=cantidadRegistrosEnFile();
+    celda aux;
+    FILE *fp=fopen(rutaCamaras, "rb");
+    int i=0;
+    for (i=0; i<cantCamaras; i++){
+        if (i>dimF){
+            dimF=realocarArreglo(camaras,dimF);
+        }
+        fread(&aux, sizeof(celda), 1, fp);
+        camaras[i]=aux;
     }
+    fclose(fp);
+    return i;
+}
+
+int verificarSupRepetido(usuario supervisores[], int dimL, usuario supervisor){ ///0=repetido /// 1=nuevo
+    int i=0, rta=1;
+    for (i=0; i<dimL; i++){
+        if (strcmp(supervisores[i].nomUsuario, supervisor.nomUsuario)==0){
+            rta=0;
+        }
+    }
+    return rta;
+}
+
+int generarArregloSupervisores(celda camaras[], int dimL, usuario supervisores[]){
+    int i=0, j=0;
+    for (i=0; i<dimL; i++){
+        if (camaras[i].eliminada==0){
+            if (verificarSupRepetido(supervisores, j, camaras[i].supervisor)==1){
+                strcpy(supervisores[j].nomUsuario, camaras[i].supervisor.nomUsuario);
+                strcpy(supervisores[j].contrasena, camaras[i].supervisor.contrasena);
+                j++;
+            }
+        }
+    }
+    return j;
+}
+
+void actualizarArchivoSupervisores(){
+    FILE *sup=fopen(rutaSupervisores,"wb");
+    celda camaras[100];
+    usuario supervisores[50];
+    int dimL=0, dimF=100, dimLsup=0, i=0;
+    dimL=generarArregloTodasLasCamaras(camaras, dimL, dimF);
+    dimLsup=generarArregloSupervisores(camaras, dimL, supervisores);
+    for(i=0; i<dimLsup; i++){
+        fwrite(&supervisores[i], sizeof(usuario), 1, sup);
+    }
+    fclose(sup);
 }
 
 usuario registro(){

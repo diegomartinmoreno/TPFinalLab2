@@ -7,7 +7,7 @@ void inicioSistema(){
     inicializarHistAlertas();
     inicializarHistAverias();
     crearArchivoAdministradores();
-    crearArchivoSupervisores();
+    actualizarArchivoSupervisores();
     system("Pause");
     SwitchMenuPrincipal();
 };
@@ -44,7 +44,7 @@ void iniciarMenuCamaras(){
             case '4':
                 system("cls");
                 imprimirHeader("  Cargar nueva camara  ");
-                arbol=cargarCamaras(arbol);
+                ///arbol=cargarCamaras(arbol);
                 break;
             case '5':
                 aux=buscarCamara(arbol);
@@ -173,12 +173,15 @@ void SwitchMenuPrincipal(){
         switch(op){
             case 1:
                 system("cls");
-                inicioSesionSup();
+                acceso=inicioSesionSup(user);
+                if (acceso==1){
+                    menuSup(user);
+                }
             break;
             case 2:
                 system("cls");
                 acceso=identificarse();
-                if (acceso){
+                if (acceso==1){
                     menuAdmin();
                 }
             break;

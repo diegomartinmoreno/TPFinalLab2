@@ -48,12 +48,17 @@ typedef struct
 } historial;
 ///LOS PRIMEROS 4 BYTES DEL HISTORIAL, UNA VEZ GUARDADO EN FILE, SERÁ INDICADOR DE LA CANTIDAD DE REGISTROS INGRESADOS PARA ESA CAMARA.
 
+typedef struct usuario{
+    char nomUsuario[sizeNom];
+    char contrasena[sizeNom];
+} usuario;
+
 typedef struct celda{
     int IDcamara;
     int estado; /// 0=offline; 1=online; 2=en reparacion;
     tiempo fechaInstalacion;
     lugar ubicacion;
-    char supervisor[sizeNom];
+    usuario supervisor;
     int prioridad; // 0 <= prioridad <= 10
     int eliminada; // 0 si no fue eliminada, 1 si lo fue.
     historial *histAverias;
@@ -85,10 +90,6 @@ typedef struct nodo2Supervisor{
     struct nodo2Supervisor * sig;
 } nodo2Supervisor;
 
-typedef struct usuario{
-    char nomUsuario[sizeNom];
-    char contrasena[sizeNom];
-} usuario;
 
 /// >>>>  PROTOTIPADO <<<<<
 
