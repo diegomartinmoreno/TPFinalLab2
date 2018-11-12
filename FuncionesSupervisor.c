@@ -102,7 +102,7 @@ void inicSupervision (celda camaras[], int i, int dimL){
     do{
         system("cls");
         if (i<dimL){
-            imprimirHeadSupervisor();
+            imprimirHeader("    Modo Supervision   ");
             printf ("Comienza supervision de la camara: %i", camaras[i].IDcamara);
             mostrarUnaCamara(camaras[i]);
             puts ("<<<<---------------------------------------------------->>>>");

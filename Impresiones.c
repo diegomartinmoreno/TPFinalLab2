@@ -2,7 +2,7 @@
 
 void imprimirCamaraEncontrada (celda cam){
     if (!cam.eliminada){
-        printf("-----------------------------------------------------------------------------------------\n");
+        printf("|---------------------------------->>>\n");
         printf("ID de camara: %i\n",cam.IDcamara);
         printf("Nombre y Apellido de supervisor: %s\n",cam.supervisor);
         if(cam.estado == 0)
@@ -12,7 +12,7 @@ void imprimirCamaraEncontrada (celda cam){
         if(cam.estado == 2)
             printf("Estado: EN REPARACION\n");
         printf("Prioridad de Camara: %i",cam.prioridad);
-        printf("\n---------------------------------------------------------------------------------------\n");
+        printf("\n|-------------------------------------------------------------------->>>\n");
     }else{
         puts("Error! Intenta mostrar una camara eliminada!");
 }
@@ -127,8 +127,6 @@ void imprimirHeader(char titulo[]){
 
 
 void imprimirPrimerMenu(){
-    int opc;
-
     textcolor(10);
     printf("\n\t1.- ");
     textcolor(15);
@@ -141,18 +139,10 @@ void imprimirPrimerMenu(){
     printf("\n\t3.- ");
     textcolor(15);
     printf("Salir del sistema.");
-
-
-    printf("\nIngrese opcion para continuar: ");
-    fflush(stdin);
-    scanf("%i",&opc);
-
-    primerMenuSwt(opc);
 }
 
 
-void imprimirHeadSupervisor (){
-    imprimirHeader("   Menu  Supervisor   ");
+void imprimirMenuSupervisor (){
     textcolor(10);
     printf("\n\t1.- ");
     textcolor(15);
@@ -168,28 +158,7 @@ void imprimirHeadSupervisor (){
 }
 
 
-void imprimirMenuHalcon(){
-
-    int opc;
-    imprimirHeadSupervisor();
-    textcolor(12);
-    printf("\n\t4.- ");
-    textcolor(15);
-    printf("Salir del sistema.");
-
-    printf("\nIngrese una opcion para continuar: ");
-    fflush(stdin);
-    scanf("%i",&opc);
-
-    menuHalconSwt(opc);
-
-};
-
-
 void imprimirMenuAdmin(){
-    int opc;
-    system("cls");
-    imprimirHeader("  Menu Administrador  ");
     textcolor(10);
     printf("\n\t1.- ");
     textcolor(15);
@@ -218,10 +187,6 @@ void imprimirMenuAdmin(){
     printf("\n\t7.- ");
     textcolor(15);
     printf("Salir del sistema.");
-    printf("\nIngrese una opcion para continuar: ");
-    fflush(stdin);
-    scanf("%i",&opc);
-    menuAdminSwt(opc);
 }
 
 void imprimirMenuCamaras (){

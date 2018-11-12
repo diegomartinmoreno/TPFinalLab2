@@ -124,7 +124,7 @@ usuario registro();
 int buscarExistente(usuario aux);
 int cantReg();
 void cargarUsuariosAdm();
-void identificarse();
+int identificarse();
 
 
 /// funcionesSupervisor.c

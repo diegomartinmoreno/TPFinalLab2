@@ -15,7 +15,7 @@ void mostrarArchivoAdministrador(){
 };
 
 
-void crearArchivo(){
+void crearArchivoAdministradores(){
     FILE *admin=fopen(rutaAdministradores,"wb");
     usuario in;
     if(admin){
@@ -130,16 +130,14 @@ int identificarse(){
     printf("Ingrese nombre: ");
     fflush(stdin);
     gets(aux.nomUsuario);
-
     printf("\nIngrese contrase%ca: ",164);
-    while(i<20){
+    do{
         pass=getch();
         if(pass != 13 && pass != 8){
             printf("%c",enmascarado[i]);
             aux.contrasena[i]=pass;
             i++;
         }
-        
         if(pass==8){ //si lee backspace
             i--;
             printf("\b");
@@ -149,11 +147,11 @@ int identificarse(){
         }
         if(pass==13){ //si lee retorno de carro
             aux.contrasena[i]='\0';
-            encontrado=buscarExistente(aux);
-            if(encontrado==1){
-                ingreso=1;
-            }
         }
+    }while(i<20&&pass!=13);
+    encontrado=buscarExistente(aux);
+    if(encontrado==1){
+        ingreso=1;
     }
     return ingreso;
 };

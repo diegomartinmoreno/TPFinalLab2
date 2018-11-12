@@ -2,95 +2,190 @@
 
 
 void inicioSistema(){
+    puts("Bienvenidos al trabajo final de Laboratorio 2 de los alumnos Toledo y Moreno.\n");
     inicializarCamaras();
     inicializarHistAlertas();
     inicializarHistAverias();
-    crearArchivo();
-    system("Pause");
-    system("cls");
-    imprimirHeader("    Menu Principal    ");
-    imprimirPrimerMenu();
+    crearArchivoAdministradores();
+    SwitchMenuPrincipal();
 };
 
+void iniciarMenuCamaras(){
+    char op='n', input, confirmacion;
+    arbolCamara *arbol=0, *aux=0;
+    arbol=fileToArbol(arbol);
+    do{
+        system("cls");
+        imprimirHeader("    Menu de Camaras   ");
+        imprimirMenuCamaras();
+        fflush(stdin);
+        input=getch();
+        switch (input){
+            case '1':
+                aux=buscarCamara(arbol);
+                system("cls");
+                imprimirHeader("    Datos de camara   ");
+                puts("");
+                imprimirCamaraEncontrada (aux->C);
+                system("Pause");
+                break;
+            case '2':
+                mostrarArbolCamaras(arbol, 1, 30, 0);
+                puts("");
+                system("Pause");
+                break;
+            case '3':
+                mostrarArbolCamaras(arbol, 2, 30, 0);
+                puts("");
+                system("Pause");
+                break;
+            case '4':
+                system("cls");
+                imprimirHeader("  Cargar nueva camara  ");
+                arbol=cargarCamaras(arbol);
+                break;
+            case '5':
+                aux=buscarCamara(arbol);
+                if (aux!=NULL){
+                    system("cls");
+                    imprimirHeader("    Datos de camara   ");
+                    puts("");
+                    imprimirCamaraEncontrada (aux->C);
+                    puts("Eliminar la camara de la base de datos? S/N");
+                    fflush(stdin);
+                    confirmacion=getch();
+                    if (confirmacion=='s'||confirmacion=='S'){
+                        aux->C.eliminada=1;
+                        puts("La camara ha sido eliminada.");
+                    }else{
+                        puts("La camara no ha sido eliminada.");
+                    }
+                }
+                system("Pause");
+                break;
+            case '6':
+                op=control();
+                break;
+            default:
+                printf("Opcion invalida!\n");
+                break;
+        }
+    }while (op!='s'&&op!='s');
+    arbolToFile(arbol);
+}
 
-void menuHalconSwt(int opc){ ///alertar reportar listar salir
-
+void menuSup(){
     system("cls");
-    switch (opc) {
-        case 1:
-            printf("CREAR ALERTA");
+    char flag='n';
+    int op;
+    do{
+        system("cls");
+        imprimirHeader("   Menu  Supervisor   ");
+        imprimirMenuSupervisor();
+        puts("");
+        fflush(stdin);
+        scanf("%i", &op);
+        switch(op){
+            case 1:
+                system("cls");
             break;
-        case 2:
-            printf("REPORTAR AVERIA");
+            case 2:
+                system("cls");
             break;
-        case 3:
-            printf("LISTAR CAMARAS");
+            case 3:
+                puts("\nDesea salir del sistema? S/N");
+                fflush(stdin);
+                flag=getch();
+                system("cls");
             break;
-        case 4:
-            inicioSistema();
+            default:
+                puts("OPCION INCORRECTA.");
             break;
-        default:
-            printf("Ingrese una opcion valida!\n");
-            break;
-    }
-};
+        }
+    }while(flag!='s'&&flag!='S');
+}
 
+void menuAdmin(){
+    char control='n';
+    int op;
+    do{
+        system("cls");
+        imprimirHeader("   Menu Administrador  ");
+        imprimirMenuAdmin();
+        puts("");
+        fflush(stdin);
+        scanf("%i", &op);
+        switch(op){
+            case 1:
+                system("cls");
+                ///iniciarMenuEstadisticasAverias();
+            break;
+            case 2:
+                system("cls");
+                ///iniciarMenuEstadisticasAlertas();
+            break;
+            case 3:
+                system("cls");
+                iniciarMenuCamaras();
+            break;
+            case 4:
+                system("cls");
+                system("pause");
+            break;
+            case 5:
+                system("cls");
+                cargarUsuariosAdm();
+                imprimirMenuAdmin();
+            break;
+            case 6:
+                mostrarArchivoAdministrador();
+                getch();
+                imprimirMenuAdmin();
+            break;
+            case 7:
+                puts("Volver al menu principal? S/N\n");
+                fflush(stdin);
+                scanf("%c",&control);
+            break;
+            default:
+                puts("OPCION INCORRECTA.");
+            break;
+        }
+    }while (control!='s'&&control!='S');
+}
 
-void menuAdminSwt(int opc){ ///alertas y estad. / averias y estad. / listar y modif. cams / Personal en nomina y estad.
-
-    system("cls");
-    switch (opc) {
-        case 1:
-            printf("Estadisticas de alertas.\n");
+void SwitchMenuPrincipal(){
+    crearArchivoAdministradores();
+    char flag='n';
+    int op, acceso=0;
+    do{
+        system("cls");
+        imprimirHeader(" Bienvenido al sistema ");
+        imprimirPrimerMenu();
+        puts("");
+        fflush(stdin);
+        scanf("%i", &op);
+        switch(op){
+            case 1:
+                system("cls");
+                ///menuSup();
             break;
-        case 2:
-            printf("AVERIAS Y ESTADISTICAS\n");
+            case 2:
+                system("cls");
+                acceso=identificarse();
+                if (acceso){
+                    menuAdmin();
+                }
             break;
-        case 3:
-            iniciarMenuCamaras();
+            case 3:
+                puts("\nDesea salir del sistema? S/N");
+                fflush(stdin);
+                flag=getch();
+                system("cls");
             break;
-        case 4:
-            printf("LISTAR PERSONAL EN NOMINA Y ESTADISTICA\n");
+            default:
+                puts("OPCION INCORRECTA.");
             break;
-        case 5:
-            cargarUsuariosAdm();
-            imprimirMenuAdmin();
-            break;
-        case 6:
-            mostrarArchivoAdministrador();
-            getch();
-            imprimirMenuAdmin();
-            break;
-        case 7:
-            inicioSistema();
-            break;
-        default:
-            printf("Ingrese una opcion valida!\n");
-            break;
-    }
-};
-
-
-void primerMenuSwt(int opc){
-
-    crearArchivo();
-    system("cls");
-    switch (opc) {
-        case 1:
-            imprimirMenuHalcon();
-            break;
-        case 2:
-            identificarse();
-            break;
-        case 3:
-            printf("Cerrando sistema...\n");
-            system("pause");
-            break;
-        default:
-            printf("Ingrese opcion valida.");
-            system("pause");
-            system("cls");
-            inicioSistema();
-            break;
-    }
-};
+        }
+    }while(flag!='s'&&flag!='S');
+}
