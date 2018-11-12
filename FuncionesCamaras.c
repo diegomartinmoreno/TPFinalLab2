@@ -228,7 +228,9 @@ void iniciarMenuCamaras(){
                 system("Pause");
                 break;
             case '4':
-
+                system("cls");
+                imprimirHeader("  Cargar nueva camara  ");
+                arbol=cargarCamaras(arbol);
                 break;
             case '5':
                 aux=buscarCamara(arbol);
