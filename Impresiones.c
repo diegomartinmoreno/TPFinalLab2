@@ -1,6 +1,6 @@
 #include "headers.h"
 
-void mostrarUnaCamara(celda cam){
+void imprimirCamaraEncontrada (celda cam){
     if (!cam.eliminada){
         printf("-----------------------------------------------------------------------------------------\n");
         printf("ID de camara: %i\n",cam.IDcamara);
@@ -15,8 +15,52 @@ void mostrarUnaCamara(celda cam){
         printf("\n---------------------------------------------------------------------------------------\n");
     }else{
         puts("Error! Intenta mostrar una camara eliminada!");
+}
+}
+
+void mostrarUnaCamara (celda cam, int modo, char cliente[]){ /// MODO= 1 muestra activas // 2 muestra inactivas // 3 imprime IDS. /// 4 imprime camaras del lugar CLIENTE.
+    if (cam.eliminada==0){
+        switch(modo){
+            case 2:
+                if (cam.estado == 2||cam.estado == 0){
+                    printf("|---------------------------------->>>\n");
+                    printf("| ID de camara: %i /// ",cam.IDcamara);
+                    printf("Supervisor: %s\n",cam.supervisor);
+                    printf("| Cliente: %s /// ", cam.ubicacion.nombre);
+                    if(cam.estado == 0)
+                        printf("Estado: OFFLINE");
+                    if(cam.estado == 2)
+                        printf("Estado: EN REPARACION");
+                    printf(" /// Prioridad de Camara: %i",cam.prioridad);
+                    printf("\n|-------------------------------------------------------------------->>>\n");
+                }
+                break;
+            case 1:
+                if (cam.estado == 1){
+                    printf("|---------------------------------->>>\n");
+                    printf("| ID de camara: %i /// ",cam.IDcamara);
+                    printf("Supervisor: %s\n",cam.supervisor);
+                    printf("| Cliente: %s /// ", cam.ubicacion.nombre);
+                    printf("Estado: ONLINE");;
+                    printf(" /// Prioridad de Camara: %i",cam.prioridad);
+                    printf("\n|-------------------------------------------------------------------->>>\n");
+                }
+                break;
+            case 3:
+                printf("| %i |", cam.IDcamara);
+                break;
+            case 4:
+                if (strcmp(cam.ubicacion.nombre, cliente)==0){
+                    printf("| %i |", cam.IDcamara);
+                }
+                break;
+        }
+
     }
-};
+}
+
+
+
 
 void textcolor (int color) // Gracias por tanto StackOverflow.
 {
@@ -178,4 +222,31 @@ void imprimirMenuAdmin(){
     fflush(stdin);
     scanf("%i",&opc);
     menuAdminSwt(opc);
+}
+
+void imprimirMenuCamaras (){
+    textcolor(10);
+    printf("\n\t1.- ");
+    textcolor(15);
+    printf("Buscar camara.");
+    textcolor(10);
+    printf("\n\t2.- ");
+    textcolor(15);
+    printf("Listar camaras activas.");
+    textcolor(10);
+    printf("\n\t3.- ");
+    textcolor(15);
+    printf("Listar camaras en reparacion.");
+    textcolor(10);
+    printf("\n\t4.- ");
+    textcolor(15);
+    printf("Cargar nueva camara.");
+    textcolor(10);
+    printf("\n\t5.- ");
+    textcolor(15);
+    printf("Eliminar una camara.");
+    textcolor(12);
+    printf("\n\t6.- ");
+    textcolor(15);
+    printf("Volver al menu anterior.\n");
 }
