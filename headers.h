@@ -75,19 +75,14 @@ typedef struct arbolCamara
 } arbolCamara;
 
 ///Estructuras Personal
-typedef struct supervisor{
-    int idSupervisor;
-    char nomYApe[sizeNom];
-    int cantReportes;
-} supervisor;
 
 typedef struct nodoSupervisor{
-    supervisor sup;
+    usuario sup;
     struct nodoSupervisor * sig;
 } nodoSupervisor;
 
 typedef struct nodo2Supervisor{
-    supervisor sup;
+    usuario sup;
     struct nodo2Supervisor * ante;
     struct nodo2Supervisor * sig;
 } nodo2Supervisor;

@@ -128,7 +128,7 @@ nodoSupervisor * cargarListaSupervisores(nodoSupervisor * lista){
 
     while(opc=='s'){
 
-        nuevo=cargarUnSupervisor();
+        //nuevo=cargarUnSupervisor();
 
         lista=insertarSupEnListaOrdenNombre(lista,crearNodoSupervisor(nuevo));
 
