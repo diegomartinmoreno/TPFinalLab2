@@ -31,11 +31,21 @@ void generarCamara (int ID){
     celda camara;
     int i;
     char supervisores[][sizeNom]={{"Domingo"},{"Nestor"},{"Mauri"},{"Sergio"},{"Gaby"},{"Mariu"},{"Lilita"},{"Cristina"}};
-    i=rand()%8;
+    i=rand()%7;
     strcpy(camara.supervisor, supervisores[i]);
     camara.fechaInstalacion=generarFecha();
     camara.histAlertas=0;
     camara.histAlertas=0;
+    i=rand()%100;
+    if (i>80){
+        camara.estado=2;
+    }
+    if (i>70&&i<=80){
+        camara.estado=0;
+    }
+    if (i<=70){
+        camara.estado=0;
+    }
     camara.estado=rand()%3;
     camara.IDcamara=ID;
     camara.ubicacion=generarUbicacion(ID);

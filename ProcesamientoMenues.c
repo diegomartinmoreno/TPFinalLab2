@@ -47,7 +47,7 @@ void menuAdminSwt(int opc){ ///alertas y estad. / averias y estad. / listar y mo
             printf("AVERIAS Y ESTADISTICAS\n");
             break;
         case 3:
-            printf("LISTAR Y MODIFICAR CAMARAS\n");
+            iniciarMenuCamaras();
             break;
         case 4:
             printf("LISTAR PERSONAL EN NOMINA Y ESTADISTICA\n");

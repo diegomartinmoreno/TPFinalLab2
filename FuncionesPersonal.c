@@ -326,7 +326,7 @@ nodo2Supervisor * archivoToLista(nodoSupervisor * listaD){
     opcOrdenacion=consultaOrdenacion();
 
     if(personal){
-        for(i;i<val;i++){
+        for(i=0;i<val;i++){
             fread(&aux,sizeof(supervisor),1,personal);
 
             nuevo=crearNodoDobleSupervisor(aux);
