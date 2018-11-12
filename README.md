@@ -29,4 +29,10 @@ DIARIO DE TRABAJO
 
 >>> 12/11
 * Moreno -- Implementacion y finalizado de las funciones de camaras.
-* Toledo -- Funciones de acceso controlado a los diferentes menues.
+* Toledo -- Funciones de acceso autorizado para los diferentes menues.
+
+
+
+>>> 12/11
+* Moreno -- Implementacion y finalizado de las funciones de supervision.
+* Toledo -- Funciones de gestion de personal.
