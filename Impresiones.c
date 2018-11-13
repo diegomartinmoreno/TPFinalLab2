@@ -255,6 +255,36 @@ void imprimirPrimerMenu(){
     printf("Salir del sistema.\n\n");
 }
 
+void imprimirMenuEstadisticas (){
+    textcolor(10);
+    printf("\n\t1.- ");
+    textcolor(15);
+    printf("Historico de averias por camara.");
+    textcolor(10);
+    printf("\n\t2.- ");
+    textcolor(15);
+    printf("Historico de alertas por cliente.");
+    textcolor(10);
+    printf("\n\t3.- ");
+    textcolor(15);
+    printf("Promedio de tiempo de inactividad por camara.");
+    textcolor(10);
+    printf("\n\t4.- ");
+    textcolor(15);
+    printf("Promedio de alertas/averias por supervisor.");
+    textcolor(10);
+    printf("\n\t5.- ");
+    textcolor(15);
+    printf("Promedio de alertas/averias por periodo.");
+    textcolor(10);
+    printf("\n\t6.- ");
+    textcolor(15);
+    printf("Tiempo medio de respuesta alertas/averias.");
+    textcolor(12);
+    printf("\n\t7.- ");
+    textcolor(15);
+    printf("Salir al menu anterior.\n\n");
+}
 
 void imprimirMenuSupervisor (){
     textcolor(10);
@@ -277,7 +307,7 @@ void imprimirMenuSupervisor (){
     printf("\n\t5.- ");
     textcolor(15);
     printf("Reportar gestionada una alerta.");
-    textcolor(10);
+    textcolor(12);
     printf("\n\t6.- ");
     textcolor(15);
     printf("Salir al menu principal.\n\n");
@@ -288,29 +318,25 @@ void imprimirMenuAdmin(){
     textcolor(10);
     printf("\n\t1.- ");
     textcolor(15);
-    printf("Estadisticas de alertas.");
+    printf("Estadisticas del sistema.");
     textcolor(10);
     printf("\n\t2.- ");
     textcolor(15);
-    printf("Estadisticas de averias.");
+    printf("Listar y modificar camaras.");
     textcolor(10);
     printf("\n\t3.- ");
     textcolor(15);
-    printf("Listar y modificar camaras.");
+    printf("Administracion de supervisores.");
     textcolor(10);
     printf("\n\t4.- ");
     textcolor(15);
-    printf("Personal en nomina y estadisticas.");
+    printf("Agregar Administrador.");//agregado
     textcolor(10);
     printf("\n\t5.- ");
     textcolor(15);
-    printf("Agregar Administrador.");//agregado
-    textcolor(10);
-    printf("\n\t6.- ");
-    textcolor(15);
     printf("Listar Administradores."); //agregado
     textcolor(12);
-    printf("\n\t7.- ");
+    printf("\n\t6.- ");
     textcolor(15);
     printf("Salir del sistema.\n\n");
 }

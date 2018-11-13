@@ -3,9 +3,9 @@
 tiempo generarFecha (){
     tiempo aux;
     aux.ano=(rand()%10)+2008;
-    aux.dia=rand()%30;
+    aux.dia=(rand()%29)+1;
     aux.hora=rand()%24;
-    aux.mes=rand()%13;
+    aux.mes=(rand()%12)+1;
     aux.minuto=rand()%60;
     aux.segundo=rand()%60;
     return aux;

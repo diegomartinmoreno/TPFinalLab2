@@ -30,7 +30,6 @@ int contarHistoriales(char path[]){
 int obtenerArrayAA(historial aux[], int IDCamara, int op, char ruta[]){ /// op=0 imprime inactivas /// op=1 imprime activas. /// op=2 imprime todas.
     int cantHist=contarHistoriales(ruta), i=0, dimL=0;
     FILE *fp=fopen(ruta, "rb");
-    imprimirHeader("      Historiales      ");
     for (i=0; i<cantHist; i++){
         fread(&aux[dimL], sizeof(historial), 1, fp);
         if (aux[dimL].IDcamara==IDCamara){
@@ -63,6 +62,7 @@ int obtenerArrayAA(historial aux[], int IDCamara, int op, char ruta[]){ /// op=0
             }
         }
     }
+    fclose(fp);
     return dimL;
 }
 
@@ -87,11 +87,40 @@ void reportarGestion(historial hist, char ruta[]){
     for (i=0; i<cantHist; i++){
         fread(&aux, sizeof(historial), 1, fp);
         if (hist.IDregistro==aux.IDregistro){
-            fseek(fp, -sizeof(historial), SEEK_CUR);
             hist.activo=0;
+            fseek(fp, -(sizeof(historial)), SEEK_CUR);
             fwrite(&hist, sizeof(historial), 1, fp);
+            }
+    }
+    fclose(fp);
+}
+
+
+
+int obtenerIDSCliente(int IDS[], int dimLClientes, char clientes [][sizeNom]){
+    FILE *fp=fopen(rutaCamaras, "rb");
+    char clienteSeleccionado[sizeNom], opchar;
+    celda aux;
+    int dimL=0, i=0, op=0, cantCam=cantidadRegistrosEnFile();
+    puts("Seleccione el cliente cuyo historial de alertas desea mostrar:");
+    for(i=0; i<dimLClientes; i++){
+        textcolor(10);
+        printf("\n\t%i.- ", i+1);
+        textcolor(15);
+        printf("%s.", clientes[i]);
+    }
+    fflush(stdin);
+    opchar=getch();
+    op=atoi(&opchar);
+    op--;
+    for (i=0; i<cantCam; i++){
+        fread(&aux, sizeof(celda), 1, fp);
+        if(strcmp(aux.ubicacion.nombre, clientes[op])==0){
+            IDS[dimL]=aux.IDcamara;
+            dimL++;
         }
     }
+    return dimL;
 }
 
 void atenderAA(int IDCamara, int op, char ruta[]){ /// op=0 imprime inactivas /// op=1 imprime activas. /// op=2 imprime todas.
@@ -99,6 +128,7 @@ void atenderAA(int IDCamara, int op, char ruta[]){ /// op=0 imprime inactivas //
     char opchar;
     int seleccion;
     int dimL=0;
+    imprimirHeader("      Historiales      ");
     dimL=obtenerArrayAA(historiales, IDCamara, op, ruta);
     puts("Ingrese una seleccion:");
     fflush(stdin);
@@ -107,4 +137,3 @@ void atenderAA(int IDCamara, int op, char ruta[]){ /// op=0 imprime inactivas //
     seleccion--;
     reportarGestion(historiales[seleccion], ruta);
 }
-

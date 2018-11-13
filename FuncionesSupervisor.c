@@ -1,63 +1,4 @@
 #include "headers.h"
-/// *** Funciones por si se puede ingresar una entrada de historial de fechas anteriores, ordenandola antes de las ultimas entradas.
-/*
-int compararFechas (tiempo t1, tiempo t2){ /// 1 si son iguales, -1 si tienen mismo dia distinta hora. 2 si t1 es mayor y -2 si t2 es mayor.
-    int rta=-2;
-    if (t1.ano==t2.ano && t1.mes==t2.mes && t1.dia==t2.dia){ /// Compara fecha
-        rta=-1;
-    }
-    if (t1.hora==t2.hora && t1.minuto==t2.minuto && t1.segundo==t2.segundo){ /// Comprara hora
-        rta=1;
-    }
-    if (t1.ano>t2.ano){
-        rta=2;
-    }else {
-        if (t1.mes>t2.mes){
-            rta=2;
-        }else {
-            if (t1.dia>t2.dia){
-                rta=2;
-            }else {
-                if (t1.hora>t2.hora){
-                    rta=2;
-                }else{
-                    if (t1.minuto>t2.minuto){
-                        rta=2;
-                    }
-                    else{
-                        if (t1.segundo>t2.segundo)
-                            rta=2;
-                    }
-                }
-            }
-        }
-    }
-    return rta;
-}
-
-
-historial *insertarOrdenardoAA (historial *lista, historial *nuevo){
-    historial *seg=lista, *anterior=lista;
-    if (lista){
-        if (compararFechas(seg->fecha, nuevo->fecha)==-2){
-            while (seg->siguiente && compararFechas(seg->fecha, nuevo->fecha)==2){
-                anterior=seg;
-                seg=seg->siguiente;
-            }
-            anterior->siguiente=nuevo;
-            nuevo->siguiente=seg;
-        }else{
-            nuevo->siguiente=lista;
-            lista=nuevo;
-        }
-    }else{
-        lista=nuevo;
-    }
-    return lista;
-}
-
-///****************************************
-*/
 
 tiempo leerFechaActual(){
     tiempo aux;
@@ -274,14 +215,14 @@ int inicioSesionSup (char user[]){
             aux.contrasena[i]=pass;
             i++;
         }
-        if(pass==8){ //si lee backspace
+        if(pass==8){ ///si lee backspace
             i--;
             printf("\b");
             printf(" ");
             printf("\b");
 
         }
-        if(pass==13){ //si lee retorno de carro
+        if(pass==13){ ///si lee retorno de carro
             aux.contrasena[i]='\0';
         }
     }while(i<20&&pass!=13);
@@ -293,3 +234,64 @@ int inicioSesionSup (char user[]){
     strcpy(user, aux.nomUsuario);
     return aprobado;
 }
+
+
+/// *** Funciones por si se puede ingresar una entrada de historial de fechas anteriores, ordenandola antes de las ultimas entradas.
+/*
+int compararFechas (tiempo t1, tiempo t2){ /// 1 si son iguales, -1 si tienen mismo dia distinta hora. 2 si t1 es mayor y -2 si t2 es mayor.
+    int rta=-2;
+    if (t1.ano==t2.ano && t1.mes==t2.mes && t1.dia==t2.dia){ /// Compara fecha
+        rta=-1;
+    }
+    if (t1.hora==t2.hora && t1.minuto==t2.minuto && t1.segundo==t2.segundo){ /// Comprara hora
+        rta=1;
+    }
+    if (t1.ano>t2.ano){
+        rta=2;
+    }else {
+        if (t1.mes>t2.mes){
+            rta=2;
+        }else {
+            if (t1.dia>t2.dia){
+                rta=2;
+            }else {
+                if (t1.hora>t2.hora){
+                    rta=2;
+                }else{
+                    if (t1.minuto>t2.minuto){
+                        rta=2;
+                    }
+                    else{
+                        if (t1.segundo>t2.segundo)
+                            rta=2;
+                    }
+                }
+            }
+        }
+    }
+    return rta;
+}
+
+
+historial *insertarOrdenardoAA (historial *lista, historial *nuevo){
+    historial *seg=lista, *anterior=lista;
+    if (lista){
+        if (compararFechas(seg->fecha, nuevo->fecha)==-2){
+            while (seg->siguiente && compararFechas(seg->fecha, nuevo->fecha)==2){
+                anterior=seg;
+                seg=seg->siguiente;
+            }
+            anterior->siguiente=nuevo;
+            nuevo->siguiente=seg;
+        }else{
+            nuevo->siguiente=lista;
+            lista=nuevo;
+        }
+    }else{
+        lista=nuevo;
+    }
+    return lista;
+}
+
+///****************************************
+*/

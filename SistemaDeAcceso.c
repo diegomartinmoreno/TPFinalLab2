@@ -16,13 +16,14 @@ void mostrarArchivoAdministrador(){
 
 
 void crearArchivoAdministradores(){
-    FILE *admin=fopen(rutaAdministradores,"ab+");
+    FILE *admin=fopen(rutaAdministradores,"rb");
     usuario in;
-    if(admin){
+    if(admin==NULL){
+        fclose(admin);
+        admin=fopen(rutaAdministradores, "wb");
         strcpy(in.nomUsuario,"master");
         strcpy(in.contrasena,"master");
         fwrite(&in,sizeof(usuario),1,admin);
-        puts(" ");
         fclose(admin);
     }
 };

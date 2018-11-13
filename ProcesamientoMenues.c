@@ -13,6 +13,65 @@ void inicioSistema(){
     SwitchMenuPrincipal();
 };
 
+void iniciarMenuEstadisticas(){
+    historial historiales[50];
+    int i=0, IDcamara, IDScliente[30], dimLClientes, dimLIDS;
+    char clientes[30][sizeNom];
+    arbolCamara *arbol=0, *aux;
+    arbol=fileToArbol(arbol);
+    dimLClientes=obtenerClientes(arbol, clientes, 0);
+    char control='n', op;
+    while (control!='s'&&control!='S'){
+        system("cls");
+        imprimirHeader("     Estadisticas     ");
+        imprimirMenuEstadisticas();
+        fflush(stdin);
+        op=getch();
+        switch(op){
+        case '1':
+            aux=buscarCamara(arbol);
+            system("cls");
+            IDcamara=aux->C.IDcamara;
+            imprimirHeader("   Historial Averias  ");
+            obtenerArrayAA(historiales, IDcamara, 2, rutaHistorialAverias);
+            system("pause");
+            break;
+        case '2':
+            dimLIDS=obtenerIDSCliente(IDScliente, dimLClientes, clientes);
+            system("cls");
+            imprimirHeader("   Historial Alertas  ");
+            for(i=0; i<dimLIDS; i++){
+                printf("\n|||---- Entradas vinculadas a la camara ID %i ----|||\n\n", IDScliente[i]);
+                obtenerArrayAA(historiales, IDScliente[i], 2, rutaHistorialAlertas);
+            }
+            system("pause");
+            break;
+        case '3':
+            //promInactividad();
+            break;
+        case '4':
+            //promSupervisor();
+            break;
+        case '5':
+            //promPeriodo();
+            break;
+        case '6':
+            //promRespuesta();
+            break;
+        case '7':
+            puts("\nDesea volver al menu anterior? S/N");
+            fflush(stdin);
+            control=getch();
+            system("cls");
+            break;
+        default:
+            puts("OPCION INCORRECTA.");
+            Sleep(500);
+            break;
+        }
+    }
+}
+
 void iniciarMenuCamaras(){
     char op='n', input, confirmacion;
     arbolCamara *arbol=0, *aux=0;
@@ -70,8 +129,8 @@ void iniciarMenuCamaras(){
                 op=control();
                 break;
             default:
-                printf("Opcion invalida!\n");
-                break;
+                puts("OPCION INCORRECTA.");
+                Sleep(500);
         }
     }while (op!='s'&&op!='s');
     arbolToFile(arbol);
@@ -97,7 +156,6 @@ void menuSup(char usuario[]){
                 system("cls");
             break;
             case 2:
-
                 aux=buscarCamara(arbol);
                 IDCamara=aux->C.IDcamara;
                 system("cls");
@@ -109,7 +167,7 @@ void menuSup(char usuario[]){
                 aux=buscarCamara(arbol);
                 IDCamara=aux->C.IDcamara;
                 system("cls");
-                ingresarNuevaAveria(IDCamara);
+                ingresarNuevaAlerta(IDCamara);
                 printf("Se ha ingresado una alerta. ");
                 system("pause");
             break;
@@ -133,6 +191,7 @@ void menuSup(char usuario[]){
             break;
             default:
                 puts("OPCION INCORRECTA.");
+                Sleep(500);
             break;
         }
     }while(flag!='s'&&flag!='S');
@@ -153,37 +212,32 @@ void menuAdmin(){
         switch(op){
             case 1:
                 system("cls");
-                ///iniciarMenuEstadisticasAverias();
+                iniciarMenuEstadisticas();
             break;
             case 2:
                 system("cls");
-                ///iniciarMenuEstadisticasAlertas();
+                iniciarMenuCamaras();
             break;
             case 3:
                 system("cls");
-                iniciarMenuCamaras();
+                listarPersonal();
             break;
             case 4:
                 system("cls");
-                listarPersonal();
+                cargarUsuariosAdm();
             break;
             case 5:
-                system("cls");
-                cargarUsuariosAdm();
-                imprimirMenuAdmin();
-            break;
-            case 6:
                 mostrarArchivoAdministrador();
                 getch();
-                imprimirMenuAdmin();
             break;
-            case 7:
+            case 6:
                 puts("Volver al menu principal? S/N\n");
                 fflush(stdin);
                 control=getch();
             break;
             default:
                 puts("OPCION INCORRECTA.");
+                Sleep(500);
             break;
         }
     }while (control!='s'&&control!='S');
@@ -224,6 +278,7 @@ void SwitchMenuPrincipal(){
             break;
             default:
                 puts("OPCION INCORRECTA.");
+                Sleep(500);
             break;
         }
     }while(flag!='s'&&flag!='S');
