@@ -88,6 +88,7 @@ void reportarGestion(historial hist, char ruta[]){
         fread(&aux, sizeof(historial), 1, fp);
         if (hist.IDregistro==aux.IDregistro){
             hist.activo=0;
+            hist.tiempoRespuesta=obtenerTiempoGestion(hist.fecha);
             fseek(fp, -(sizeof(historial)), SEEK_CUR);
             fwrite(&hist, sizeof(historial), 1, fp);
             }
@@ -120,6 +121,7 @@ int obtenerIDSCliente(int IDS[], int dimLClientes, char clientes [][sizeNom]){
             dimL++;
         }
     }
+    fclose(fp);
     return dimL;
 }
 

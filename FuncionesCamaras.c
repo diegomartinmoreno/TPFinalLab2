@@ -3,19 +3,114 @@
 arbolCamara* inicializarArbolCamaras(){
     return NULL;
 };
-/// AGREGAR VERIFICACIONES DE USUARIO Y CONTRASEÑA SUPERVISOR
 /*
-celda crearCamara(){
+void obtenerContrasena (char contrasena[], char user[]){
+    FILE *fp;
+    fp==fopen(rutaSupervisores, "rb");
+    usuario aux;
+    int i, cantSup=contarUsuariosCreados();
+    for (i=0; i<cantSup; i++){
+        fread(&aux, sizeof(usuario), 1, fp);
+        if(strcmp(aux.nomUsuario, user)==0){
+            strcpy(contrasena, aux.contrasena);
+        }
+    }
+}
+
+int comprobarRepetido (char clientes[][sizeNom], int dimLClientes, char nuevo[]){
+
+}
+
+lugar crearCliente(){
+    lugar aux;
+    char input[sizeNom];
+    puts(">>> Carga de un nuevo cliente:");
+    printf("Ingrese nombre de cliente: ");
+    fflush(stdin);
+    gets(aux.nombre);
+    printf("\nIngrese localidad de la instalacion: ");
+    fflush(stdin);
+    gets(aux.ciudad);
+    printf("\nIngrese calle de la instalacion: ");
+    fflush(stdin);
+    gets(aux.calle);
+    printf("\nIngrese altura de la calle: ");
+    fflush(stdin);
+    gets(input);
+    aux.altura=atoi(input);
+    printf("\nIngrese numero departamento: ");
+    fflush(stdin);
+    gets(input);
+    aux.departamento=atoi(input);
+    printf("\nIngrese la planta de instalacion (PB=0): ");
+    fflush(stdin);
+    gets(input);
+    aux.piso=atoi(input);
+};
+
+lugar pasarClienteALugar(char cliente[]){
+    int cantCam=cantidadRegistrosEnFile();
+    FILE *fp=fopen(rutaCamaras, "rb");
     celda aux;
 
-    printf("\nIngrese ID Camara: ");
-    fflush(stdin);
-    scanf("%i",&aux.IDcamara);
 
-    printf("Ingrese nombre y apellido del Supervisor:  ");
-    fflush(stdin);
-    gets(aux.supervisor);
+};
 
+///DESPUES DE CREAR LA CAMARA ACTUALIZAR FILE DE SUPERVISORES!!!!!!!!
+celda crearCamara(char clientes[][sizeNom], int dimLClientes){
+    celda aux;
+    char opchar='n', control='n';
+    int encontrado, input, i=0;
+    do{
+        puts("Ingrese 1 para crear un nuevo cliente y 2 para agregar camara a un cliente existente.")
+        do{
+            opchar='n';
+            fflush(stdin);
+            opchar=getch();
+            input=atoi(&opchar);
+        }while (input!=1&&input!=2);
+        if (input==1){
+            aux.ubicacion=crearCliente();
+        }else{
+            for(i=0;i<dimLClientes;i++){
+                textcolor(10);
+                printf("\n\t%i.- ", i+1);
+                textcolor(15);
+                printf("%s.", clientes[i]);
+            }
+            printf("Ingrese su seleccion entre 1 y %i", dimLClientes);
+            do{
+                fflush(stdin);
+                opchar=getch();
+                input=atoi(&opchar);
+            }while (input<0||input>dimLClientes);
+        }
+    }while (control!='s'&&control!='S');
+    control='n';
+    do{
+        printf("Ingrese usuario del Supervisor a cargo de la vigilacia: ");
+        fflush(stdin);
+        gets(&(aux.supervisor));
+        encontrado=buscarExistente(aux.supervisor, rutaSupervisores);
+        if(encontrado==0){
+            puts("Se ha detectado un nombre de usuario de Supervisor nuevo.");
+            puts("Desea crear un nuevo usuario? S/N.");
+            opchar='n';
+            fflush(stdin);
+            opchar=getch();
+            if (opchar=='S'||opchar=='s'){
+                puts("Ingrese una contrasena para el nuevo usuario:");
+                fflush(stdin);
+                gets(aux.supervisor.contrasena);
+                puts("\nNuevo usuario creado.");
+                control='s';
+                Sleep(500);
+            }
+        } else{
+            obtenerContrasena(&aux.supervisor.contrasena, aux.supervisor.nomUsuario);
+            control='s';
+        }
+    }while (control!='s'&&control!='S');
     printf(".:Prioridad de Camara:.\n");
     do{
     printf("La prioridad ingresada debe ser MAYOR a 0 (cero) y MENOR a 9 (nueve).\n");
@@ -27,19 +122,7 @@ celda crearCamara(){
     aux.eliminada=0;
     return aux;
 };
-
-arbolCamara * cargarCamaras(arbolCamara * arbol){
-    char opc='s';
-
-    printf(".:A CONTINUACION, INGRESE LOS DATOS SOLICITADOS PARA LA CARGA DE UNA CAMARA:.\n\n");
-    while (opc=='s'){
-        arbol=insertarNodoCamaraEnArbol(arbol,crearNodoArbolCamara(crearCamara()));
-        opc=control();
-    }
-    return arbol;
-};
 */
-
 arbolCamara * crearNodoArbolCamara(celda cam){
     arbolCamara * aux=(arbolCamara *)malloc(sizeof(arbolCamara));
     aux->C=cam;
@@ -47,7 +130,6 @@ arbolCamara * crearNodoArbolCamara(celda cam){
     aux->izquierda=0;
     return aux;
 };
-
 
 arbolCamara * insertarNodoCamaraEnArbol(arbolCamara * arbol, arbolCamara * nuevo){
 
@@ -61,6 +143,22 @@ arbolCamara * insertarNodoCamaraEnArbol(arbolCamara * arbol, arbolCamara * nuevo
     }
     return arbol;
 };
+/*
+arbolCamara * cargarCamaras(arbolCamara * arbol){
+    char opc='s';
+    char clientes [30][sizeNom];
+    int dimLClientes=0;
+    dimLClientes=obtenerClientes(arbol, clientes, 0);
+    printf("\n<< A CONTINUACION, INGRESE LOS DATOS SOLICITADOS PARA LA CARGA DE UNA CAMARA >>\n\n");
+    while (opc=='s'){
+        arbol=insertarNodoCamaraEnArbol(arbol,crearNodoArbolCamara(crearCamara(clientes, dimLClientes)));
+        opc=control();
+    }
+    return arbol;
+};
+
+*/
+
 
 
 int mostrarArbolCamaras(arbolCamara * arbol, int modo, int rep, char cliente[]){

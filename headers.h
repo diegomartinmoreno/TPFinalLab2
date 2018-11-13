@@ -40,7 +40,7 @@ typedef struct tiempo
     int segundo;
 } tiempo;
 
-typedef struct
+typedef struct historial
 {
     int IDregistro;
     int IDcamara;
@@ -115,7 +115,7 @@ void primerMenuSwt(int opc);
 void mostrarArchivoAdministrador();
 void crearArchivo();
 usuario registro();
-int buscarExistente(usuario aux);
+int buscarExistente(usuario aux, char ruta[]);
 int cantReg();
 void cargarUsuariosAdm();
 int identificarse();
