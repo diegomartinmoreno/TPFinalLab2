@@ -57,62 +57,24 @@ listaClientes * obtenerClientes (arbolCamara *arbol, listaClientes *lista){
 }
 */ ///Resolvi manejarlo con arreglos ya que era mucho mas sencillo de pasar desde el arbol.
 
-int verificarRepetido(char clientes[][sizeNom], char nuevo[], int i) { ///0 si ya se encuentra, 1 si es nuevo.
-    int rta=1;
-    int j;
-    for (j=0; j<i; j++){
-        if (strcmp(clientes[j], nuevo)==0){
-            rta=0;
-        }
-    }
-    return rta;
-}
 
-int obtenerClientes(arbolCamara *arbol, char clientes[][sizeNom], int i)
-{
-    lugar auxLugar; ///
-    celda auxCelda; ///
-    char nuevo[sizeNom]; ///
-    if(arbol != NULL){
-        auxCelda=arbol->C; ///
-        auxLugar=auxCelda.ubicacion; ///
-        strcpy(nuevo, auxLugar.nombre); /// La que tepa codeblocks.
-        if (verificarRepetido(clientes, nuevo, i)){
-            strcpy(clientes[i], nuevo);
-            i++;
-        }
-        if(arbol->derecha != NULL)
-            i = obtenerClientes(arbol->derecha, clientes, i);
-        if(arbol->izquierda != NULL)
-            i = obtenerClientes(arbol->izquierda, clientes, i);
-    }
-    return i;
-}
-
-int obtenerInput (char input[], int *numero){ /// Retorna 1 si se ingreso un ID y 0 si se ingreso una palabra.
-    int i=0, rta=0;
-    fflush(stdin);
-    while (stdin){
-        input[i]=getch;
-        i++;
-    }
-    input [i]='\0';
-    if (47<(input[0])&& (input[0])<58) { /// Es numero
-        *numero=atoi(input);
-        rta=1;
-    }
-    return rta;
-}
 
 void histAverias(arbolCamara *arbol){
+    int i=0;
+    arbolCamara *encontrada=buscarCamara(arbol);
     system("cls");
-    char input[sizeNom];
-    int esNumero, ID;
     imprimirHeader(" Historico de Averias ");
-    puts("Ingrese el nombre del cliente o el ID de la camara buscada:");
-    esNumero=obtenerInput(input, &ID);
-    if (esNumero){
-        ///obtenerHist(ID);
+    for (i=0; i<(encontrada->C.dimAverias); i++){
+        imprimirUnHistorial(encontrada->C.averias[i]);
     }
+}
 
+void histAlertas(arbolCamara *arbol){
+    int i=0;
+    arbolCamara *encontrada=buscarCamara(arbol);
+    system("cls");
+    imprimirHeader(" Historico de Averias ");
+    for (i=0; i<(encontrada->C.dimAlertas); i++){
+        imprimirUnHistorial(encontrada->C.alertas[i]);
+    }
 }

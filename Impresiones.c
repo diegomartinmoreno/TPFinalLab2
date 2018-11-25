@@ -3,6 +3,7 @@
 void imprimirDibujo(int op){
     switch (op){
     case 1:
+        textcolor(11);
         printf("                      {}\n");
         printf("     ,   A            {}\n");
         printf("    / \\, | ,         .--.\n");
@@ -21,13 +22,14 @@ void imprimirDibujo(int op){
         printf("          |        \\_ || _/    `\n");
         printf("          |        <_ >< _>\n");
         printf("          |        |  ||  |\n");
-        printf("          |        |  ||  |\n");
         printf("          |       _\\.:||:./_\n");
         printf("          |      /____/\\____\\\n");
-        printf("\n");
+        textcolor(10);
         printf(".:*~*:._.:*~*:._.:*~*:._.:*~*:._.:*~*:._.:*~*:\n");
+        textcolor(15);
         break;
     case 2:
+        textcolor(11);
         printf("                     {}\n");
         printf("    ,   A             {}\n");
         printf("   / \\, | ,          .--.\n");
@@ -46,13 +48,14 @@ void imprimirDibujo(int op){
         printf("           |       \\_ || _/    `\n");
         printf("           |       <_ >< _>\n");
         printf("            |      |  ||  |\n");
-        printf("            |      |  ||  |\n");
         printf("            |     _\\.:||:./_\n");
         printf("            |    /____/\\____\\\n");
-        printf("\n");
+        textcolor(10);
         printf(".:*~*:._.:*~*:._.:*~*:._.:*~*:._.:*~*:._.:*~*\n");
+        textcolor(15);
         break;
     case 3:
+        textcolor(11);
         printf("                      {}\n");
         printf("     ,   A            {}\n");
         printf("    / \\, | ,         .--.\n");
@@ -71,13 +74,14 @@ void imprimirDibujo(int op){
         printf("          |        \\_ || _/    `\n");
         printf("          |        <_ >< _>\n");
         printf("          |        |  ||  |\n");
-        printf("          |        |  ||  |\n");
         printf("          |       _\\.:||:./_\n");
         printf("          |      /____/\\____\\\n");
-        printf("\n");
+        textcolor(10);
         printf(".:*~*:._.:*~*:._.:*~*:._.:*~*:._.:*~*:._.:*~*:\n");
+        textcolor(15);
         break;
     case 4:
+        textcolor(11);
         printf("                       {}\n");
         printf("      ,   A           {}\n");
         printf("     / \\, | ,        .--.\n");
@@ -96,79 +100,91 @@ void imprimirDibujo(int op){
         printf("         |         \\_ || _/    `\n");
         printf("         |         <_ >< _>\n");
         printf("        |          |  ||  |\n");
-        printf("        |          |  ||  |\n");
         printf("        |         _\\.:||:./_\n");
         printf("        |        /____/\\____\\\n");
-        printf("\n");
+        textcolor(10);
         printf(".:*~*:._.:*~*:._.:*~*:._.:*~*:._.:*~*:._.:*~*\n");
+        textcolor(15);
         break;
     }
 }
 
-void imprimirFecha(tiempo fecha){
-    printf("Hora: %i:%i:%i del %i/%i/%i", fecha.hora, fecha.minuto, fecha.segundo, fecha.dia, fecha.mes, fecha.ano);
+void imprimirUnHistorial(historial hist){
+    puts(" <<<----------------------------->>>");
+    printf("Ingresada en ");
+    imprimirFecha(hist.fecha);
+    puts("");
+    if(hist.activo==0){
+        printf("La entrada ha sido gestionada en: %.2f horas\n", hist.tiempoRespuesta);
+    }
+    else{
+        puts("La entrada se encuentra pendiente para ser gestionada.");
+    }
+    printf("Descripcion: %s\n", hist.descripcion);
+    puts("<<<--------------------------------->>>");
+}
+
+void imprimirFecha(time_t aux){
+    struct tm *fecha;
+    if (aux!=-1){
+        fecha=localtime(&aux);
+        printf("Hora: %i:%i:%i del %i/%i/%i", fecha->tm_hour, fecha->tm_min, fecha->tm_sec, fecha->tm_mday, fecha->tm_mon, fecha->tm_year);
+    }else{
+        printf("(FECHA ALEATORIA)");
+    }
 }
 
 void imprimirCamaraEncontrada (celda cam){
-    if (!cam.eliminada){
-        printf("|---------------------------------->>>\n");
-        printf(" ID de camara: %i\n",cam.IDcamara);
-        printf(" Nombre y Apellido de supervisor: %s\n",cam.supervisor.nomUsuario);
-        printf("| Cliente: %s /// Desde ", cam.ubicacion.nombre);
-        imprimirFecha(cam.fechaInstalacion);
-        if(cam.estado == 0)
-            printf("\n| Estado: OFFLINE\n");
-        if(cam.estado == 1)
-            printf("\n| Estado: ONLINE\n");
-        if(cam.estado == 2)
-            printf("\n| Estado: EN REPARACION\n");
-        printf(" Prioridad de Camara: %i",cam.prioridad);
-        printf("\n|-------------------------------------------------------------------->>>\n");
-    }else{
-        puts("Error! Intenta mostrar una camara eliminada!");
-}
+    printf("|---------------------------------->>>\n");
+    printf(" ID de camara: %i\n",cam.IDcamara);
+    printf(" Nombre y Apellido de supervisor: %s\n",cam.supervisor.nomUsuario);
+    printf("| Cliente: %s /// Desde ", cam.ubicacion.nombre);
+    imprimirFecha(cam.fechaInstalacion);
+    if(cam.estado == 1)
+        printf("\n| Estado: ONLINE\n");
+    if(cam.estado == 2)
+        printf("\n| Estado: EN REPARACION\n");
+    printf(" Prioridad de Camara: %i",cam.prioridad);
+    printf("\n|-------------------------------------------------------------------->>>\n");
 }
 
 void mostrarUnaCamara (celda cam, int modo, char cliente[]){ /// MODO= 1 muestra activas // 2 muestra inactivas // 3 imprime IDS. /// 4 imprime camaras del lugar CLIENTE.
-    if (cam.eliminada==0){
-        switch(modo){
-            case 2:
-                if (cam.estado == 2||cam.estado == 0){
-                    printf("|---------------------------------->>>\n");
-                    printf("| ID de camara: %i /// ",cam.IDcamara);
-                    printf("Supervisor: %s\n",cam.supervisor.nomUsuario);
-                    printf("| Cliente: %s /// Desde ", cam.ubicacion.nombre);
-                    imprimirFecha(cam.fechaInstalacion);
-                    if(cam.estado == 0)
-                        printf("\n| Estado: OFFLINE");
-                    if(cam.estado == 2)
-                        printf("\n| Estado: EN REPARACION");
-                    printf(" /// Prioridad de Camara: %i",cam.prioridad);
-                    printf("\n|-------------------------------------------------------------------->>>\n");
-                }
-                break;
-            case 1:
-                if (cam.estado == 1){
-                    printf("|---------------------------------->>>\n");
-                    printf("| ID de camara: %i /// ",cam.IDcamara);
-                    printf("Supervisor: %s\n",cam.supervisor.nomUsuario);
-                    printf("| Cliente: %s /// Desde ", cam.ubicacion.nombre);
-                    imprimirFecha(cam.fechaInstalacion);
-                    printf("\n| Estado: ONLINE");;
-                    printf(" /// Prioridad de Camara: %i",cam.prioridad);
-                    printf("\n|-------------------------------------------------------------------->>>\n");
-                }
-                break;
-            case 3:
+    switch(modo){
+        case 2:
+            if (cam.estado == 2||cam.estado == 0){
+                printf("|---------------------------------->>>\n");
+                printf("| ID de camara: %i /// ",cam.IDcamara);
+                printf("Supervisor: %s\n",cam.supervisor.nomUsuario);
+                printf("| Cliente: %s /// Desde ", cam.ubicacion.nombre);
+                imprimirFecha(cam.fechaInstalacion);
+                if(cam.estado == 0)
+                    printf("\n| Estado: OFFLINE");
+                if(cam.estado == 2)
+                    printf("\n| Estado: EN REPARACION");
+                printf(" /// Prioridad de Camara: %i",cam.prioridad);
+                printf("\n|-------------------------------------------------------------------->>>\n");
+            }
+            break;
+        case 1:
+            if (cam.estado == 1){
+                printf("|---------------------------------->>>\n");
+                printf("| ID de camara: %i /// ",cam.IDcamara);
+                printf("Supervisor: %s\n",cam.supervisor.nomUsuario);
+                printf("| Cliente: %s /// Desde ", cam.ubicacion.nombre);
+                imprimirFecha(cam.fechaInstalacion);
+                printf("\n| Estado: ONLINE");;
+                printf(" /// Prioridad de Camara: %i",cam.prioridad);
+                printf("\n|-------------------------------------------------------------------->>>\n");
+            }
+            break;
+        case 3:
+            printf("| %i |", cam.IDcamara);
+            break;
+        case 4:
+            if (strcmp(cam.ubicacion.nombre, cliente)==0){
                 printf("| %i |", cam.IDcamara);
-                break;
-            case 4:
-                if (strcmp(cam.ubicacion.nombre, cliente)==0){
-                    printf("| %i |", cam.IDcamara);
-                }
-                break;
-        }
-
+            }
+            break;
     }
 }
 

@@ -30,27 +30,14 @@ typedef struct lugar
     char departamento;
 } lugar;
 
-typedef struct tiempo
-{
-    int ano;
-    int mes;
-    int dia;
-    int hora;
-    int minuto;
-    int segundo;
-} tiempo;
-
 typedef struct historial
 {
-    int IDregistro;
-    int IDcamara;
+    int IDregistro; /// INDIVIDUAL de cada camara.
     int activo; /// 1 si todavia no fue reparada la averia o gestionada la alerta, 0 si ya fue hecho.
-    tiempo fecha;
+    time_t fecha;
     float tiempoRespuesta; /// En horas, tiempo que tardo el tecnico o la seguridad en arribar a la incidencia.
     char descripcion[150];
-    struct historial *siguiente;
 } historial;
-///LOS PRIMEROS 4 BYTES DEL HISTORIAL, UNA VEZ GUARDADO EN FILE, SERÁ INDICADOR DE LA CANTIDAD DE REGISTROS INGRESADOS PARA ESA CAMARA.
 
 typedef struct usuario{
     char nomUsuario[sizeNom];
@@ -59,14 +46,16 @@ typedef struct usuario{
 
 typedef struct celda{
     int IDcamara;
-    int estado; /// 0=offline; 1=online; 2=en reparacion;
-    tiempo fechaInstalacion;
+    int estado; /// 1=online; 2=en reparacion;
+    time_t fechaInstalacion;
     lugar ubicacion;
     usuario supervisor;
     int prioridad; // 0 <= prioridad <= 10
-    int eliminada; // 0 si no fue eliminada, 1 si lo fue.
-    historial *histAverias;
-    historial *histAlertas;
+    /// Maximo de 50 averias/alertas almacenadas por camara.
+    int dimAverias;
+    historial averias[50];
+    int dimAlertas;
+    historial alertas[50];
 } celda;
 
 typedef struct arbolCamara
@@ -136,15 +125,18 @@ int identificarse();
 /// funcionesCamaras.c
 
 
+/// funcionesHistoriales.c
+historial ingresarNuevoHistorial(int IDRegistro);
+
 
 /// generadorRandom.c
-tiempo generarFecha ();
+time_t generarFecha ();
 lugar generarUbicacion (int ID);
 void generarCamara (int ID);
 void generarBaseCamaras();
 void inicializarCamaras ();
-
-
+historial generarAveriaRandom(int IDh);
+historial generarAlertaRandom(int IDh);
 
 
 #endif // HEADERS_H_INCLUDED

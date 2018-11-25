@@ -123,6 +123,7 @@ celda crearCamara(char clientes[][sizeNom], int dimLClientes){
     return aux;
 };
 */
+
 arbolCamara * crearNodoArbolCamara(celda cam){
     arbolCamara * aux=(arbolCamara *)malloc(sizeof(arbolCamara));
     aux->C=cam;
@@ -177,25 +178,34 @@ int mostrarArbolCamaras(arbolCamara * arbol, int modo, int rep, char cliente[]){
     return rep;
 };
 
-
-void arbolToFile(arbolCamara * arbol){
-    FILE * cam=fopen(rutaCamaras,"a+b");
-
+FILE *cargaArbolToFile(arbolCamara * arbol, FILE *cam){
     celda aux;
-
-    if(cam){
-        if(arbol){
-            aux=arbol->C;
-            fwrite(&aux,sizeof(celda),1,cam);
-            arbolToFile(arbol->izquierda);
-            arbolToFile(arbol->derecha);
+    if(arbol){
+        aux=arbol->C;
+        fwrite(&aux,sizeof(celda),1,cam);
+        if (arbol->izquierda!=NULL){
+            cam=cargaArbolToFile(arbol->izquierda, cam);
         }
-    }else{
+        if (arbol->derecha!=NULL){
+            cam=cargaArbolToFile(arbol->derecha, cam);
+        }
+    }
+    return cam;
+};
+
+void arbolToFile (arbolCamara *arbol){
+    FILE * cam=fopen(rutaCamaras,"wb");
+    if (cam){
+        cam = cargaArbolToFile(arbol, cam);
+    }
+    else{
         puts("Error en apertura.");
         printf("\a");
     }
     fclose(cam);
-};
+}
+
+
 
 arbolCamara * fileToArbol(arbolCamara *arbol){
     int i, cantCam=cantidadRegistrosEnFile();
@@ -245,6 +255,63 @@ int cantidadRegistrosEnFile(){
     return rta;
 };
 
+///---------------------------------------------------------------------------------------------
+
+celda eliminarMasIzquierdo(arbolCamara **arbol){
+    celda eliminado;
+    if ((*arbol)!=NULL){
+        if((*arbol)->izquierda!=NULL){
+            eliminado=eliminarMasIzquierdo(&(*arbol)->izquierda);
+        }else{
+            eliminado=(*arbol)->C;
+            if((*arbol)->derecha!=NULL){
+                (*arbol)=(*arbol)->derecha;
+            }
+        }
+    }
+    return eliminado;
+}
+
+void eliminarCamara(arbolCamara **arbol, celda eliminar){
+    celda aux;
+    if ((*arbol)!=NULL){
+        if ((*arbol)->C.IDcamara==eliminar.IDcamara){
+            ///SI NO TIENE HIJOS.
+            if ((*arbol)->derecha==NULL&&(*arbol)->izquierda==NULL){
+                (*arbol)=NULL;
+            }
+            ///SI TIENE UN SOLO HIJO IZQUIERDO.
+            else{
+                if ((*arbol)->derecha==NULL&&(*arbol)->izquierda!=NULL){
+                    (*arbol)=(*arbol)->izquierda;
+                }
+                ///SI TIENE UN SOLO HIJO RADICAL.
+                else{
+                    if ((*arbol)->izquierda==NULL&&(*arbol)->derecha!=NULL){
+                        (*arbol)=(*arbol)->derecha;
+                    }
+                    /// SI TIENE DOS HIJOS
+                    else{
+                        if ((*arbol)->izquierda!=NULL&&(*arbol)->derecha!=NULL){
+                            ///Lo reemplazo por el nodo mas izquierdo del subarbol derecho,
+                            ///y reemplazo el lugar anterior de ese nodo por su subarbol derecho si lo tiene.
+                            aux=eliminarMasIzquierdo(&(*arbol)->derecha);
+                            (*arbol)->C=aux;
+                        }
+                    }
+                }
+            }
+        }else{
+            if (eliminar.prioridad>(*arbol)->C.prioridad){
+                eliminarCamara(&(*arbol)->derecha, eliminar);
+            }
+            else{
+                eliminarCamara(&(*arbol)->izquierda, eliminar);
+            }
+        }
+    }
+}
+
 void buscarCamaraXID (arbolCamara *arbol, arbolCamara **rta, int ID){
     if (arbol!=NULL){
         buscarCamaraXID(arbol->derecha, rta, ID);
@@ -255,10 +322,90 @@ void buscarCamaraXID (arbolCamara *arbol, arbolCamara **rta, int ID){
     }
 }
 
+int verificarRepetido(char clientes[][sizeNom], char nuevo[], int i) { ///0 si ya se encuentra, 1 si es nuevo.
+    int rta=1;
+    int j;
+    for (j=0; j<i; j++){
+        if (strcmp(clientes[j], nuevo)==0){
+            rta=0;
+        }
+    }
+    return rta;
+}
+
+int obtenerClientes(arbolCamara *arbol, char clientes[][sizeNom], int i)
+{
+    lugar auxLugar; ///
+    celda auxCelda; ///
+    char nuevo[sizeNom]; ///
+    if(arbol != NULL){
+        auxCelda=arbol->C; ///
+        auxLugar=auxCelda.ubicacion; ///
+        strcpy(nuevo, auxLugar.nombre); /// La que tepa codeblocks.
+        if (verificarRepetido(clientes, nuevo, i)){
+            strcpy(clientes[i], nuevo);
+            i++;
+        }
+        if(arbol->derecha != NULL)
+            i = obtenerClientes(arbol->derecha, clientes, i);
+        if(arbol->izquierda != NULL)
+            i = obtenerClientes(arbol->izquierda, clientes, i);
+    }
+    return i;
+}
+
+int obtenerInput (char input[], int *numero){ /// Retorna 1 si se ingreso un ID y 0 si se ingreso una palabra.
+    int i=0, rta=0;
+    fflush(stdin);
+    while (stdin){
+        input[i]=getch;
+        i++;
+    }
+    input [i]='\0';
+    if (47<(input[0])&& (input[0])<58) { /// Es numero
+        *numero=atoi(input);
+        rta=1;
+    }
+    return rta;
+}
+
+int obtenerIDS(arbolCamara *actual, int dimL, int IDS[], char usuario[]){
+    char aux[sizeNom];
+    if (actual->izquierda!=NULL){
+        dimL=obtenerIDS(actual->izquierda, dimL, IDS, usuario);
+    }
+    strcpy(aux, &(actual->C.supervisor));
+    if (usuario!=0){
+        if (strcmp(aux, usuario)==0){
+            IDS[dimL]=actual->C.IDcamara;
+            dimL++;
+        }
+    }else{
+        IDS[dimL]=actual->C.IDcamara;
+        dimL++;
+    }
+
+    if (actual->derecha!=NULL){
+        dimL=obtenerIDS(actual->derecha, dimL, IDS, usuario);
+    }
+    return dimL;
+}
+
+int comprobarID(int IDS[], int dimL, int input){  /// Retorna 1 si es una ID valida y 0 si no lo es.
+    int rta=0, i=0;
+    for (i=0; i<dimL; i++){
+        if (IDS[i]==input){
+            rta=1;
+        }
+    }
+    return rta;
+}
+
 arbolCamara * buscarCamara (arbolCamara *arbol){
     char input[sizeNom];
     arbolCamara *encontrado;
-    int ID, dimL=0, i=0;
+    int ID, dimL=0, i=0, IDS[100], dimLIDS=0, flag=0;
+    dimLIDS=obtenerIDS(arbol, dimLIDS, IDS, 0);
     char clientes[50][sizeNom];
     dimL=obtenerClientes(arbol, clientes, 0);
     puts("Ingrese un ID de camara o un cliente:\n");
@@ -270,30 +417,40 @@ arbolCamara * buscarCamara (arbolCamara *arbol){
     puts("\nIDs de camara existentes:");
     mostrarArbolCamaras(arbol, 3, 0, input);
     puts("");
-    fflush(stdin);
-    gets(input);
-    if (input[0]<58&&input[0]>47){ /// ES UNA ID
-        ID=atoi(input);
-        buscarCamaraXID(arbol, &encontrado, ID);
-        if (encontrado==0){
-            puts("No se encontro la camara buscada en la base de datos.");
-        }
-    }else{ /// es un cliente
-        puts("<<<---------------------------->>>");
-        printf("Seleccione la ID de la camara del cliente %s buscada\n", input);
-        mostrarArbolCamaras(arbol, 4, 0, input);
-        puts("");
+    while (flag==0){
         fflush(stdin);
         gets(input);
-        ID=atoi(input);
-        buscarCamaraXID(arbol, &encontrado, ID);
-        if (encontrado==0){
-            puts("No se encontro la camara buscada en la base de datos.");
+        if (input[0]<58&&input[0]>47){ /// ES UNA ID
+            ID=atoi(input);
+            if (comprobarID(IDS, dimLIDS, ID)){
+                buscarCamaraXID(arbol, &encontrado, ID);
+                flag=1;
+            }
+            else{
+                puts("No se encontro la camara buscada en la base de datos.");
+            }
+        }else{ /// es un cliente
+            puts("<<<---------------------------->>>");
+            printf("Seleccione la ID de la camara del cliente %s buscada\n", input);
+            mostrarArbolCamaras(arbol, 4, 0, input);
+            puts("");
+            fflush(stdin);
+            gets(input);
+            ID=atoi(input);
+            if (comprobarID(IDS, dimLIDS, ID)){
+                buscarCamaraXID(arbol, &encontrado, ID);
+                flag=1;
+            }
+            else{
+                puts("No se encontro la camara buscada en la base de datos.");
+            }
         }
     }
     return encontrado;
 }
 
+
+///---------------------------------------------------------------------------------------------
 
 
 

@@ -5,8 +5,6 @@ void inicioSistema(){
     puts("Bienvenidos al trabajo final de Laboratorio 2 de los alumnos Toledo y Moreno.\n");
     mkdir("./bases");
     inicializarCamaras();
-    inicializarHistAlertas();
-    inicializarHistAverias();
     crearArchivoAdministradores();
     actualizarArchivoSupervisores();
     system("Pause");
@@ -29,21 +27,15 @@ void iniciarMenuEstadisticas(){
         op=getch();
         switch(op){
         case '1':
-            aux=buscarCamara(arbol);
             system("cls");
-            IDcamara=aux->C.IDcamara;
             imprimirHeader("   Historial Averias  ");
-            obtenerArrayAA(historiales, IDcamara, 2, rutaHistorialAverias);
+            histAverias(arbol);
             system("pause");
             break;
         case '2':
-            dimLIDS=obtenerIDSCliente(IDScliente, dimLClientes, clientes);
             system("cls");
             imprimirHeader("   Historial Alertas  ");
-            for(i=0; i<dimLIDS; i++){
-                printf("\n|||---- Entradas vinculadas a la camara ID %i ----|||\n\n", IDScliente[i]);
-                obtenerArrayAA(historiales, IDScliente[i], 2, rutaHistorialAlertas);
-            }
+            histAlertas(arbol);
             system("pause");
             break;
         case '3':
@@ -70,6 +62,7 @@ void iniciarMenuEstadisticas(){
             break;
         }
     }
+    fileToArbol(arbol);
 }
 
 void iniciarMenuCamaras(){
@@ -117,7 +110,7 @@ void iniciarMenuCamaras(){
                     fflush(stdin);
                     confirmacion=getch();
                     if (confirmacion=='s'||confirmacion=='S'){
-                        aux->C.eliminada=1;
+                        eliminarCamara(&arbol, aux->C);
                         puts("La camara ha sido eliminada.");
                     }else{
                         puts("La camara no ha sido eliminada.");
@@ -152,36 +145,38 @@ void menuSup(char usuario[]){
         op=atoi(&opchar);
         switch(op){
             case 1:
-                procesamientoSupervision(usuario);
+                procesamientoSupervision(arbol, usuario);
                 system("cls");
             break;
             case 2:
                 aux=buscarCamara(arbol);
                 IDCamara=aux->C.IDcamara;
+                aux->C.dimAverias++;
                 system("cls");
-                ingresarNuevaAveria(IDCamara);
+                aux->C.averias[(aux->C.dimAverias)-1]=ingresarNuevoHistorial(aux->C.dimAverias-1);
                 printf("Se ha ingresado una averia. ");
                 system("pause");
             break;
             case 3:
                 aux=buscarCamara(arbol);
                 IDCamara=aux->C.IDcamara;
+                aux->C.dimAlertas++;
                 system("cls");
-                ingresarNuevaAlerta(IDCamara);
-                printf("Se ha ingresado una alerta. ");
+                aux->C.alertas[(aux->C.dimAlertas)-1]=ingresarNuevoHistorial(aux->C.dimAlertas-1);
+                printf("Se ha ingresado una averia. ");
                 system("pause");
             break;
             case 4:
-                aux=buscarCamara(arbol);
-                IDCamara=aux->C.IDcamara;
                 system("cls");
-                atenderAA(IDCamara, 1, rutaHistorialAverias);
+                imprimirHeader("    Reportar Averia   ");
+                aux=buscarCamara(arbol);
+                reportarGestion(aux, 1);
             break;
             case 5:
-                aux=buscarCamara(arbol);
-                IDCamara=aux->C.IDcamara;
                 system("cls");
-                atenderAA(IDCamara, 1, rutaHistorialAlertas);
+                imprimirHeader("    Reportar Alerta   ");
+                aux=buscarCamara(arbol);
+                reportarGestion(aux, 2);
             break;
             case 6:
                 puts("\nDesea cerrar sesion de supervisor? S/N");
@@ -195,7 +190,7 @@ void menuSup(char usuario[]){
             break;
         }
     }while(flag!='s'&&flag!='S');
-
+    arbolToFile(arbol);
 }
 
 void menuAdmin(){
@@ -244,7 +239,6 @@ void menuAdmin(){
 }
 
 void SwitchMenuPrincipal(){
-    crearArchivoAdministradores();
     char flag='n', user[sizeNom], opchar;
     int op, acceso=0;
     do{

@@ -64,12 +64,10 @@ int verificarSupRepetido(usuario supervisores[], int dimL, usuario supervisor){ 
 int generarArregloSupervisores(celda camaras[], int dimL, usuario supervisores[]){
     int i=0, j=0;
     for (i=0; i<dimL; i++){
-        if (camaras[i].eliminada==0){
-            if (verificarSupRepetido(supervisores, j, camaras[i].supervisor)==1){
-                strcpy(supervisores[j].nomUsuario, camaras[i].supervisor.nomUsuario);
-                strcpy(supervisores[j].contrasena, camaras[i].supervisor.contrasena);
-                j++;
-            }
+        if (verificarSupRepetido(supervisores, j, camaras[i].supervisor)==1){
+            strcpy(supervisores[j].nomUsuario, camaras[i].supervisor.nomUsuario);
+            strcpy(supervisores[j].contrasena, camaras[i].supervisor.contrasena);
+            j++;
         }
     }
     return j;
