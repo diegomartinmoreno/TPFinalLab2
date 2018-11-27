@@ -200,47 +200,61 @@ int mostrarArbolCamaras(arbolCamara * arbol, int modo, int rep, char cliente[]){
 
 void mostrarArbolCamarasInorder(arbolCamara * arbol, int modo, int *rep, char cliente[]){
     if(arbol){
-        mostrarArbolCamarasInorder(arbol->izquierda, modo, rep, cliente);
+        if (arbol->izquierda){
+            mostrarArbolCamarasInorder(arbol->izquierda, modo, rep, cliente);
+        }
         celda aux;
-        if(*rep==8){
+        if((*rep)>5){
             puts("El listado continua en la siguiente pagina.");
             system("Pause");
-            *rep=0;
+            system("cls");
+            imprimirHeader("Listado de Camaras");
+            (*rep)=0;
         }
-        *rep++;
+        (*rep)++;
         aux=arbol->C;
         mostrarUnaCamara(aux, modo, cliente);
-        mostrarArbolCamarasInorder(arbol->derecha, modo, rep, cliente);
+        if (arbol->derecha){
+            mostrarArbolCamarasInorder(arbol->derecha, modo, rep, cliente);
+        }
     }
 };
 
 void mostrarArbolCamarasPreorder(arbolCamara * arbol, int modo, int *rep, char cliente[]){
     if(arbol){
         celda aux;
-        if(*rep==6){
+        if((*rep)>5){
             puts("El listado continua en la siguiente pagina.");
             system("Pause");
-            *rep=0;
+            system("cls");
+            imprimirHeader("Listado de Camaras");
+            (*rep)=0;
         }
-        *rep++;
+        (*rep)++;
         aux=arbol->C;
         mostrarUnaCamara(aux, modo, cliente);
-        mostrarArbolCamarasPreorder(arbol->izquierda, modo, rep, cliente);
-        mostrarArbolCamarasPreorder(arbol->derecha, modo, rep, cliente);
+        if (arbol->izquierda){
+            mostrarArbolCamarasPreorder(arbol->izquierda, modo, rep, cliente);}
+        if (arbol->izquierda){
+            mostrarArbolCamarasPreorder(arbol->derecha, modo, rep, cliente);}
     }
 }
 
 void mostrarArbolCamarasPostorder(arbolCamara * arbol, int modo, int *rep, char cliente[]){
     if(arbol){
         celda aux;
-        mostrarArbolCamarasPostorder(arbol->izquierda, modo, rep, cliente);
-        mostrarArbolCamarasPostorder(arbol->derecha, modo, rep, cliente);
-        if(*rep==8){
+        if (arbol->izquierda){
+            mostrarArbolCamarasPostorder(arbol->izquierda, modo, rep, cliente);}
+        if (arbol->derecha){
+            mostrarArbolCamarasPostorder(arbol->derecha, modo, rep, cliente);}
+        if((*rep)>5){
             puts("El listado continua en la siguiente pagina.");
             system("Pause");
-            *rep=0;
+            system("cls");
+            imprimirHeader("Listado de Camaras");
+            (*rep)=0;
         }
-        *rep++;
+        (*rep)++;
         aux=arbol->C;
         mostrarUnaCamara(aux, modo, cliente);
     }
@@ -276,16 +290,19 @@ int mostrarArbolCamarasMenu(arbolCamara * arbol, int modo, int rep, char cliente
         case 1:
             rep=0;
             mostrarArbolCamarasInorder(arbol, modo, &rep, 0);
+            puts("\n>>> No hay mas camaras para mostrar.");
             flag=0;
             break;
         case 2:
             rep=0;
             mostrarArbolCamarasPreorder(arbol, modo, &rep, 0);
+            puts("\n>>> No hay mas camaras para mostrar.");
             flag=0;
             break;
         case 3:
             rep=0;
             mostrarArbolCamarasPostorder(arbol, modo, &rep, 0);
+            puts("\n>>> No hay mas camaras para mostrar.");
             flag=0;
             break;
         case 4:
