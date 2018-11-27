@@ -50,7 +50,7 @@ typedef struct celda{
     time_t fechaInstalacion;
     lugar ubicacion;
     usuario supervisor;
-    int prioridad; // 0 <= prioridad <= 10
+    int prioridad; // 0 <= prioridad < 10
     /// Maximo de 50 averias/alertas almacenadas por camara.
     int dimAverias;
     historial averias[50];
@@ -104,7 +104,7 @@ void primerMenuSwt(int opc);
 void mostrarArchivoAdministrador();
 void crearArchivo();
 usuario registro();
-int buscarExistente(usuario aux, char ruta[]);
+int buscarExistente(usuario *aux, char ruta[], int modo);
 int cantReg();
 void cargarUsuariosAdm();
 int identificarse();

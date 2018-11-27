@@ -102,6 +102,7 @@ void mostrarNodoSupervisor(nodoSupervisor * s){
 void mostrarUnSupervisor(usuario  s){
     printf("\n-------------------------------- \n");
     printf("Nombre de usuario: %s\n",s.nomUsuario);
+    printf("contrasena: %s",s.contrasena);
     printf("\n-------------------------------- \n");
 };
 

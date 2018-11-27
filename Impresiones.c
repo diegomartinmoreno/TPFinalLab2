@@ -205,7 +205,6 @@ void textcolor (int color) // Gracias por tanto StackOverflow.
 void mostrarUnUsuario(usuario aux){
     printf("--------------------------------------\n");
     printf("Nombre de usuario: %s\n",aux.nomUsuario);
-    printf("Contrase%ca: %s\n",164,aux.contrasena);
     printf("--------------------------------------\n");
 };
 

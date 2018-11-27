@@ -3,31 +3,12 @@
 arbolCamara* inicializarArbolCamaras(){
     return NULL;
 };
-/*
-void obtenerContrasena (char contrasena[], char user[]){
-    FILE *fp;
-    fp==fopen(rutaSupervisores, "rb");
-    usuario aux;
-    int i, cantSup=contarUsuariosCreados();
-    for (i=0; i<cantSup; i++){
-        fread(&aux, sizeof(usuario), 1, fp);
-        if(strcmp(aux.nomUsuario, user)==0){
-            strcpy(contrasena, aux.contrasena);
-        }
-    }
-}
 
-int comprobarRepetido (char clientes[][sizeNom], int dimLClientes, char nuevo[]){
-
-}
-
-lugar crearCliente(){
+lugar crearCliente(char nombre[]){
     lugar aux;
     char input[sizeNom];
-    puts(">>> Carga de un nuevo cliente:");
-    printf("Ingrese nombre de cliente: ");
-    fflush(stdin);
-    gets(aux.nombre);
+    printf(">>> Carga del nuevo cliente: %s\n", nombre);
+    strcpy(aux.nombre, nombre);
     printf("\nIngrese localidad de la instalacion: ");
     fflush(stdin);
     gets(aux.ciudad);
@@ -46,52 +27,86 @@ lugar crearCliente(){
     fflush(stdin);
     gets(input);
     aux.piso=atoi(input);
+    return aux;
 };
 
-lugar pasarClienteALugar(char cliente[]){
-    int cantCam=cantidadRegistrosEnFile();
-    FILE *fp=fopen(rutaCamaras, "rb");
-    celda aux;
+lugar esCliente (lugar clientes[], lugar nuevo, int dimL){
+/// Retorna el lugar si ya se conoce, o rta.altura == -1 si es nuevo.
+/// nuevo solo necesita estar lleno en el campo nuevo.nombre.
+    int i=0;
+    nuevo.altura=-1;
+    for (i=0; i<dimL; i++){
+        if (strcmp(clientes[i].nombre, nuevo.nombre)==0){
+            nuevo=clientes[i];
+        }
+    }
+    return nuevo;
+}
 
+void obtenerCamarasCliente (arbolCamara *arbol, celda camaras[], lugar cliente, int *centesimas){
+    int posicion=0;
+    if (arbol!=NULL){
+        if (strcmp(arbol->C.ubicacion.nombre, cliente.nombre)==0){
+            *centesimas=arbol->C.IDcamara;
+            *centesimas=(*centesimas)/100;
+            posicion=(arbol->C.IDcamara)-((*centesimas)*100);
+            camaras[posicion]=arbol->C;
+        }
+        obtenerCamarasCliente(arbol->derecha, camaras, cliente, centesimas);
+        obtenerCamarasCliente(arbol->izquierda, camaras, cliente, centesimas);
+    }
+}
 
-};
+int obtenerIDLibreCliente(arbolCamara *arbol, lugar cliente){
+    celda camarasCliente[99];
+    int i, flag=0, IDLibre=-1, centesimas=0;
+    for (i=0; i<100; i++){
+        camarasCliente[i].IDcamara=-1; /// inicio todas en -1.
+    }
+    obtenerCamarasCliente(arbol, camarasCliente, cliente, &centesimas); /// Cargo las posiciones del arreglo relativas a la centesima que ocupan en el arreglo.
+    i=0;
+    while (flag==0 && i<100){
+        if (camarasCliente[i].IDcamara==-1){
+            IDLibre=i+(centesimas*100);
+            flag=1;
+        }
+        i++;
+    }
+    return IDLibre;
+}
 
 ///DESPUES DE CREAR LA CAMARA ACTUALIZAR FILE DE SUPERVISORES!!!!!!!!
-celda crearCamara(char clientes[][sizeNom], int dimLClientes){
+celda crearCamara(arbolCamara *arbol, lugar clientes[], int *dimLClientes){
     celda aux;
-    char opchar='n', control='n';
+    FILE *supervisores;
+    char opchar='n', control='n', inputCliente[sizeNom], inputChar;
     int encontrado, input, i=0;
+    system("cls");
+    imprimirHeader("     Nueva Camara    ");
+    puts("Ingrese el nombre del cliente al que se le instalara la nueva camara: ");
+    fflush(stdin);
+    gets(inputCliente);
+    strcpy(&(aux.ubicacion.nombre), inputCliente);
+    aux.ubicacion=esCliente(clientes, aux.ubicacion, *dimLClientes);
+    if (aux.ubicacion.altura==-1){
+        puts("Se ha detectado un nuevo cliente.");
+        aux.ubicacion=crearCliente(aux.ubicacion.nombre);
+        clientes[*dimLClientes]=aux.ubicacion;
+        (*dimLClientes) ++;
+        aux.IDcamara=((*dimLClientes) * 100)+1;
+        system("cls");
+        imprimirHeader("     Nueva Camara    ");
+    }else{ /// Debo obtener un ID disponible para ese cliente (dentro del rango de cientos del cliente).
+        aux.IDcamara=obtenerIDLibreCliente(arbol, aux.ubicacion);
+    }
     do{
-        puts("Ingrese 1 para crear un nuevo cliente y 2 para agregar camara a un cliente existente.")
-        do{
-            opchar='n';
-            fflush(stdin);
-            opchar=getch();
-            input=atoi(&opchar);
-        }while (input!=1&&input!=2);
-        if (input==1){
-            aux.ubicacion=crearCliente();
-        }else{
-            for(i=0;i<dimLClientes;i++){
-                textcolor(10);
-                printf("\n\t%i.- ", i+1);
-                textcolor(15);
-                printf("%s.", clientes[i]);
-            }
-            printf("Ingrese su seleccion entre 1 y %i", dimLClientes);
-            do{
-                fflush(stdin);
-                opchar=getch();
-                input=atoi(&opchar);
-            }while (input<0||input>dimLClientes);
-        }
-    }while (control!='s'&&control!='S');
-    control='n';
-    do{
+        system("cls");
+        imprimirHeader("     Nueva Camara    ");
+        printf("El sistema selecciono la ID = %i para su camara.\n",aux.IDcamara);
         printf("Ingrese usuario del Supervisor a cargo de la vigilacia: ");
         fflush(stdin);
         gets(&(aux.supervisor));
-        encontrado=buscarExistente(aux.supervisor, rutaSupervisores);
+        encontrado=buscarExistente(&aux.supervisor, rutaSupervisores, 2);
         if(encontrado==0){
             puts("Se ha detectado un nombre de usuario de Supervisor nuevo.");
             puts("Desea crear un nuevo usuario? S/N.");
@@ -102,27 +117,37 @@ celda crearCamara(char clientes[][sizeNom], int dimLClientes){
                 puts("Ingrese una contrasena para el nuevo usuario:");
                 fflush(stdin);
                 gets(aux.supervisor.contrasena);
-                puts("\nNuevo usuario creado.");
+                puts("Nuevo usuario creado.\n\n");
                 control='s';
+
+                supervisores=fopen(rutaSupervisores, "ab");
+                fwrite(&aux.supervisor, sizeof(usuario), 1, supervisores);
+                fclose(supervisores);
                 Sleep(500);
             }
         } else{
-            obtenerContrasena(&aux.supervisor.contrasena, aux.supervisor.nomUsuario);
             control='s';
         }
     }while (control!='s'&&control!='S');
-    printf(".:Prioridad de Camara:.\n");
+    printf("Prioridad de Camara:");
     do{
-    printf("La prioridad ingresada debe ser MAYOR a 0 (cero) y MENOR a 9 (nueve).\n");
-    printf("Ingrese prioridad: ");
-    fflush(stdin);
-    scanf("%i",&aux.prioridad);
-    }while (aux.prioridad>9 && aux.prioridad<0);
-    aux.estado=0;
-    aux.eliminada=0;
+        fflush(stdin);
+        scanf("%i", &(aux.prioridad));
+        if (aux.prioridad>10 || aux.prioridad<0){
+            printf("La prioridad ingresada debe ser MAYOR igual a 0 (cero) y MENOR  a 10 (diez).\n");
+            printf("Ingrese prioridad: ");
+        }
+    }while (aux.prioridad>10 || aux.prioridad<0);
+    aux.estado=1;
+    aux.fechaInstalacion=time(NULL);
+    system("cls");
+    imprimirHeader("     Nueva Camara    ");
+    puts("Se creo la siguiente camara: ");
+    imprimirCamaraEncontrada(aux);
+    system("Pause");
     return aux;
 };
-*/
+
 
 arbolCamara * crearNodoArbolCamara(celda cam){
     arbolCamara * aux=(arbolCamara *)malloc(sizeof(arbolCamara));
@@ -144,22 +169,18 @@ arbolCamara * insertarNodoCamaraEnArbol(arbolCamara * arbol, arbolCamara * nuevo
     }
     return arbol;
 };
-/*
+
 arbolCamara * cargarCamaras(arbolCamara * arbol){
     char opc='s';
-    char clientes [30][sizeNom];
+    lugar clientes [50];
     int dimLClientes=0;
     dimLClientes=obtenerClientes(arbol, clientes, 0);
-    printf("\n<< A CONTINUACION, INGRESE LOS DATOS SOLICITADOS PARA LA CARGA DE UNA CAMARA >>\n\n");
     while (opc=='s'){
-        arbol=insertarNodoCamaraEnArbol(arbol,crearNodoArbolCamara(crearCamara(clientes, dimLClientes)));
+        arbol=insertarNodoCamaraEnArbol(arbol,crearNodoArbolCamara(crearCamara(arbol, clientes, &dimLClientes)));
         opc=control();
     }
     return arbol;
 };
-
-*/
-
 
 
 int mostrarArbolCamaras(arbolCamara * arbol, int modo, int rep, char cliente[]){
@@ -322,36 +343,35 @@ void buscarCamaraXID (arbolCamara *arbol, arbolCamara **rta, int ID){
     }
 }
 
-int verificarRepetido(char clientes[][sizeNom], char nuevo[], int i) { ///0 si ya se encuentra, 1 si es nuevo.
+int esNuevo(lugar clientes[], lugar nuevo, int dimL) { ///0 si ya se encuentra, 1 si es nuevo.
     int rta=1;
     int j;
-    for (j=0; j<i; j++){
-        if (strcmp(clientes[j], nuevo)==0){
+    for (j=0; j<dimL; j++){
+        if (strcmp(clientes[j].nombre, nuevo.nombre)==0){
             rta=0;
         }
     }
     return rta;
 }
 
-int obtenerClientes(arbolCamara *arbol, char clientes[][sizeNom], int i)
+int obtenerClientes(arbolCamara *arbol, lugar clientes[], int dimL)
 {
-    lugar auxLugar; ///
+    lugar auxLugar, nuevo; ///
     celda auxCelda; ///
-    char nuevo[sizeNom]; ///
     if(arbol != NULL){
         auxCelda=arbol->C; ///
-        auxLugar=auxCelda.ubicacion; ///
-        strcpy(nuevo, auxLugar.nombre); /// La que tepa codeblocks.
-        if (verificarRepetido(clientes, nuevo, i)){
-            strcpy(clientes[i], nuevo);
-            i++;
+        auxLugar=auxCelda.ubicacion; /// La que tepa codeblocks
+        nuevo=auxLugar;
+        if (esNuevo(clientes, nuevo, dimL)){
+            clientes[dimL]=nuevo;
+            dimL++;
         }
         if(arbol->derecha != NULL)
-            i = obtenerClientes(arbol->derecha, clientes, i);
+            dimL = obtenerClientes(arbol->derecha, clientes, dimL);
         if(arbol->izquierda != NULL)
-            i = obtenerClientes(arbol->izquierda, clientes, i);
+            dimL = obtenerClientes(arbol->izquierda, clientes, dimL);
     }
-    return i;
+    return dimL;
 }
 
 int obtenerInput (char input[], int *numero){ /// Retorna 1 si se ingreso un ID y 0 si se ingreso una palabra.
@@ -406,12 +426,12 @@ arbolCamara * buscarCamara (arbolCamara *arbol){
     arbolCamara *encontrado;
     int ID, dimL=0, i=0, IDS[100], dimLIDS=0, flag=0;
     dimLIDS=obtenerIDS(arbol, dimLIDS, IDS, 0);
-    char clientes[50][sizeNom];
+    lugar clientes[50];
     dimL=obtenerClientes(arbol, clientes, 0);
     puts("Ingrese un ID de camara o un cliente:\n");
     puts("Clientes existentes:");
     for (i=0; i<dimL; i++){
-        printf("| %s |", clientes[i]);
+        printf("| %s |", clientes[i].nombre);
     }
     puts("");
     puts("\nIDs de camara existentes:");

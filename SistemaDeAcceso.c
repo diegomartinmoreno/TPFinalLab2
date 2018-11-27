@@ -101,7 +101,9 @@ usuario registro(){
 };
 
 
-int buscarExistente(usuario aux, char ruta[]){ /// 1 si encuentra existente, 0 si no esta en la base de datos.
+int buscarExistente(usuario *aux, char ruta[], int modo){
+    /// 1 si encuentra existente (AGREGA LA CONTRASEÑA), 0 si no esta en la base de datos.
+    /// Modo 1 compara User y Pass, modo 2 compara solo User.
 
     FILE *fp=fopen(ruta,"rb");
     int rta=0,valid,ingreso=0;
@@ -110,12 +112,16 @@ int buscarExistente(usuario aux, char ruta[]){ /// 1 si encuentra existente, 0 s
     if(fp){
         while(!feof(fp) && ingreso==0){
             fread(&auxReg,sizeof(usuario),1,fp);
-            rta=strcmp(auxReg.nomUsuario,aux.nomUsuario);
-
+            rta=strcmp(auxReg.nomUsuario,(*aux).nomUsuario);
             if(rta==0){
-                valid=strcmp(auxReg.contrasena,aux.contrasena);
-                if(valid==0){
+                if (modo==1){
+                    valid=strcmp(auxReg.contrasena,(*aux).contrasena);
+                    if(valid==0){
+                        ingreso=1;
+                    }
+                }else{
                     ingreso=1;
+                    *aux=auxReg;
                 }
             }
         }
@@ -160,7 +166,7 @@ void cargarUsuariosAdm(){
             if(validos==0){
                 fwrite(&aux,sizeof(usuario),1,admin);
             }else{
-                ingreso=buscarExistente(aux, rutaAdministradores);
+                ingreso=buscarExistente(&aux, rutaAdministradores, 1);
                 if(ingreso==0){
                     fwrite(&aux,sizeof(usuario),1,admin);
                 }else{
@@ -207,7 +213,7 @@ int identificarse(){
             aux.contrasena[i]='\0';
         }
     }while(i<20&&pass!=13);
-    encontrado=buscarExistente(aux, rutaAdministradores);
+    encontrado=buscarExistente(&aux, rutaAdministradores, 1);
     if(encontrado==1){
         ingreso=1;
     }
