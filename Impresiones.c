@@ -135,7 +135,7 @@ void imprimirFecha(time_t aux){
 }
 
 void imprimirCamaraEncontrada (celda cam){
-    printf("|---------------------------------->>>\n");
+    printf("|-------------------------------->>>\n");
     printf(" ID de camara: %i\n",cam.IDcamara);
     printf(" Nombre y Apellido de supervisor: %s\n",cam.supervisor.nomUsuario);
     printf("| Cliente: %s /// Desde ", cam.ubicacion.nombre);
@@ -145,10 +145,10 @@ void imprimirCamaraEncontrada (celda cam){
     if(cam.estado == 2)
         printf("\n| Estado: EN REPARACION\n");
     printf(" Prioridad de Camara: %i",cam.prioridad);
-    printf("\n|-------------------------------------------------------------------->>>\n");
+    printf("\n|------------------------------------------------------------>>>\n");
 }
 
-void mostrarUnaCamara (celda cam, int modo, char cliente[]){ /// MODO= 1 muestra activas // 2 muestra inactivas // 3 imprime IDS. /// 4 imprime camaras del lugar CLIENTE.
+void mostrarUnaCamara (celda cam, int modo, char cliente[]){ /// MODO= 1 muestra activas // 2 muestra inactivas // 3 imprime IDS. /// 4 imprime camaras del lugar CLIENTE. /// 5 todas.
     switch(modo){
         case 2:
             if (cam.estado == 2||cam.estado == 0){
@@ -162,7 +162,7 @@ void mostrarUnaCamara (celda cam, int modo, char cliente[]){ /// MODO= 1 muestra
                 if(cam.estado == 2)
                     printf("\n| Estado: EN REPARACION");
                 printf(" /// Prioridad de Camara: %i",cam.prioridad);
-                printf("\n|-------------------------------------------------------------------->>>\n");
+                printf("\n|------------------------------------------------------------>>>\n");
             }
             break;
         case 1:
@@ -174,7 +174,7 @@ void mostrarUnaCamara (celda cam, int modo, char cliente[]){ /// MODO= 1 muestra
                 imprimirFecha(cam.fechaInstalacion);
                 printf("\n| Estado: ONLINE");;
                 printf(" /// Prioridad de Camara: %i",cam.prioridad);
-                printf("\n|-------------------------------------------------------------------->>>\n");
+                printf("\n|------------------------------------------------------------>>>\n");
             }
             break;
         case 3:
@@ -184,6 +184,21 @@ void mostrarUnaCamara (celda cam, int modo, char cliente[]){ /// MODO= 1 muestra
             if (strcmp(cam.ubicacion.nombre, cliente)==0){
                 printf("| %i |", cam.IDcamara);
             }
+            break;
+        case 5:
+            printf("|---------------------------------->>>\n");
+            printf("| ID de camara: %i /// ",cam.IDcamara);
+            printf("Supervisor: %s\n",cam.supervisor.nomUsuario);
+            printf("| Cliente: %s /// Desde ", cam.ubicacion.nombre);
+            imprimirFecha(cam.fechaInstalacion);
+            if(cam.estado == 0)
+                printf("\n| Estado: OFFLINE");
+            if(cam.estado == 1)
+                printf("\n| Estado: ONLINE");
+            if(cam.estado == 2)
+                printf("\n| Estado: EN REPARACION");
+            printf(" /// Prioridad de Camara: %i",cam.prioridad);
+            printf("\n|------------------------------------------------------------>>>\n");
             break;
     }
 }
@@ -281,7 +296,7 @@ void imprimirMenuEstadisticas (){
     textcolor(10);
     printf("\n\t3.- ");
     textcolor(15);
-    printf("Porcentaje de alertas/averias por supervisor.");
+    printf("Porcentaje de alertas/averias por dia.");
     textcolor(10);
     printf("\n\t4.- ");
     textcolor(15);

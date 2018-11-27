@@ -100,12 +100,12 @@ void iniciarMenuCamaras(){
                 system("Pause");
                 break;
             case '2':
-                mostrarArbolCamaras(arbol, 1, 30, 0);
+                mostrarArbolCamarasMenu(arbol, 1, 0, 0);
                 puts("");
                 system("Pause");
                 break;
             case '3':
-                mostrarArbolCamaras(arbol, 2, 30, 0);
+                mostrarArbolCamarasMenu(arbol, 2, 0, 0);
                 puts("");
                 system("Pause");
                 break;

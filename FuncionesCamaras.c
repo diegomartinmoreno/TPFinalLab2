@@ -182,7 +182,6 @@ arbolCamara * cargarCamaras(arbolCamara * arbol){
     return arbol;
 };
 
-
 int mostrarArbolCamaras(arbolCamara * arbol, int modo, int rep, char cliente[]){
     if(arbol){
         celda aux;
@@ -197,6 +196,107 @@ int mostrarArbolCamaras(arbolCamara * arbol, int modo, int rep, char cliente[]){
         mostrarUnaCamara(aux, modo, cliente);
     }
     return rep;
+};
+
+void mostrarArbolCamarasInorder(arbolCamara * arbol, int modo, int *rep, char cliente[]){
+    if(arbol){
+        mostrarArbolCamarasInorder(arbol->izquierda, modo, rep, cliente);
+        celda aux;
+        if(*rep==8){
+            puts("El listado continua en la siguiente pagina.");
+            system("Pause");
+            *rep=0;
+        }
+        *rep++;
+        aux=arbol->C;
+        mostrarUnaCamara(aux, modo, cliente);
+        mostrarArbolCamarasInorder(arbol->derecha, modo, rep, cliente);
+    }
+};
+
+void mostrarArbolCamarasPreorder(arbolCamara * arbol, int modo, int *rep, char cliente[]){
+    if(arbol){
+        celda aux;
+        if(*rep==6){
+            puts("El listado continua en la siguiente pagina.");
+            system("Pause");
+            *rep=0;
+        }
+        *rep++;
+        aux=arbol->C;
+        mostrarUnaCamara(aux, modo, cliente);
+        mostrarArbolCamarasPreorder(arbol->izquierda, modo, rep, cliente);
+        mostrarArbolCamarasPreorder(arbol->derecha, modo, rep, cliente);
+    }
+}
+
+void mostrarArbolCamarasPostorder(arbolCamara * arbol, int modo, int *rep, char cliente[]){
+    if(arbol){
+        celda aux;
+        mostrarArbolCamarasPostorder(arbol->izquierda, modo, rep, cliente);
+        mostrarArbolCamarasPostorder(arbol->derecha, modo, rep, cliente);
+        if(*rep==8){
+            puts("El listado continua en la siguiente pagina.");
+            system("Pause");
+            *rep=0;
+        }
+        *rep++;
+        aux=arbol->C;
+        mostrarUnaCamara(aux, modo, cliente);
+    }
+}
+
+int mostrarArbolCamarasMenu(arbolCamara * arbol, int modo, int rep, char cliente[]){
+    char inputChar;
+    int flag=1, input;
+    do{
+        system("cls");
+        imprimirHeader("Listado de Camaras");
+        puts("Seleccione el orden en que quiere visualizar las camaras,\nrecuerde que el criterio de ordenamiento es la prioridad.");
+        textcolor(10);
+        printf("\n\t1.- ");
+        textcolor(15);
+        printf("De menor a mayor prioridad.");
+        textcolor(10);
+        printf("\n\t2.- ");
+        textcolor(15);
+        printf("De mayor a menor prioridad.");
+        textcolor(10);
+        printf("\n\t3.- ");
+        textcolor(15);
+        printf("En el orden de almacenamiento.");
+        textcolor(12);
+        printf("\n\t4.- ");
+        textcolor(15);
+        printf("Cancelar.\n\n");
+        fflush(stdin);
+        inputChar=getch();
+        input=atoi(&inputChar);
+        switch (input){
+        case 1:
+            rep=0;
+            mostrarArbolCamarasInorder(arbol, modo, &rep, 0);
+            flag=0;
+            break;
+        case 2:
+            rep=0;
+            mostrarArbolCamarasPreorder(arbol, modo, &rep, 0);
+            flag=0;
+            break;
+        case 3:
+            rep=0;
+            mostrarArbolCamarasPostorder(arbol, modo, &rep, 0);
+            flag=0;
+            break;
+        case 4:
+            flag=0;
+            break;
+        default:
+            puts("OPCION INCORRECTA.");
+            Sleep(500);
+            break;
+        }
+    }while (flag);
 };
 
 FILE *cargaArbolToFile(arbolCamara * arbol, FILE *cam){
