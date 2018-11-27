@@ -192,15 +192,15 @@ int mostrarArbolCamaras(arbolCamara * arbol, int modo, int rep, char cliente[]){
             rep=0;
         }
         rep++;
-        aux=arbol->C;
+        aux=(arbol->C);
         mostrarUnaCamara(aux, modo, cliente);
     }
     return rep;
 };
 
-void mostrarArbolCamarasInorder(arbolCamara * arbol, int modo, int *rep, char cliente[]){
-    if(arbol){
-        if (arbol->izquierda){
+void mostrarArbolCamarasInorder(const arbolCamara * arbol, int modo, int *rep, char cliente[]){
+    if(arbol!=NULL){
+        if (arbol->izquierda!=NULL){
             mostrarArbolCamarasInorder(arbol->izquierda, modo, rep, cliente);
         }
         celda aux;
@@ -212,16 +212,16 @@ void mostrarArbolCamarasInorder(arbolCamara * arbol, int modo, int *rep, char cl
             (*rep)=0;
         }
         (*rep)++;
-        aux=arbol->C;
+        aux=(arbol->C);
         mostrarUnaCamara(aux, modo, cliente);
-        if (arbol->derecha){
+        if (arbol->derecha!=NULL){
             mostrarArbolCamarasInorder(arbol->derecha, modo, rep, cliente);
         }
     }
 };
 
-void mostrarArbolCamarasPreorder(arbolCamara * arbol, int modo, int *rep, char cliente[]){
-    if(arbol){
+void mostrarArbolCamarasPreorder(const arbolCamara * arbol, int modo, int *rep, char cliente[]){
+    if(arbol!=NULL){
         celda aux;
         if((*rep)>5){
             puts("El listado continua en la siguiente pagina.");
@@ -231,21 +231,21 @@ void mostrarArbolCamarasPreorder(arbolCamara * arbol, int modo, int *rep, char c
             (*rep)=0;
         }
         (*rep)++;
-        aux=arbol->C;
+        aux=(arbol->C);
         mostrarUnaCamara(aux, modo, cliente);
-        if (arbol->izquierda){
+        if (arbol->izquierda!=NULL){
             mostrarArbolCamarasPreorder(arbol->izquierda, modo, rep, cliente);}
-        if (arbol->izquierda){
+        if (arbol->izquierda!=NULL){
             mostrarArbolCamarasPreorder(arbol->derecha, modo, rep, cliente);}
     }
 }
 
-void mostrarArbolCamarasPostorder(arbolCamara * arbol, int modo, int *rep, char cliente[]){
-    if(arbol){
+void mostrarArbolCamarasPostorder(const arbolCamara * arbol, int modo, int *rep, char cliente[]){
+    if(arbol!=NULL){
         celda aux;
-        if (arbol->izquierda){
+        if (arbol->izquierda!=NULL){
             mostrarArbolCamarasPostorder(arbol->izquierda, modo, rep, cliente);}
-        if (arbol->derecha){
+        if (arbol->derecha!=NULL){
             mostrarArbolCamarasPostorder(arbol->derecha, modo, rep, cliente);}
         if((*rep)>5){
             puts("El listado continua en la siguiente pagina.");

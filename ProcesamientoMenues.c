@@ -157,12 +157,14 @@ void menuSup(char usuario[]){
     arbolCamara *arbol=0, *aux=0;
     arbol=fileToArbol(arbol);
     do{
+        opchar='0';
         system("cls");
         imprimirHeader("   Menu  Supervisor   ");
         imprimirMenuSupervisor();
         puts("");
         fflush(stdin);
         opchar=getch();
+        fflush(stdin);
         op=atoi(&opchar);
         switch(op){
             case 1:
@@ -174,30 +176,36 @@ void menuSup(char usuario[]){
                 IDCamara=aux->C.IDcamara;
                 aux->C.dimAverias++;
                 system("cls");
-                aux->C.averias[(aux->C.dimAverias)-1]=ingresarNuevoHistorial(aux->C.dimAverias-1);
-                printf("Se ha ingresado una averia. ");
+                aux->C.averias[(aux->C.dimAverias)-1]=ingresarNuevoHistorial((aux->C.dimAverias)-1);
+                printf("Se ha ingresado una averia. \n");
                 system("pause");
+                fflush(stdin);
             break;
             case 3:
                 aux=buscarCamara(arbol);
                 IDCamara=aux->C.IDcamara;
                 aux->C.dimAlertas++;
                 system("cls");
-                aux->C.alertas[(aux->C.dimAlertas)-1]=ingresarNuevoHistorial(aux->C.dimAlertas-1);
-                printf("Se ha ingresado una averia. ");
+                aux->C.alertas[(aux->C.dimAlertas)-1]=ingresarNuevoHistorial((aux->C.dimAlertas-1));
+                printf("Se ha ingresado una averia. \n");
                 system("pause");
+                fflush(stdin);
             break;
             case 4:
                 system("cls");
-                imprimirHeader("    Reportar Averia   ");
+                imprimirHeader("    Reportar Averia  \n");
                 aux=buscarCamara(arbol);
                 reportarGestion(aux, 1);
+                system("pause");
+                fflush(stdin);
             break;
             case 5:
                 system("cls");
                 imprimirHeader("    Reportar Alerta   ");
                 aux=buscarCamara(arbol);
                 reportarGestion(aux, 2);
+                system("pause");
+                fflush(stdin);
             break;
             case 6:
                 puts("\nDesea cerrar sesion de supervisor? S/N");
