@@ -14,6 +14,7 @@ void inicioSistema(){
 void iniciarMenuEstadisticas(){
     historial historiales[50];
     int i=0, IDcamara, IDScliente[30], dimLClientes, dimLIDS;
+    float impresionOutput;
     char clientes[30][sizeNom];
     arbolCamara *arbol=0, *aux;
     arbol=fileToArbol(arbol);
@@ -22,6 +23,16 @@ void iniciarMenuEstadisticas(){
     while (control!='s'&&control!='S'){
         system("cls");
         imprimirHeader("     Estadisticas     ");
+        puts(">>> Estadisticas del sistema: ");
+        impresionOutput=0;
+        tiempoRespuestaAlertaSistema(arbol, &impresionOutput);
+        printf("| Tiempo medio de respuesta a las alertas: %.3f horas\n", impresionOutput);
+        impresionOutput=0;
+        tiempoRespuestaAveriaSistema(arbol, &impresionOutput);
+        printf("| Tiempo medio de respuesta a las averias: %.3f horas\n", impresionOutput);
+        textcolor(10);
+        puts("\n********************************************");
+        textcolor(15);
         imprimirMenuEstadisticas();
         fflush(stdin);
         op=getch();
@@ -39,18 +50,22 @@ void iniciarMenuEstadisticas(){
             system("pause");
             break;
         case '3':
-            //promInactividad();
+            /// PROMEDIO AVERIAS POR CAMARA.
             break;
         case '4':
-            //promSupervisor();
+            system("cls");
+            imprimirHeader("Estadisticas de Camara");
+            aux=buscarCamara(arbol);
+            system("cls");
+            imprimirHeader("Estadisticas de Camara");
+            printf("Estadisticas de la camara ID = %i\n\n", aux->C.IDcamara);
+            impresionOutput=tiempoRespuestaCamaraAlerta(arbol, aux->C.IDcamara);
+            printf(">> El tiempo de respuesta medio a las alertas en esta camara es de %.3f horas.\n\n", impresionOutput);
+            impresionOutput=tiempoRespuestaCamaraAveria(arbol, aux->C.IDcamara);
+            printf(">> El tiempo de respuesta medio a las averias en esta camara es de %.3f horas.\n\n", impresionOutput);
+            system("Pause");
             break;
         case '5':
-            //promPeriodo();
-            break;
-        case '6':
-            //promRespuesta();
-            break;
-        case '7':
             puts("\nDesea volver al menu anterior? S/N");
             fflush(stdin);
             control=getch();

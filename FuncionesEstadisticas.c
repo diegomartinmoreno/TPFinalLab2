@@ -1,80 +1,99 @@
 #include "headers.h"
 
-
-/// PROMEDIOS
-/// Cantidad de averias por camara.
-/// Cantidad de alertas por cliente.
-/// Promedio de tiempo inactiva.
-/// Promedio de alertas por supervisor.
-/// Promedio de averias por supervisor.
-/// Promedio de alertas/averias totales en un periodo de tiempo.
-/// Tiempo medio respuesta alertas.
-/// Tiempo medio respuesta averias.
-
-/*
-int comprobarRepetido (listaClientes *primero, char cliente[sizeNom]) { /// Retorna 0 si ya tengo ese cliente y 1 si no lo tengo.
-    listaClientes *lista=primero;
-    int rta=1;
-    while (lista){
-        if (strcmp(lista->cli, cliente)==0){
-            rta=0;
-        }
-        lista=lista->sig;
-    }
-    return rta;
-}
-
-void agregarFinal(listaClientes **clientes, char agregar []){
-    listaClientes *seg=*clientes;
-    if (*clientes){
-        while (seg->sig!=NULL){
-            seg=seg->sig;
-        }
-        seg->sig=(listaClientes*)malloc(sizeof(listaClientes));
-        seg=seg->sig;
-        strcpy(seg->cli, agregar);
-        seg->sig=0;
-    }else{
-    *clientes=(listaClientes*)malloc(sizeof(listaClientes));
-    strcpy((*clientes)->cli, agregar);
-    (*clientes)->sig=0;
-    }
-}
-
-listaClientes * obtenerClientes (arbolCamara *arbol, listaClientes *lista){
-    celda aux;
-    lugar aux2;
-    if (arbol){
-        lista=obtenerClientes(arbol->izquierda, lista);
-        lista=obtenerClientes(arbol->derecha, lista);
-        aux=arbol->C;
-        aux2=aux.ubicacion; /// Gracias por tanto Code::Blocks
-        if (comprobarRepetido(lista, aux2.nombre)){
-            agregarFinal(&lista, aux2.nombre);
-        }
-    }
-    return lista;
-}
-*/ ///Resolvi manejarlo con arreglos ya que era mucho mas sencillo de pasar desde el arbol.
-
-
-
 void histAverias(arbolCamara *arbol){
-    int i=0;
+    int i=0, salto=0;
     arbolCamara *encontrada=buscarCamara(arbol);
     system("cls");
     imprimirHeader(" Historico de Averias ");
     for (i=0; i<(encontrada->C.dimAverias); i++){
         imprimirUnHistorial(encontrada->C.averias[i]);
+        salto++;
+        if (salto==5){
+                salto=0;
+            puts("Continua en la siguiente pagina.");
+            system("Pause");
+            system("cls");
+            imprimirHeader(" Historico de Averias ");
+        }
     }
+    puts("No hay mas entradas en el historial de la camara.");
 }
 
 void histAlertas(arbolCamara *arbol){
-    int i=0;
+    int i=0, salto=0;
     arbolCamara *encontrada=buscarCamara(arbol);
     system("cls");
     imprimirHeader(" Historico de Averias ");
     for (i=0; i<(encontrada->C.dimAlertas); i++){
         imprimirUnHistorial(encontrada->C.alertas[i]);
+        salto++;
+        if (salto==5){
+                salto=0;
+            puts("Continua en la siguiente pagina.");
+            system("Pause");
+            system("cls");
+            imprimirHeader(" Historico de Averias ");
+        }
     }
+    puts("No hay mas entradas en el historial de la camara.");
+}
+
+float tiempoRespuestaCamaraAveria (arbolCamara *arbol, int IDCamara){
+    float rta=0, tiempoTotal=0;
+    int cantRegistros=0, i=0;
+    if (arbol!=NULL){
+        if (arbol->C.IDcamara==IDCamara){
+            if (arbol->C.dimAverias!=0){
+                for (i=0; i<(arbol->C.dimAverias); i++){
+                    tiempoTotal+=arbol->C.averias[i].tiempoRespuesta;
+                }
+                rta=tiempoTotal/(arbol->C.dimAverias);
+            }
+        }
+        rta+=tiempoRespuestaCamaraAveria(arbol->derecha, IDCamara);
+        rta+=tiempoRespuestaCamaraAveria(arbol->izquierda, IDCamara);
+    }
+    return rta;
+}
+
+void tiempoRespuestaAveriaSistema(arbolCamara *arbol, float *rta){
+    int IDS[200], dimLIDS=0, i=0;
+    float sumatoria=0;
+    dimLIDS=obtenerIDS(arbol, dimLIDS, IDS, 0);
+    for (i=0; i<dimLIDS; i++){
+        sumatoria+=tiempoRespuestaCamaraAveria(arbol, IDS[i]);
+    }
+    *rta=sumatoria/(float)dimLIDS;
+}
+
+float tiempoRespuestaCamaraAlerta (arbolCamara *arbol, int IDCamara){
+    float rta=0, tiempoTotal=0;
+    int cantRegistros=0, i=0;
+    if (arbol!=NULL){
+        if (arbol->C.IDcamara==IDCamara){
+            if ((arbol->C.dimAlertas)!=0){
+                for (i=0; i<(arbol->C.dimAlertas); i++){
+                    tiempoTotal+=arbol->C.alertas[i].tiempoRespuesta;
+                }
+                rta=tiempoTotal/(arbol->C.dimAlertas);
+            }
+        }
+        if (arbol->izquierda!=NULL){
+            rta+=tiempoRespuestaCamaraAlerta(arbol->izquierda, IDCamara);
+        }
+        if (arbol->derecha!=NULL){
+            rta+=tiempoRespuestaCamaraAlerta(arbol->derecha, IDCamara);
+        }
+    }
+    return rta;
+}
+
+void  tiempoRespuestaAlertaSistema(arbolCamara *arbol, float *rta){
+    int IDS[200], dimLIDS=0, i=0;
+    float sumatoria=0;
+    dimLIDS=obtenerIDS(arbol, dimLIDS, IDS, 0);
+    for (i=0; i<dimLIDS; i++){
+        sumatoria+=tiempoRespuestaCamaraAlerta(arbol, IDS[i]);
+    }
+    *rta=sumatoria/(float)dimLIDS;
 }

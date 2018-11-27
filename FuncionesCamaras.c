@@ -65,7 +65,7 @@ int obtenerIDLibreCliente(arbolCamara *arbol, lugar cliente){
     }
     obtenerCamarasCliente(arbol, camarasCliente, cliente, &centesimas); /// Cargo las posiciones del arreglo relativas a la centesima que ocupan en el arreglo.
     i=0;
-    while (flag==0 && i<100){
+    while (flag==0 && i<100){ /// la primera del arreglo cuyo ID sea -1 es la que esta libre dentro de esa centesima.
         if (camarasCliente[i].IDcamara==-1){
             IDLibre=i+(centesimas*100);
             flag=1;

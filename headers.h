@@ -119,9 +119,10 @@ int identificarse();
 
 
 /// funcionesEstadisticas.c
-
-
-
+void  tiempoRespuestaAlertaSistema(arbolCamara *arbol, float *rta);
+float tiempoRespuestaCamaraAlerta (arbolCamara *arbol, int IDCamara);
+void tiempoRespuestaAveriaSistema(arbolCamara *arbol, float *rta);
+float tiempoRespuestaCamaraAveria (arbolCamara *arbol, int IDCamara);
 /// funcionesCamaras.c
 
 

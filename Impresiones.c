@@ -281,21 +281,13 @@ void imprimirMenuEstadisticas (){
     textcolor(10);
     printf("\n\t3.- ");
     textcolor(15);
-    printf("Promedio de tiempo de inactividad por camara.");
+    printf("Porcentaje de alertas/averias por supervisor.");
     textcolor(10);
     printf("\n\t4.- ");
     textcolor(15);
-    printf("Promedio de alertas/averias por supervisor.");
-    textcolor(10);
-    printf("\n\t5.- ");
-    textcolor(15);
-    printf("Promedio de alertas/averias por periodo.");
-    textcolor(10);
-    printf("\n\t6.- ");
-    textcolor(15);
-    printf("Tiempo medio de respuesta alertas/averias.");
+    printf("Tiempo medio de respuesta alertas/averias por camara.");
     textcolor(12);
-    printf("\n\t7.- ");
+    printf("\n\t5.- ");
     textcolor(15);
     printf("Salir al menu anterior.\n\n");
 }
