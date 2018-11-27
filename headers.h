@@ -123,6 +123,11 @@ void  tiempoRespuestaAlertaSistema(arbolCamara *arbol, float *rta);
 float tiempoRespuestaCamaraAlerta (arbolCamara *arbol, int IDCamara);
 void tiempoRespuestaAveriaSistema(arbolCamara *arbol, float *rta);
 float tiempoRespuestaCamaraAveria (arbolCamara *arbol, int IDCamara);
+float promedioAlertasXDiaXCamara(arbolCamara *arbol, int IDcamara);
+float promedioAveriasXDiaXCamara(arbolCamara *arbol, int IDcamara);
+float promedioAlertasXDiaSistema(arbolCamara *arbol);
+float promedioAveriasXDiaSistema(arbolCamara *arbol);
+
 /// funcionesCamaras.c
 
 

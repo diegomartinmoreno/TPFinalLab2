@@ -97,3 +97,70 @@ void  tiempoRespuestaAlertaSistema(arbolCamara *arbol, float *rta){
     }
     *rta=sumatoria/(float)dimLIDS;
 }
+
+float promedioAveriasXDiaXCamara(arbolCamara *arbol, int IDcamara){
+    float rta=0;
+    time_t fechaActual;
+    double diferenciaSegundos=0;
+    int diasDesdeInstalacion=0;
+    time(&fechaActual);
+    if (arbol!=NULL){
+        if(arbol->C.IDcamara==IDcamara){
+            diferenciaSegundos=difftime(fechaActual, arbol->C.fechaInstalacion);
+            diasDesdeInstalacion=(int)((diferenciaSegundos/86400)+1); /// REDONDEA PARA ARRIBA!
+            rta=( ( (float)(arbol->C.dimAverias) ) / ( (float)diasDesdeInstalacion ) );
+        }
+        if (arbol->izquierda!=NULL){
+            rta+=promedioAveriasXDiaXCamara(arbol->izquierda, IDcamara);
+        }
+        if(arbol->derecha!=NULL){
+            rta+=promedioAveriasXDiaXCamara(arbol->derecha, IDcamara);
+        }
+    }
+    return rta;
+}
+
+float promedioAlertasXDiaXCamara(arbolCamara *arbol, int IDcamara){
+    float rta=0;
+    time_t fechaActual;
+    double diferenciaSegundos=0;
+    int diasDesdeInstalacion=0;
+    time(&fechaActual);
+    if (arbol!=NULL){
+        if(arbol->C.IDcamara==IDcamara){
+            diferenciaSegundos=difftime(fechaActual, arbol->C.fechaInstalacion);
+            diasDesdeInstalacion=(int)((diferenciaSegundos/86400)+1); /// REDONDEA PARA ARRIBA!
+            rta=( ( (float)(arbol->C.dimAlertas) ) / ( (float)diasDesdeInstalacion ) );
+        }
+        if (arbol->izquierda!=NULL){
+            rta+=promedioAlertasXDiaXCamara(arbol->izquierda, IDcamara);
+        }
+        if(arbol->derecha!=NULL){
+            rta+=promedioAlertasXDiaXCamara(arbol->derecha, IDcamara);
+        }
+    }
+    return rta;
+}
+
+
+float promedioAlertasXDiaSistema(arbolCamara *arbol){
+    int IDS[200], dimLIDS=0, i=0;
+    float sumatoria=0, rta=0;
+    dimLIDS=obtenerIDS(arbol, dimLIDS, IDS, 0);
+    for (i=0; i<dimLIDS; i++){
+        sumatoria+=promedioAlertasXDiaXCamara(arbol, IDS[i]);
+    }
+    rta=( (sumatoria) / ( (float)dimLIDS ) );
+    return rta;
+}
+
+float promedioAveriasXDiaSistema(arbolCamara *arbol){
+    int IDS[200], dimLIDS=0, i=0;
+    float sumatoria=0, rta=0;
+    dimLIDS=obtenerIDS(arbol, dimLIDS, IDS, 0);
+    for (i=0; i<dimLIDS; i++){
+        sumatoria+=promedioAveriasXDiaXCamara(arbol, IDS[i]);
+    }
+    rta=( (sumatoria) / ( (float)dimLIDS ) );
+    return rta;
+}

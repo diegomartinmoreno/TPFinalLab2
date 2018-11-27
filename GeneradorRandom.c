@@ -1,18 +1,18 @@
 #include "headers.h"
 
 time_t generarFecha (){
-    time_t rta;
-    struct tm aux;
-    aux.tm_year=(rand()%10)+2008;
-    aux.tm_mday=(rand()%29)+1;
-    aux.tm_hour=rand()%23;
-    aux.tm_mon=(rand()%11)+1;
-    aux.tm_min=rand()%59;
-    aux.tm_sec=rand()%59;
-    rta=mktime(&aux);
+    time_t rta, seed;
+    int offset=0;
+    struct tm *aux;
+    time(&seed);
+    aux=localtime(&seed);
+    if((*aux).tm_mday>5){
+        offset=rand()%5;
+        (*aux).tm_mday-=offset;
+    }
+    rta=mktime(aux);
     return rta;
 }
-
 
 lugar generarUbicacion (int ID){
     lugar aux;

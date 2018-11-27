@@ -23,13 +23,17 @@ void iniciarMenuEstadisticas(){
     while (control!='s'&&control!='S'){
         system("cls");
         imprimirHeader("     Estadisticas     ");
-        puts(">>> Estadisticas del sistema: ");
+        puts(">>> Estadisticas del sistema: \n");
+        impresionOutput=promedioAlertasXDiaSistema(arbol);
+        printf("| Promedio de alertas por dia: %.2f\n", impresionOutput);
         impresionOutput=0;
         tiempoRespuestaAlertaSistema(arbol, &impresionOutput);
-        printf("| Tiempo medio de respuesta a las alertas: %.3f horas\n", impresionOutput);
+        printf("| Tiempo medio de respuesta a las alertas: %.3f horas\n\n", impresionOutput);
+        impresionOutput=promedioAveriasXDiaSistema(arbol);
+        printf("| Promedio de averias por dia: %.2f\n", impresionOutput);
         impresionOutput=0;
         tiempoRespuestaAveriaSistema(arbol, &impresionOutput);
-        printf("| Tiempo medio de respuesta a las averias: %.3f horas\n", impresionOutput);
+        printf("| Tiempo medio de respuesta a las averias: %.3f horas\n\n", impresionOutput);
         textcolor(10);
         puts("\n********************************************");
         textcolor(15);
@@ -50,22 +54,24 @@ void iniciarMenuEstadisticas(){
             system("pause");
             break;
         case '3':
-            /// PROMEDIO AVERIAS POR CAMARA.
-            break;
-        case '4':
             system("cls");
             imprimirHeader("Estadisticas de Camara");
             aux=buscarCamara(arbol);
             system("cls");
             imprimirHeader("Estadisticas de Camara");
             printf("Estadisticas de la camara ID = %i\n\n", aux->C.IDcamara);
+            impresionOutput=promedioAlertasXDiaXCamara(arbol, aux->C.IDcamara);
+            printf(">> Esta camara tiene un promedio de %.2f alertas por dia.\n", impresionOutput);
             impresionOutput=tiempoRespuestaCamaraAlerta(arbol, aux->C.IDcamara);
-            printf(">> El tiempo de respuesta medio a las alertas en esta camara es de %.3f horas.\n\n", impresionOutput);
+            printf("| El tiempo de respuesta medio a las alertas en esta camara es de %.3f horas.\n\n\n", impresionOutput);
+            impresionOutput=promedioAveriasXDiaXCamara(arbol, aux->C.IDcamara);
+            printf(">> Esta camara tiene un promedio de %.2f averias por dia.\n", impresionOutput);
             impresionOutput=tiempoRespuestaCamaraAveria(arbol, aux->C.IDcamara);
-            printf(">> El tiempo de respuesta medio a las averias en esta camara es de %.3f horas.\n\n", impresionOutput);
+            printf("| El tiempo de respuesta medio a las averias en esta camara es de %.3f horas.\n\n", impresionOutput);
+
             system("Pause");
             break;
-        case '5':
+        case '4':
             puts("\nDesea volver al menu anterior? S/N");
             fflush(stdin);
             control=getch();

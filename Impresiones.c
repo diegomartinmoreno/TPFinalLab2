@@ -296,13 +296,9 @@ void imprimirMenuEstadisticas (){
     textcolor(10);
     printf("\n\t3.- ");
     textcolor(15);
-    printf("Porcentaje de alertas/averias por dia.");
-    textcolor(10);
-    printf("\n\t4.- ");
-    textcolor(15);
-    printf("Tiempo medio de respuesta alertas/averias por camara.");
+    printf("Estadisticas por camara.");
     textcolor(12);
-    printf("\n\t5.- ");
+    printf("\n\t4.- ");
     textcolor(15);
     printf("Salir al menu anterior.\n\n");
 }
